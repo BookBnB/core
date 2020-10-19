@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/BookBnB/node-template.svg?branch=master)](https://travis-ci.com/BookBnB/node-template)
 [![codecov](https://codecov.io/gh/BookBnB/core/branch/master/graph/badge.svg?token=3HYQW6VBPY)](undefined)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=bookbnb-master)](https://bookbnb-master.herokuapp.com/)
 
 Servicio principal para BookBnB
 
