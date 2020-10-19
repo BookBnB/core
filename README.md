@@ -1,9 +1,9 @@
-# Node Template
+# BookBnB
 
-[![Build Status](https://travis-ci.com/BookBnB/bookbnb.svg?token=ztzmYxxiK9M4zZcGZZzZ&branch=master)](https://travis-ci.com/BookBnB/bookbnb)
-[![codecov](https://codecov.io/gh/BookBnB/bookbnb/branch/master/graph/badge.svg?token=4TF231UDNN)](https://codecov.io/gh/BookBnB/bookbnb)
+[![Build Status](https://travis-ci.com/BookBnB/node-template.svg?branch=master)](https://travis-ci.com/BookBnB/node-template)
+[![codecov](https://codecov.io/gh/BookBnB/core/branch/master/graph/badge.svg?token=3HYQW6VBPY)](undefined)
 
-Template repo for nodejs services
+Servicio principal para BookBnB
 
 ## Run
 
