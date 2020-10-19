@@ -28,10 +28,11 @@ export default class Api {
         this.logger = logger
         this.container = container
         this.openApiInfo = openApiInfo
+        this.initialize()
     }
 
-    public async start(): Promise<void> {
-        await this.useContainer();
+    public initialize(): void {
+        this.useContainer();
         useExpressServer(this.app, this.options());
         this.serveApiDocs()
     }
@@ -40,7 +41,7 @@ export default class Api {
      * Configura el container para instanciar los controladores.
      * @private
      */
-    private async useContainer() {
+    private useContainer() {
         useContainer(new ContainerAdapter(this.container));
     }
 
