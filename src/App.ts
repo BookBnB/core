@@ -5,18 +5,16 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import registerTypes from "./infra/container/registerTypes";
 import {DIContainer} from "@wessberg/di";
+import express from "express";
 
 
 async function main() {
 	dotenvExpand(dotenv.config())
 	configure(require('../config/log-config.json'));
 
-	const DEFAULT_PORT: number = 3000;
-
-	const port: number = process.env.PORT ? parseInt(process.env.PORT) : DEFAULT_PORT;
-
+	const app = express();
 	const api: Api = new Api({
-		port,
+		app,
 		logger: new Log4JSLogger('Api'),
 		container: await registerTypes(new DIContainer()),
 		openApiInfo: {
@@ -26,6 +24,12 @@ async function main() {
 			}
 		}
 	});
+
+	const DEFAULT_PORT: number = 3000;
+	const port: number = process.env.PORT ? parseInt(process.env.PORT) : DEFAULT_PORT;
+	const appLogger = new Log4JSLogger('Api')
+
+	app.listen(port, () => appLogger.info(`Listening at port ${port}`))
 
 	await api.start();
 }

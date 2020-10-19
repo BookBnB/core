@@ -1,7 +1,7 @@
 import {Application} from "express";
 import {ILogger} from "./infra/logging/Logger";
 import "reflect-metadata"; // Necesario para routing-controllers
-import {createExpressServer, getMetadataArgsStorage, useContainer} from "routing-controllers";
+import {getMetadataArgsStorage, useContainer, useExpressServer} from "routing-controllers";
 import {routingControllersToSpec} from 'routing-controllers-openapi';
 import {validationMetadatasToSchemas} from 'class-validator-jsonschema'
 import swaggerUi from 'swagger-ui-express';
@@ -11,20 +11,20 @@ import {HTTPErrorHandlerLogger, HTTPLogger} from './infra/logging/HTTPLogger';
 import {OpenAPIObject} from "openapi3-ts";
 
 export interface ApiConstructor {
-    port: number,
+    app: Application,
     logger: ILogger,
     container: IContainer,
     openApiInfo?: Partial<OpenAPIObject>
 }
 
 export default class Api {
-    private readonly port: number;
+    private readonly app: Application;
     private readonly logger: ILogger;
     private readonly container: IContainer;
     private readonly openApiInfo: Partial<OpenAPIObject>;
 
-    public constructor({port, logger, container, openApiInfo = {}}: ApiConstructor) {
-        this.port = port
+    public constructor({app, logger, container, openApiInfo = {}}: ApiConstructor) {
+        this.app = app
         this.logger = logger
         this.container = container
         this.openApiInfo = openApiInfo
@@ -32,9 +32,8 @@ export default class Api {
 
     public async start(): Promise<void> {
         await this.useContainer();
-        const app: Application = createExpressServer(this.options());
-        this.serveApiDocs(app)
-        app.listen(this.port, () => this.logger.info(`Listening at port ${this.port}`))
+        useExpressServer(this.app, this.options());
+        this.serveApiDocs()
     }
 
     /**
@@ -47,10 +46,9 @@ export default class Api {
 
     /**
      * Muestra la documentación de la api.
-     * @param app
      * @private
      */
-    private serveApiDocs(app: Application) {
+    private serveApiDocs() {
         const schemas = validationMetadatasToSchemas({
             refPointerPrefix: '#/components/schemas/',
         })
@@ -64,8 +62,8 @@ export default class Api {
             }
         )
 
-        app.use(`${this.options().routePrefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(spec));
-        app.get(`${this.options().routePrefix}/api.json`, (req, res) =>
+        this.app.use(`${this.options().routePrefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(spec));
+        this.app.get(`${this.options().routePrefix}/api.json`, (req, res) =>
             res.json(spec));
     }
 
