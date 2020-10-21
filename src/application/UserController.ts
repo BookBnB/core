@@ -34,7 +34,7 @@ class PaginationQuery {
     security: [{basicAuth: []}]
 })
 
-@JsonController('/users')
+@JsonController('/users2')
 export class UserController {
     constructor(private readonly getUsers: GetUsers) {
     }
