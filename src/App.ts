@@ -9,6 +9,7 @@ import express from "express";
 import Welcome from "./app/Welcome";
 import UsersServiceProxy from "./app/UsersServiceProxy";
 import {HTTPErrorHandlerLogger, HTTPLogger} from "./infra/logging/HTTPLogger";
+import Cors from "./app/Cors";
 
 
 async function main() {
@@ -17,6 +18,7 @@ async function main() {
 
     const app = express();
     const appLogger = new Log4JSLogger('App')
+    new Cors({app, logger: appLogger})
     new HTTPLogger({app, logger: appLogger})
     new Welcome(app)
     new UsersServiceProxy({app})
