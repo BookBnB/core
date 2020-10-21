@@ -1,13 +1,13 @@
 import {Application} from "express";
-import {ILogger} from "./infra/logging/Logger";
+import {ILogger} from "../infra/logging/Logger";
 import "reflect-metadata"; // Necesario para routing-controllers
 import {getMetadataArgsStorage, useContainer, useExpressServer} from "routing-controllers";
 import {routingControllersToSpec} from 'routing-controllers-openapi';
 import {validationMetadatasToSchemas} from 'class-validator-jsonschema'
 import swaggerUi from 'swagger-ui-express';
-import ContainerAdapter from "./infra/container/ContainerAdapter";
-import {IContainer} from "./infra/container/Container";
-import {HTTPErrorHandlerLogger, HTTPLogger} from './infra/logging/HTTPLogger';
+import ContainerAdapter from "../infra/container/ContainerAdapter";
+import {IContainer} from "../infra/container/Container";
+import {HTTPErrorHandlerLogger, HTTPLogger} from '../infra/logging/HTTPLogger';
 import {OpenAPIObject} from "openapi3-ts";
 
 export interface ApiConstructor {
@@ -75,7 +75,7 @@ export default class Api {
     private options() {
         return {
             routePrefix: "/v1",
-            controllers: [__dirname + "/application/**/*"],
+            controllers: [__dirname + "/../application/**/*"],
             middlewares: [
                 HTTPLogger,
                 HTTPErrorHandlerLogger

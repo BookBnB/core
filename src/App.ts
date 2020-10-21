@@ -1,4 +1,4 @@
-import Api from "./Api";
+import Api from "./app/Api";
 import {configure} from "log4js";
 import Log4JSLogger from "./infra/logging/Logger";
 import dotenv from 'dotenv';
@@ -6,7 +6,7 @@ import dotenvExpand from 'dotenv-expand';
 import registerTypes from "./infra/container/registerTypes";
 import {DIContainer} from "@wessberg/di";
 import express from "express";
-import Welcome from "./Welcome";
+import Welcome from "./app/Welcome";
 import UsersServiceProxy from "./app/UsersServiceProxy";
 
 
