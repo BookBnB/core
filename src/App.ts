@@ -8,6 +8,7 @@ import {DIContainer} from "@wessberg/di";
 import express from "express";
 import Welcome from "./app/Welcome";
 import UsersServiceProxy from "./app/UsersServiceProxy";
+import {HTTPErrorHandlerLogger, HTTPLogger} from "./infra/logging/HTTPLogger";
 
 
 async function main() {
@@ -15,6 +16,10 @@ async function main() {
     configure(require('../config/log-config.json'));
 
     const app = express();
+    const appLogger = new Log4JSLogger('App')
+    new HTTPLogger({app, logger: appLogger})
+    new Welcome(app)
+    new UsersServiceProxy({app})
     new Api({
         app,
         logger: new Log4JSLogger('Api'),
@@ -26,15 +31,10 @@ async function main() {
             }
         }
     });
-    new Welcome(app)
-    new UsersServiceProxy({
-        app,
-        logger: new Log4JSLogger('UsersServiceProxy')
-    })
+    new HTTPErrorHandlerLogger({app, logger: appLogger})
 
     const DEFAULT_PORT: number = 3000;
     const port: number = process.env.PORT ? parseInt(process.env.PORT) : DEFAULT_PORT;
-    const appLogger = new Log4JSLogger('Api')
 
     app.listen(port, () => appLogger.info(`Listening at port ${port}`))
 }

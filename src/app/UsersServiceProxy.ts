@@ -1,14 +1,11 @@
-import {ILogger} from "../infra/logging/Logger";
 import {Application} from "express";
-import { createProxyMiddleware } from "http-proxy-middleware";
+import {createProxyMiddleware} from "http-proxy-middleware";
 
 export default class UsersServiceProxy {
     private readonly app: Application;
-    private readonly logger: ILogger;
 
-    public constructor({app, logger}: { app: Application, logger: ILogger }) {
+    public constructor({app}: { app: Application }) {
         this.app = app
-        this.logger = logger
         this.initilize()
     }
 

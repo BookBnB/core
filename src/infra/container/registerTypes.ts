@@ -25,7 +25,6 @@ export default async (container: DIContainer): Promise<IContainer> => {
 
     // Users
     await registerUsers(container);
-    await registerLoggers(container);
 
     // Return
     return container
@@ -38,13 +37,4 @@ const registerUsers = async (container: DIContainer) => {
         new UserRepository(container.get<Repository<User>>()))
     container.registerSingleton<UserController>()
     container.registerTransient<GetUsers>()
-}
-
-const registerLoggers = async (container: DIContainer) => {
-    const httpLogger = new Log4JSLogger('HTTP');
-    container.registerSingleton<HTTPLogger>(() =>
-        new HTTPLogger(httpLogger))
-
-    container.registerSingleton<HTTPErrorHandlerLogger>(() =>
-        new HTTPErrorHandlerLogger(httpLogger))
 }
