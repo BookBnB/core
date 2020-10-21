@@ -2,8 +2,9 @@
 
 [![Build Status](https://travis-ci.com/BookBnB/core.svg?branch=master)](https://travis-ci.com/BookBnB/core)
 [![codecov](https://codecov.io/gh/BookBnB/core/branch/master/graph/badge.svg?token=3HYQW6VBPY)](https://codecov.io/gh/BookBnB/core)
-[![Heroku](https://img.shields.io/badge/heroku-production-green.svg)](https://bookbnb-master.herokuapp.com/)
-[![Heroku](https://img.shields.io/badge/heroku-develop-green.svg)](https://bookbnb-develop.herokuapp.com/)
+[![Heroku](https://img.shields.io/badge/heroku-master-success.svg?l?style=flat&logo=heroku&logoColor=white&labelColor=494998)](https://bookbnb-master.herokuapp.com/)
+[![Heroku](https://img.shields.io/badge/heroku-develop-success.svg?l?style=flat&logo=heroku&logoColor=white&labelColor=494998)](https://bookbnb-develop.herokuapp.com/)
+
 
 Servicio principal para BookBnB.
 
