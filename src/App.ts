@@ -7,6 +7,7 @@ import registerTypes from "./infra/container/registerTypes";
 import {DIContainer} from "@wessberg/di";
 import express from "express";
 import Welcome from "./Welcome";
+import UsersServiceProxy from "./app/UsersServiceProxy";
 
 
 async function main() {
@@ -26,6 +27,10 @@ async function main() {
         }
     });
     new Welcome(app)
+    new UsersServiceProxy({
+        app,
+        logger: new Log4JSLogger('UsersServiceProxy')
+    })
 
     const DEFAULT_PORT: number = 3000;
     const port: number = process.env.PORT ? parseInt(process.env.PORT) : DEFAULT_PORT;
