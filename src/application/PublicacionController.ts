@@ -1,13 +1,13 @@
 import {Body, Get, HttpCode, JsonController, Param, Post, Put, QueryParams} from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
 import {ConsultaConPaginacion} from "./helpers/helpers";
-import CrearPublicacion, {CrearPublicacionDTO} from "../domain/publicaciones/casos-de-uso/CrearPublicacion";
+import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 
 
 @JsonController('/publicaciones')
 export class PublicacionController {
-    constructor(private crearPublicacion: CrearPublicacion) {
+    constructor(private readonly crearPublicacion: CrearPublicacion) {
     }
 
     @Get('/')
@@ -27,7 +27,7 @@ export class PublicacionController {
     @HttpCode(201)
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Crea una publicación'})
-    crear(@Body() body: CrearPublicacionDTO) {
+    crear(@Body() body: CrearPublicacionDTO): Promise<PublicacionDTO> {
         return this.crearPublicacion.execute(body)
     }
 

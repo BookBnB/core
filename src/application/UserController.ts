@@ -9,7 +9,6 @@ import {
     QueryParams
 } from 'routing-controllers'
 import {OpenAPI} from 'routing-controllers-openapi'
-import {GetUsers} from '../domain/UseCases'
 
 class CreateUserBody {
     @IsString()
@@ -36,13 +35,12 @@ class PaginationQuery {
 
 @JsonController('/users2')
 export class UserController {
-    constructor(private readonly getUsers: GetUsers) {
+    constructor() {
     }
 
     @Get('/')
     @OpenAPI({summary: 'Return a list of users'})
     getAll(@QueryParams() query: PaginationQuery) {
-        return this.getUsers.execute();
     }
 
     @Get('/:id')

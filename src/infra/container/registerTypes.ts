@@ -1,14 +1,12 @@
 import {DIContainer} from "@wessberg/di";
 import typeOrmConnection from "../typeOrmConnection";
 import {Connection, Repository} from "typeorm";
-import {UserController} from "../../application/UserController";
-import IUserRepository from "../../domain/repositories/UserRepository";
-import UserRepository from "../repositories/UserRepository";
-import User from "../../domain/entities/User";
 import {IContainer} from "./Container";
-import {GetUsers} from "../../domain/UseCases";
-import {HTTPErrorHandlerLogger, HTTPLogger} from "../logging/HTTPLogger";
-import Log4JSLogger from "../logging/Logger";
+import {PublicacionController} from "../../application/PublicacionController";
+import {CrearPublicacion} from "../../domain/publicaciones/casos-uso/CrearPublicacion";
+import PublicacionRepositorio from "../repositories/PublicacionRepositorio";
+import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
+import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -24,17 +22,29 @@ export default async (container: DIContainer): Promise<IContainer> => {
     container.registerSingleton<Connection>(() => connection)
 
     // Users
-    await registerUsers(container);
+    // await registerUsers(container)
+
+    await registrarPublicaciones(container)
 
     // Return
     return container
 }
 
-const registerUsers = async (container: DIContainer) => {
-    const user_repo = await container.get<Connection>().getRepository(User);
-    container.registerSingleton<Repository<User>>(() => user_repo)
-    container.registerSingleton<IUserRepository>(() =>
-        new UserRepository(container.get<Repository<User>>()))
-    container.registerSingleton<UserController>()
-    container.registerTransient<GetUsers>()
+// const registerUsers = async (container: DIContainer) => {
+//     const user_repo = await container.get<Connection>().getRepository(User);
+//     container.registerSingleton<Repository<User>>(() => user_repo)
+//     container.registerSingleton<IUserRepository>(() =>
+//         new UserRepository(container.get<Repository<User>>()))
+//     container.registerSingleton<UserController>()
+//     container.registerTransient<GetUsers>()
+// }
+
+const registrarPublicaciones = async (container: DIContainer) => {
+    container.registerSingleton<PublicacionController>()
+    container.registerTransient<CrearPublicacion>()
+
+    const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
+    container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
+    container.registerSingleton<IPublicacionRepositorio>( () =>
+        new PublicacionRepositorio(container.get<Repository<Publicacion>>()))
 }
