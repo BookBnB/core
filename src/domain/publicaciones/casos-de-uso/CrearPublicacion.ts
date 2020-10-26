@@ -2,13 +2,14 @@ import {UseCase} from "../../UseCases";
 import PublicacionDTO from "../dtos/PublicacionDTO";
 import DireccionDTO from "../dtos/DireccionDTO";
 import {IsPositive, IsString, ValidateNested} from "class-validator";
+import {JSONSchema} from "class-validator-jsonschema";
 
 export class CrearPublicacionDTO {
     @IsString() public titulo: string
     @IsString() public descripcion: string
-    @IsPositive() public precioPorNoche: number
+    @JSONSchema({example: 2}) @IsPositive() public precioPorNoche: number
     @ValidateNested() public direccion: DireccionDTO
-    @IsPositive() public cantidadDeHuespedes: number
+    @JSONSchema({example: 2}) @IsPositive() public cantidadDeHuespedes: number
     // Esto se puede hacer bastante largo...
 
     constructor(
