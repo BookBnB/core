@@ -3,11 +3,15 @@ import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
 import {ConsultaConPaginacion} from "./helpers/helpers";
 import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
+import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
 
 
 @JsonController('/publicaciones')
 export class PublicacionController {
-    constructor(private readonly crearPublicacion: CrearPublicacion) {
+    constructor(
+        private readonly crearPublicacion: CrearPublicacion,
+        private readonly verPublicacion: VerPublicacion
+    ) {
     }
 
     @Get('/')
@@ -19,8 +23,8 @@ export class PublicacionController {
     @Get('/:id')
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Muestra una publicación'})
-    mostrarUno(@Param('id') id: string) {
-        return {name: 'Publicación #' + id}
+    mostrarUno(@Param('id') id: string): Promise<PublicacionDTO> {
+        return this.verPublicacion.execute(id)
     }
 
     @Post('/')

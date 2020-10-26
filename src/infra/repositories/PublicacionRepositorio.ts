@@ -1,6 +1,7 @@
 import {Repository} from "typeorm";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
+import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
 
 export default class PublicacionRepositorio implements IPublicacionRepositorio {
     public constructor(private readonly repo: Repository<Publicacion>) {
@@ -8,5 +9,12 @@ export default class PublicacionRepositorio implements IPublicacionRepositorio {
 
     guardar(publicacion: Publicacion): Promise<Publicacion> {
         return this.repo.save(publicacion)
+    }
+
+    async obtener(id: string): Promise<Publicacion> {
+        const publicacion = await this.repo.findOne(id);
+        if(!publicacion)
+            throw new PublicacionInexistenteError(`La publicación con id ${id} no existe.`)
+        return publicacion;
     }
 }
