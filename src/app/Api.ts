@@ -75,6 +75,7 @@ export default class Api {
         return {
             routePrefix: "/v1",
             controllers: [__dirname + "/../application/**/*"],
+            validation: true
         }
     }
 }

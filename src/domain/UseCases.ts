@@ -1,7 +1,7 @@
 import IUserRepository from "./repositories/UserRepository";
 import User from "./entities/User";
 
-interface UseCase {
+export interface UseCase {
     execute(...params: any): any;
 }
 
