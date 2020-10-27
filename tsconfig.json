@@ -1,5 +1,5 @@
 {
-  "exclude": ["./test/", "./migration/"],
+  "exclude": ["./test/", "./features/"],
   "compilerOptions": {
     "plugins": [{
         "transform": "./src/infra/di-compiler-adapter.ts"
