@@ -1,12 +1,11 @@
 # language: es
 Característica:
-  Como anfitrion
-  Quiero poder dar de alta una publicacion de mi alojamiento
-  Para que realicen reservas del mismo y poder cobrar su uso
+  Como huesped
+  Quiero poder visualizar una publicacion de un alojamiento
+  Para ver sus fotos y/o videos y revisar sus características.
 
-  Escenario: Creación exitosa
-    Dado que soy anfitrión
-    Cuando creo una publicación con:
+  Antecedentes:
+    Dado que existe una publicacion con:
       | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
       | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
@@ -14,7 +13,11 @@ Característica:
       | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
       | numero              | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
-    Entonces veo una nueva publicación con:
+
+  Escenario: Ver una publicacion
+    Dado que soy huesped
+    Cuando ingreso a la publicación con título "Departamento con vista"
+    Entonces veo una publicación con:
       | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
       | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |

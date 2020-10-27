@@ -10,7 +10,7 @@
     "clean": "rm -rf build",
     "test": "npm run test:unit && npm run test:aceptance",
     "test:unit": "mocha -r @wessberg/di-compiler/register -r source-map-support/register 'test/**/*.ts'",
-    "test:aceptance": "cucumber-js --require-module @wessberg/di-compiler/register features/**/*.feature -r features/world.ts -r features/**/steps/*.ts --format node_modules/cucumber-pretty --exit",
+    "test:aceptance": "cucumber-js --require-module @wessberg/di-compiler/register features/**/*.feature -r features/hooks.ts -r features/**/steps/*.ts --format node_modules/cucumber-pretty --exit",
     "test:coverage": "nyc --nycrc-path config/nycrc-config.json npm run test",
     "typeorm": "dotenv -- ts-node ./node_modules/typeorm/cli.js",
     "migration:create": "npm run typeorm migration:create -- -n",
