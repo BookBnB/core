@@ -5,7 +5,7 @@ Característica:
   Para que realicen reservas del mismo y poder cobrar su uso
 
   Escenario: Creación exitosa
-    Dado que soy anfitrión
+#    Dado que soy anfitrión
     Cuando creo una publicación con:
       | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
@@ -22,3 +22,35 @@ Característica:
       | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
       | numero              | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
+
+  Esquema del escenario: Campos faltantes
+    Dado que soy anfitrión
+    Cuando creo una publicación sin "<campo>":
+    Entonces veo un error indicado en el campo "<campo>"
+    Y veo que no hay publicaciones
+
+    Ejemplos:
+      | campo               |
+      | titulo              |
+      | descripcion         |
+      | precioPorNoche      |
+      | direccion.calle     |
+      | direccion.numero    |
+      | cantidadDeHuespedes |
+
+#  Esquema del escenario: Campos vacíos
+#    Dado que soy anfitrión
+#    Cuando creo una publicación con:
+#      | campo               | valor                 |
+#      | titulo              | <titulo>              |
+#      | descripcion         | <descripcion>         |
+#      | precioPorNoche      | <precioPorNoche>      |
+#      | calle               | <calle>               |
+#      | numero              | <numero>              |
+#      | cantidadDeHuespedes | <cantidadDeHuespedes> |
+#    Entonces veo un error indicado en el campo "<campoError>"
+#    Y veo que no hay publicaciones
+#
+#    Ejemplos:
+#      | campoError | titulo | descripcion          | precioPorNoche | calle                  | numero | cantidadDeHuespedes |
+#      | titulo     |        | Hermoso departamento | 10             | Patricio Peralta Ramos | 4799   | 2                   |

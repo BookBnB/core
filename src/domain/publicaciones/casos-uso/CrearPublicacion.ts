@@ -5,6 +5,7 @@ import {IsPositive, IsString, ValidateNested} from "class-validator";
 import {JSONSchema} from "class-validator-jsonschema";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion from "../entidades/Publicacion";
+import {Type} from "class-transformer";
 
 export interface CrearPublicacionDTOConstructor {
     titulo: string
@@ -18,7 +19,7 @@ export class CrearPublicacionDTO {
     @IsString() public titulo!: string
     @IsString() public descripcion!: string
     @JSONSchema({example: 2}) @IsPositive() public precioPorNoche!: number
-    @ValidateNested() public direccion!: DireccionDTO
+    @ValidateNested() @Type(() => DireccionDTO) public direccion!: DireccionDTO
     @JSONSchema({example: 2}) @IsPositive() public cantidadDeHuespedes!: number
 
     constructor(args: CrearPublicacionDTOConstructor) {

@@ -27,6 +27,18 @@ const crearPublicacion = async function (this: any, dataTable: TableDefinition) 
         })
 }
 
+function deletePropertyPath(obj: any, path: string): any {
+    const paths = path.split('.')
+    let nestedObj = obj
+    paths.forEach((attribute: string, n) => {
+        if(n === paths.length -1)
+            delete nestedObj[attribute]
+        else
+            nestedObj = nestedObj[attribute]
+    });
+    return obj;
+}
+
 const validarPublicacion = function (this: any, dataTable: TableDefinition) {
     const data = dataTable.rowsHash()
     expect(this.last_response.body).to.have.property('titulo').to.be.equal(data.titulo)
@@ -61,3 +73,31 @@ Then('veo una publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.be.json
     validarPublicacion.bind(this)(dataTable)
 })
+
+When('creo una publicación sin {string}:', {timeout : 2000 * 1000}, async function (campo: string) {
+    const data = deletePropertyPath({
+        titulo: 'Departamento con vista',
+        descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
+        precioPorNoche: 0.05,
+        direccion: {
+            calle: 'Av. Bv. Marítimo Patricio Peralta Ramos',
+            numero: 4799,
+        },
+        cantidadDeHuespedes: 2
+    }, campo)
+    this.last_response = await chai.request(this.app)
+        .post('/v1/publicaciones')
+        .type("json")
+        .send(data)
+});
+
+Then('veo un error indicado en el campo {string}', function (campoError: string) {
+    expect(this.last_response).to.have.status(400)
+    expect(this.last_response).to.be.json
+    expect(campoError).to.include(this.last_response.body.errors[0].property)
+});
+
+Then('veo que no hay publicaciones', function () {
+
+});
+

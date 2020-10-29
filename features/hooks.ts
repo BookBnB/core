@@ -6,12 +6,12 @@ import registerTypes from "../src/infra/container/registerTypes";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
 
-
 Before(async function () {
     process.env.TYPEORM_CONNECTION = 'sqlite'
     process.env.TYPEORM_DATABASE = ':memory:'
     process.env.TYPEORM_SYNCHRONIZE = 'true'
     process.env.TYPEORM_ENTITIES = './src/domain/**/entidades/**/*'
+    process.env.NODE_ENV = 'test'
 
     const app = express()
     this.app = app
