@@ -1,10 +1,15 @@
-import {After, Before} from "cucumber";
+import {After, AfterAll, Before, BeforeAll} from "cucumber";
 import express from "express"
 import Api from "../src/app/Api";
 import Log4JSLogger from "../src/infra/logging/Logger";
 import registerTypes from "../src/infra/container/registerTypes";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
+import {server} from './mocks/server';
+
+BeforeAll(async function () {
+    server.listen();
+});
 
 Before(async function () {
     process.env.TYPEORM_CONNECTION = 'sqlite'
@@ -26,6 +31,12 @@ Before(async function () {
 });
 
 After(async function () {
+    server.resetHandlers();
+
     const container: DIContainer = this.container;
     return await container.get<Connection>().close()
-})
+});
+
+AfterAll(async function () {
+    server.close();
+});
