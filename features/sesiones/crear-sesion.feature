@@ -9,7 +9,7 @@ Característica:
       | nombre              | Test                                                   |
       | email               | test@test.test                                         |
       | password            | password                                               |
-      | role                | guest                                                  |
+      | role                | host                                                   |
     Cuando inicio sesión
     Entonces obtengo un token con:
       | email               | test@test.test                                         |
