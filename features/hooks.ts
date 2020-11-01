@@ -5,10 +5,16 @@ import Log4JSLogger from "../src/infra/logging/Logger";
 import registerTypes from "../src/infra/container/registerTypes";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
-import {server} from './mocks/server';
+import {buildServer} from './mocks/server';
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
+
+dotenvExpand(dotenv.config())
+
+const mockServer = buildServer();
 
 BeforeAll(async function () {
-    server.listen();
+    mockServer.listen();
 });
 
 Before(async function () {
@@ -31,12 +37,12 @@ Before(async function () {
 });
 
 After(async function () {
-    server.resetHandlers();
+    mockServer.resetHandlers();
 
     const container: DIContainer = this.container;
     return await container.get<Connection>().close()
 });
 
 AfterAll(async function () {
-    server.close();
+    mockServer.close();
 });

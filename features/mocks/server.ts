@@ -1,4 +1,7 @@
 import { setupServer } from 'msw/node';
-import { handlers } from './handlers'
+import { buildHandlers } from './handlers'
 
-export const server = setupServer(...handlers);
+export function buildServer() {
+    const handlers = buildHandlers();
+    return setupServer(...handlers);
+}
