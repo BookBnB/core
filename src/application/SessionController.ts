@@ -6,11 +6,13 @@ import {
     Param,
     Post,
     Put,
-    QueryParams
+    QueryParams,
+    UnauthorizedError
 } from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
 import CrearSessionDTO, { CrearSession } from '../domain/sesiones/casos-uso/CrearSession';
 import { SessionDTO } from '../domain/sesiones/dtos/SessionDTO';
+import UsuarioNoReconocidoError from '../domain/sesiones/entidades/UsuarioNoReconocidoError';
 
 @JsonController('/session')
 export class SessionController {
@@ -22,7 +24,15 @@ export class SessionController {
     @Post('/')
     @OpenAPI({summary: 'Create a session'})
     @ResponseSchema(SessionDTO)
-    getAll(@Body() body: CrearSessionDTO) {
-        return this.crearSesion.execute(body);
+    async getAll(@Body() body: CrearSessionDTO) {
+        try {
+            return await this.crearSesion.execute(body);
+        } catch (e) {
+            if (e instanceof UsuarioNoReconocidoError) {
+                throw new UnauthorizedError(e.message);
+            }
+
+            throw e;
+        }
     }
 }

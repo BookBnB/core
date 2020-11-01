@@ -6,11 +6,29 @@ Característica:
 
   Escenario: Creación exitosa
     Dado que soy un usuario con datos:
-      | nombre              | Test                                                   |
-      | email               | test@test.test                                         |
+      | nombre              | John Doe                                               |
+      | email               | john@doe.com                                           |
       | password            | password                                               |
       | role                | host                                                   |
-    Cuando inicio sesión
+    Cuando inicio sesión con contraseña 'password'
     Entonces obtengo un token con:
-      | email               | test@test.test                                         |
+      | email               | john@doe.com                                           |
       | rol                 | host                                                   |
+
+  Escenario: Creación fallida - Contraseña incorrecta
+    Dado que soy un usuario con datos:
+      | nombre              | John Doe                                               |
+      | email               | john@doe.com                                           |
+      | password            | password                                               |
+      | role                | host                                                   |
+    Cuando inicio sesión con contraseña 'incorrecta'
+    Entonces obtengo un error 401 con mensaje 'Usuario no reconocido'
+
+  Escenario: Creación fallida - Usuario inexistente
+    Dado que soy un usuario con datos:
+      | nombre              | John Doe                                               |
+      | email               | john@doe.com                                           |
+      | password            | password                                               |
+      | role                | host                                                   |
+    Cuando inicio sesión con email 'noexisto@doe.com' y contraseña 'password'
+    Entonces obtengo un error 401 con mensaje 'Usuario no reconocido'

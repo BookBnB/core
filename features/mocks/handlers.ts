@@ -1,22 +1,69 @@
 import { rest } from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
 
-export function buildHandlers() {
-    console.log(`${process.env.USERS_SERVICE_URL}/v1/session`)
-    return [
-        rest.post(`${process.env.USERS_SERVICE_URL}/v1/session`, (req, res, ctx) => {
-            const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken({
-                email: (<any>req.body).email,
-                role: 'host',
-                exp: +new Date()
-            });
+interface User {
+    email: string,
+    password: string,
+    name: string,
+    role: string
+}
 
+interface SessionCreation {
+    email: string,
+    password: string
+}
+
+let usersMap: Map<string, User> = new Map();
+
+function userCreationHandler() {
+    // wildcard * necesario porque el endpoint /v1/users esta cubierto por un proxy
+    // que msw por alguna razón no llega a capturar. Lo que hacemos es capturar
+    // la llamada a la aplicación en lugar al destino del proxy
+    return rest.post(`*/v1/users`, (req, res, ctx) => {
+        const user: User = <User>req.body;
+
+        usersMap.set(user.email, user);
+
+        return res(
+            ctx.status(200),
+            ctx.json(user)
+        );
+    })
+}
+
+function sessionCreationHandler() {
+    return rest.post(`${process.env.USERS_SERVICE_URL}/v1/session`, (req, res, ctx) => {
+        const requestBody: SessionCreation = <SessionCreation>req.body;
+
+        const user: User = <User>usersMap.get(requestBody.email);
+
+        if (user.password != requestBody.password) {
             return res(
-                ctx.status(200),
+                ctx.status(401),
                 ctx.json({
-                    token: mockedToken
+                    error: 'User not recognized'
                 })
-            );
-        })
+            )
+        }
+
+        const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken({
+            email: user.email,
+            role: user.role,
+            exp: +new Date()
+        });
+
+        return res(
+            ctx.status(200),
+            ctx.json({
+                token: mockedToken
+            })
+        );
+    })
+}
+
+export function buildHandlers() {
+    return [
+        sessionCreationHandler(),
+        userCreationHandler()
     ]
 }
