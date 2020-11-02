@@ -8,6 +8,7 @@ import {Connection} from "typeorm";
 import {buildServer} from './mocks/server';
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
+import Store from "./util/Store";
 
 dotenvExpand(dotenv.config())
 
@@ -37,6 +38,8 @@ Before(async function () {
 });
 
 After(async function () {
+    Store.reset();
+
     mockServer.resetHandlers();
 
     const container: DIContainer = this.container;

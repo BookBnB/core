@@ -1,5 +1,6 @@
 import { rest } from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
+import Store from '../util/Store';
 
 interface User {
     email: string,
@@ -13,8 +14,6 @@ interface SessionCreation {
     password: string
 }
 
-let usersMap: Map<string, User> = new Map();
-
 function userCreationHandler() {
     // wildcard * necesario porque el endpoint /v1/users esta cubierto por un proxy
     // que msw por alguna razón no llega a capturar. Lo que hacemos es capturar
@@ -22,7 +21,7 @@ function userCreationHandler() {
     return rest.post(`*/v1/users`, (req, res, ctx) => {
         const user: User = <User>req.body;
 
-        usersMap.set(user.email, user);
+        Store.getInstance().set(user.email, user);
 
         return res(
             ctx.status(200),
@@ -35,7 +34,7 @@ function sessionCreationHandler() {
     return rest.post(`${process.env.USERS_SERVICE_URL}/v1/session`, (req, res, ctx) => {
         const requestBody: SessionCreation = <SessionCreation>req.body;
 
-        const user: User = <User>usersMap.get(requestBody.email);
+        const user: User = Store.getInstance().get(requestBody.email);
 
         if (user.password != requestBody.password) {
             return res(
