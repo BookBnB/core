@@ -10,7 +10,7 @@ Característica:
       | email               | john@doe.com                                           |
       | password            | password                                               |
       | role                | host                                                   |
-    Cuando inicio sesión con contraseña 'password'
+    Cuando inicio sesión con email 'john@doe.com' y contraseña 'password'
     Entonces obtengo un token con:
       | email               | john@doe.com                                           |
       | rol                 | host                                                   |
@@ -21,7 +21,7 @@ Característica:
       | email               | john@doe.com                                           |
       | password            | password                                               |
       | role                | host                                                   |
-    Cuando inicio sesión con contraseña 'incorrecta'
+    Cuando inicio sesión con email 'john@doe.com' y contraseña 'incorrecta'
     Entonces obtengo un error 401 con mensaje 'Usuario no reconocido'
 
   Escenario: Creación fallida - Usuario inexistente

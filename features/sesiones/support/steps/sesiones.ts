@@ -9,7 +9,7 @@ const expect = chai.expect;
 Given('que soy un usuario con datos:', async function (dataTable) {
     const data = dataTable.rowsHash();
 
-    this.user = {
+    const user = {
         nombre: data.nombre,
         email: data.email,
         password: data.password,
@@ -19,17 +19,7 @@ Given('que soy un usuario con datos:', async function (dataTable) {
     this.lastRequest = await chai.request(this.app)
         .post('/v1/users')
         .type('json')
-        .send(this.user);
-});
-
-When('inicio sesión con contraseña {string}', async function (password) {
-    this.lastRequest = await chai.request(this.app)
-        .post('/v1/sessions')
-        .type('json')
-        .send({
-            email: this.user.email,
-            password: password
-        })
+        .send(user);
 });
 
 When('inicio sesión con email {string} y contraseña {string}', async function (email, password) {

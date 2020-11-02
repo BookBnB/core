@@ -1,4 +1,4 @@
-import CrearSessionDTO from "../../domain/sesiones/casos-uso/CrearSession";
+import CrearSessionDTO from "../../domain/sesiones/dtos/CrearSessionDTO";
 import { SessionDTO } from "../../domain/sesiones/dtos/SessionDTO";
 import IUserService from "../../domain/sesiones/servicios/UserService";
 import axios, { AxiosResponse, AxiosError } from 'axios';

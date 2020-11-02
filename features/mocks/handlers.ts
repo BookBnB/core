@@ -1,5 +1,6 @@
 import { rest } from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
+import CrearSessionDTO from "../../src/domain/sesiones/dtos/CrearSessionDTO";
 import Store from '../util/Store';
 
 interface User {
@@ -9,9 +10,8 @@ interface User {
     role: string
 }
 
-interface SessionCreation {
-    email: string,
-    password: string
+function hours(n: number) {
+    return n * 60 * 60 * 1000;
 }
 
 function userCreationHandler() {
@@ -32,7 +32,7 @@ function userCreationHandler() {
 
 function sessionCreationHandler() {
     return rest.post(`${process.env.USERS_SERVICE_URL}/v1/sessions`, (req, res, ctx) => {
-        const requestBody: SessionCreation = <SessionCreation>req.body;
+        const requestBody: CrearSessionDTO = <CrearSessionDTO>req.body;
 
         if (!Store.getInstance().has(requestBody.email)) {
             return res(
@@ -57,7 +57,7 @@ function sessionCreationHandler() {
         const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken({
             email: user.email,
             role: user.role,
-            exp: +new Date()
+            exp: Date.now() + hours(1)
         });
 
         return res(

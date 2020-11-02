@@ -1,16 +1,12 @@
-import {IsOptional, IsString, MaxLength, IsNumber, IsPositive} from 'class-validator'
 import {
     Body,
-    Get,
     JsonController,
-    Param,
     Post,
-    Put,
-    QueryParams,
     UnauthorizedError
 } from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
-import CrearSessionDTO, { CrearSession } from '../domain/sesiones/casos-uso/CrearSession';
+import { CrearSession } from '../domain/sesiones/casos-uso/CrearSession';
+import CrearSessionDTO from '../domain/sesiones/dtos/CrearSessionDTO';
 import { SessionDTO } from '../domain/sesiones/dtos/SessionDTO';
 import UsuarioNoReconocidoError from '../domain/sesiones/entidades/UsuarioNoReconocidoError';
 
