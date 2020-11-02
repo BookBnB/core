@@ -5,7 +5,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 import UsuarioNoReconocidoError from "../../domain/sesiones/entidades/UsuarioNoReconocidoError";
 
 export default class UserService implements IUserService {
-    private readonly SESSION_PATH = '/v1/session';
+    private readonly SESSION_PATH = '/v1/sessions';
 
     constructor(private readonly serviceUrl: string) {
     }

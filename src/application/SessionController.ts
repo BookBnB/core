@@ -14,7 +14,7 @@ import CrearSessionDTO, { CrearSession } from '../domain/sesiones/casos-uso/Crea
 import { SessionDTO } from '../domain/sesiones/dtos/SessionDTO';
 import UsuarioNoReconocidoError from '../domain/sesiones/entidades/UsuarioNoReconocidoError';
 
-@JsonController('/session')
+@JsonController('/sessions')
 export class SessionController {
     constructor(
         private readonly crearSesion: CrearSession

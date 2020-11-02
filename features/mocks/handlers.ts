@@ -31,7 +31,7 @@ function userCreationHandler() {
 }
 
 function sessionCreationHandler() {
-    return rest.post(`${process.env.USERS_SERVICE_URL}/v1/session`, (req, res, ctx) => {
+    return rest.post(`${process.env.USERS_SERVICE_URL}/v1/sessions`, (req, res, ctx) => {
         const requestBody: SessionCreation = <SessionCreation>req.body;
 
         if (!Store.getInstance().has(requestBody.email)) {

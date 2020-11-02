@@ -24,7 +24,7 @@ Given('que soy un usuario con datos:', async function (dataTable) {
 
 When('inicio sesión con contraseña {string}', async function (password) {
     this.lastRequest = await chai.request(this.app)
-        .post('/v1/session')
+        .post('/v1/sessions')
         .type('json')
         .send({
             email: this.user.email,
@@ -34,7 +34,7 @@ When('inicio sesión con contraseña {string}', async function (password) {
 
 When('inicio sesión con email {string} y contraseña {string}', async function (email, password) {
     this.lastRequest = await chai.request(this.app)
-        .post('/v1/session')
+        .post('/v1/sessions')
         .type('json')
         .send({
             email: email,
