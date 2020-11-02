@@ -97,7 +97,8 @@ Then('veo un error indicado en el campo {string}', function (campoError: string)
     expect(campoError).to.include(this.last_response.body.errors[0].property)
 });
 
-Then('veo que no hay publicaciones', function () {
-
+Then('veo que no hay publicaciones', async function () {
+    const response = await chai.request(this.app).get(`/v1/publicaciones`)
+    expect(response.body).to.eql([])
 });
 

@@ -5,7 +5,7 @@ Característica:
   Para que realicen reservas del mismo y poder cobrar su uso
 
   Escenario: Creación exitosa
-#    Dado que soy anfitrión
+    Dado que soy anfitrión
     Cuando creo una publicación con:
       | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |

@@ -4,20 +4,23 @@ import {ConsultaConPaginacion} from "./helpers/helpers";
 import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
+import {ListarPublicaciones} from "../domain/publicaciones/casos-uso/ListarPublicaciones";
 
 
 @JsonController('/publicaciones')
 export class PublicacionController {
     constructor(
         private readonly crearPublicacion: CrearPublicacion,
-        private readonly verPublicacion: VerPublicacion
+        private readonly verPublicacion: VerPublicacion,
+        private readonly listarPublicaciones: ListarPublicaciones
     ) {
     }
 
     @Get('/')
     @OpenAPI({summary: 'Muestra una lista de publicaciones'})
     @ResponseSchema(PublicacionDTO)
-    listar(@QueryParams() consulta: ConsultaConPaginacion) {
+    listar(@QueryParams() consulta: ConsultaConPaginacion): Promise<PublicacionDTO[]> {
+        return this.listarPublicaciones.execute(consulta)
     }
 
     @Get('/:id')

@@ -8,6 +8,7 @@ import PublicacionRepositorio from "../repositories/PublicacionRepositorio";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import {VerPublicacion} from "../../domain/publicaciones/casos-uso/VerPublicacion";
+import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicaciones";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -32,6 +33,7 @@ const registrarPublicaciones = async (container: DIContainer) => {
     container.registerSingleton<PublicacionController>()
     container.registerTransient<CrearPublicacion>()
     container.registerTransient<VerPublicacion>()
+    container.registerTransient<ListarPublicaciones>()
 
     const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
     container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
