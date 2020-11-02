@@ -34,6 +34,15 @@ function sessionCreationHandler() {
     return rest.post(`${process.env.USERS_SERVICE_URL}/v1/session`, (req, res, ctx) => {
         const requestBody: SessionCreation = <SessionCreation>req.body;
 
+        if (!Store.getInstance().has(requestBody.email)) {
+            return res(
+                ctx.status(401),
+                ctx.json({
+                    error: 'User not recognized'
+                })
+            )
+        }
+
         const user: User = Store.getInstance().get(requestBody.email);
 
         if (user.password != requestBody.password) {
