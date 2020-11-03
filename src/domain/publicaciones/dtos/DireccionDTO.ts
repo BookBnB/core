@@ -1,7 +1,7 @@
-import {IsInt, IsString} from "class-validator";
+import {IsInt, IsString, MinLength} from "class-validator";
 
 export default class DireccionDTO {
-    @IsString() public calle: string
+    @IsString() @MinLength(2) public calle: string
     @IsInt() public numero: number
     constructor(calle: string, numero: number) {
         this.calle = calle;

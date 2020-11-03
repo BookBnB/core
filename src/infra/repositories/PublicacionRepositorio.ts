@@ -17,4 +17,8 @@ export default class PublicacionRepositorio implements IPublicacionRepositorio {
             throw new PublicacionInexistenteError(`La publicación con id ${id} no existe.`)
         return publicacion;
     }
+
+    listar(offset: number, limit: number): Promise<Publicacion[]> {
+        return Promise.resolve([]);
+    }
 }

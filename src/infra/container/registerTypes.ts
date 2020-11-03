@@ -15,6 +15,7 @@ import IUserService from "../../domain/sesiones/servicios/UserService";
 import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
 import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
+import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicaciones";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -45,6 +46,7 @@ const registrarPublicaciones = async (container: DIContainer) => {
     container.registerSingleton<PublicacionController>()
     container.registerTransient<CrearPublicacion>()
     container.registerTransient<VerPublicacion>()
+    container.registerTransient<ListarPublicaciones>()
 
     const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
     container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
