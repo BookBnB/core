@@ -10,7 +10,7 @@ Característica:
       | email               | john@doe.com                                           |
       | password            | password                                               |
       | role                | host                                                   |
-    Y inicié mi sesión correctamente
+    Y que inicié mi sesión correctamente
 
   Escenario: Creación exitosa
     Dado que soy anfitrión

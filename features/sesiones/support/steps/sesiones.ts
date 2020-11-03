@@ -32,7 +32,7 @@ When('inicio sesión con email {string} y contraseña {string}', async function 
         })
 });
 
-Given('inicié mi sesión correctamente', async function () {
+Given('que inicié mi sesión correctamente', async function () {
     this.last_response = await chai.request(this.app)
         .post('/v1/sessions')
         .type('json')
@@ -46,7 +46,7 @@ Given('inicié mi sesión correctamente', async function () {
     this.sessionToken = this.last_response.body.token;
 });
 
-Given('mi sesión expiró', function () {
+Given('que mi sesión expiró', function () {
     this.reloj.setAhora(Date.now() + 61 * 60000)
 });
 
