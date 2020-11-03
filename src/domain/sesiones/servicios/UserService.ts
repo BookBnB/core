@@ -1,6 +1,6 @@
 import CrearSessionDTO from "../dtos/CrearSessionDTO";
-import { SessionDTO } from "../dtos/SessionDTO";
+import { Session } from "../entidades/Session";
 
 export default interface IUserService {
-    crearSession(body: CrearSessionDTO): Promise<SessionDTO>;
+    crearSession(body: CrearSessionDTO): Promise<Session>;
 }

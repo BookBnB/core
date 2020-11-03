@@ -1,9 +1,10 @@
-import { IsJWT, IsNumber, IsString } from "class-validator";
+import {IsJWT, IsNumber, IsString} from "class-validator";
+import IJWTTokenBuilder from "../servicios/JWTTokenBuilder";
 
-export class SessionPayloadDTO {
-    @IsString() public email!: string;
-    @IsString() public role!: string;
-    @IsNumber() public exp!: number;
+export class SessionPayload {
+    public email!: string;
+    public role!: string;
+    public exp!: number;
 
     constructor(email: string, role: string, exp: number) {
         this.email = email;
@@ -20,7 +21,7 @@ export class SessionPayloadDTO {
     }
 }
 
-export class SessionDTO {
+export class Session {
     @IsJWT() public token!: string;
 
     private static readonly PAYLOAD_INDEX = 1;
@@ -29,17 +30,21 @@ export class SessionDTO {
         this.token = token;
     }
 
-    public getPayload(): SessionPayloadDTO {
+    public getPayload(): SessionPayload {
         const parts: string[] = this.token.split('.');
 
-        const payloadString: string = Buffer.from(parts[SessionDTO.PAYLOAD_INDEX], 'base64').toString('ascii');
+        const payloadString: string = Buffer.from(parts[Session.PAYLOAD_INDEX], 'base64').toString('ascii');
 
         const payload = JSON.parse(payloadString);
 
-        return new SessionPayloadDTO(
+        return new SessionPayload(
             payload.email,
             payload.role,
             payload.exp
         );
+    }
+
+    public getNewToken(tokenBuilder: IJWTTokenBuilder): Session {
+        return new Session(tokenBuilder.buildToken(this.getPayload().toPlainObject()));
     }
 }

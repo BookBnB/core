@@ -1,7 +1,7 @@
 import {Given, When, Then, TableDefinition } from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
-import { SessionDTO, SessionPayloadDTO } from "../../../../src/domain/sesiones/dtos/SessionDTO";
+import { Session, SessionPayload } from "../../../../src/domain/sesiones/entidades/Session";
 import JWTTokenBuilder from "../../../../src/infra/servicios/JWTTokenBuilder";
 
 chai.use(chaiHttp);
@@ -48,10 +48,10 @@ Given('inicié mi sesión correctamente', async function () {
 });
 
 Given('mi sesión expiró', function () {
-    const session: SessionDTO = new SessionDTO(this.sessionToken);
-    const payload: SessionPayloadDTO = session.getPayload();
+    const session: Session = new Session(this.sessionToken);
+    const payload: SessionPayload = session.getPayload();
 
-    const newPayload: SessionPayloadDTO = new SessionPayloadDTO(
+    const newPayload: SessionPayload = new SessionPayload(
         payload.email,
         payload.role,
         Date.now()
@@ -64,8 +64,8 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
     const data = dataTable.rowsHash();
 
     const token: string = this.last_response.body.token;
-    const session: SessionDTO = new SessionDTO(token);
-    const payload: SessionPayloadDTO = session.getPayload();
+    const session: Session = new Session(token);
+    const payload: SessionPayload = session.getPayload();
 
     expect(payload).to.have.property('email').to.be.equal(data.email)
     expect(payload).to.have.property('role').to.be.equal(data.rol)
