@@ -1,4 +1,4 @@
-import {IsJWT, IsNumber, IsString} from "class-validator";
+import {IsJWT} from "class-validator";
 import IJWTTokenBuilder from "../servicios/JWTTokenBuilder";
 
 export class SessionPayload {

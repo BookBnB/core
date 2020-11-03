@@ -8,7 +8,7 @@ import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
 import { CrearSession } from '../domain/sesiones/casos-uso/CrearSession';
 import CrearSessionDTO from '../domain/sesiones/dtos/CrearSessionDTO';
 import { Session } from '../domain/sesiones/entidades/Session';
-import UsuarioNoReconocidoError from '../domain/sesiones/entidades/UsuarioNoReconocidoError';
+import UsuarioNoReconocidoError from '../domain/sesiones/excepciones/UsuarioNoReconocidoError';
 
 @JsonController('/sessions')
 export class SessionController {

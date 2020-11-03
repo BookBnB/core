@@ -2,7 +2,7 @@ import CrearSessionDTO from "../../domain/sesiones/dtos/CrearSessionDTO";
 import { Session } from "../../domain/sesiones/entidades/Session";
 import IUserService from "../../domain/sesiones/servicios/UserService";
 import axios, { AxiosResponse} from 'axios';
-import UsuarioNoReconocidoError from "../../domain/sesiones/entidades/UsuarioNoReconocidoError";
+import UsuarioNoReconocidoError from "../../domain/sesiones/excepciones/UsuarioNoReconocidoError";
 
 export default class UserService implements IUserService {
     private readonly SESSION_PATH = '/v1/sessions';
