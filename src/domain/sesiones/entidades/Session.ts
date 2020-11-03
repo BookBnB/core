@@ -1,5 +1,6 @@
 import {IsJWT} from "class-validator";
 import IJWTTokenBuilder from "../servicios/JWTTokenBuilder";
+import IReloj from "../../common/servicios/Reloj";
 
 export class SessionPayload {
     public email!: string;
@@ -46,5 +47,9 @@ export class Session {
 
     public getNewToken(tokenBuilder: IJWTTokenBuilder): Session {
         return new Session(tokenBuilder.buildToken(this.getPayload().toPlainObject()));
+    }
+
+    public expirado(reloj: IReloj): boolean {
+        return this.getPayload().exp < reloj.ahora()
     }
 }

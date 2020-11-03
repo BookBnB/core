@@ -16,6 +16,8 @@ import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
 import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
 import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicaciones";
+import IReloj from "../../domain/common/servicios/Reloj";
+import Reloj from "../servicios/Reloj";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -28,6 +30,7 @@ import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPu
  */
 export default async (container: DIContainer): Promise<IContainer> => {
     await registrarTypeOrmConnection(container);
+    await registrarReloj(container);
     await registrarServicios(container);
     await registrarPublicaciones(container);
     await registrarSesiones(container);
@@ -40,6 +43,10 @@ export default async (container: DIContainer): Promise<IContainer> => {
 async function registrarTypeOrmConnection(container: DIContainer) {
     const connection = await typeOrmConnection();
     container.registerSingleton<Connection>(() => connection);
+}
+
+const registrarReloj = (container: DIContainer) => {
+    container.registerSingleton<IReloj>(() => new Reloj());
 }
 
 const registrarPublicaciones = async (container: DIContainer) => {
@@ -68,5 +75,6 @@ const registrarSesiones = async (container: DIContainer) => {
 }
 
 const registrarMiddlewares = async (container: DIContainer) => {
-    container.registerSingleton<AuthenticationMiddleware>(() => new AuthenticationMiddleware());
+    container.registerSingleton<AuthenticationMiddleware>(() =>
+        new AuthenticationMiddleware(container.get<IReloj>()));
 }
