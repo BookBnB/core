@@ -23,7 +23,7 @@ export class SessionPayloadDTO {
 export class SessionDTO {
     @IsJWT() public token!: string;
 
-    private readonly PAYLOAD_INDEX = 1;
+    private static readonly PAYLOAD_INDEX = 1;
 
     constructor(token: string) {
         this.token = token;
@@ -32,7 +32,7 @@ export class SessionDTO {
     public getPayload(): SessionPayloadDTO {
         const parts: string[] = this.token.split('.');
 
-        const payloadString: string = Buffer.from(parts[this.PAYLOAD_INDEX], 'base64').toString('ascii');
+        const payloadString: string = Buffer.from(parts[SessionDTO.PAYLOAD_INDEX], 'base64').toString('ascii');
 
         const payload = JSON.parse(payloadString);
 
