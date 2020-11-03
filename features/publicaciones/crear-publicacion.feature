@@ -4,16 +4,8 @@ Característica:
   Quiero poder dar de alta una publicacion de mi alojamiento
   Para que realicen reservas del mismo y poder cobrar su uso
 
-  Antecedentes:
-    Dado que soy un usuario con datos:
-      | nombre              | John Doe                                               |
-      | email               | john@doe.com                                           |
-      | password            | password                                               |
-      | role                | host                                                   |
-    Y inicié mi sesión correctamente
-
   Escenario: Creación exitosa
-    Dado que soy anfitrión
+    Dado que soy "anfitrión"
     Cuando creo una publicación con:
       | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
@@ -32,7 +24,7 @@ Característica:
       | cantidadDeHuespedes | 2                                                      |
 
   Esquema del escenario: Campos faltantes
-    Dado que soy anfitrión
+    Dado que soy "anfitrión"
     Cuando creo una publicación sin "<campo>":
     Entonces veo un error indicado en el campo "<campo>"
     Y veo que no hay publicaciones
@@ -47,7 +39,7 @@ Característica:
       | cantidadDeHuespedes |
 
   Esquema del escenario: Campos vacíos
-    Dado que soy anfitrión
+    Dado que soy "anfitrión"
     Cuando creo una publicación con:
       | campo               | valor                 |
       | titulo              | <titulo>              |

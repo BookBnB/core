@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from 'express'
 import { ExpressMiddlewareInterface } from 'routing-controllers';
-import { SessionDTO, SessionPayloadDTO } from '../../domain/sesiones/dtos/SessionDTO';
+import { Session} from '../../domain/sesiones/entidades/Session';
+import IReloj from "../../domain/common/servicios/Reloj";
 
 export default class AuthenticationMiddleware implements ExpressMiddlewareInterface {
-    constructor() {}
+    constructor(private readonly reloj: IReloj) {}
 
     use(req: Request, resp: Response, next: NextFunction) {
         const token: string = req.get('authorization') || '';
 
-        const session: SessionDTO = new SessionDTO(token);
-        const payload: SessionPayloadDTO = session.getPayload();
+        const session: Session = new Session(token);
 
-        if (payload.exp < Date.now()) {
+        if (session.expirado(this.reloj)) {
             resp.status(401)
                 .json({
                     'message': 'Sesión expirada'

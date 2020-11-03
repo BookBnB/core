@@ -1,15 +1,12 @@
-import {Given, When, Then, TableDefinition } from "cucumber"
+import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
-import { SessionDTO, SessionPayloadDTO } from "../../../../src/domain/sesiones/dtos/SessionDTO";
-import JWTTokenBuilder from "../../../../src/infra/servicios/JWTTokenBuilder";
+import {Session, SessionPayload} from "../../../../src/domain/sesiones/entidades/Session";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-Given('que soy un usuario con datos:', async function (dataTable) {
-    const data = dataTable.rowsHash();
-
+export async function crearUsuario(this: any, data: { nombre: string, email: string, password: string, role: string }) {
     this.currentUser = {
         nombre: data.nombre,
         email: data.email,
@@ -21,9 +18,9 @@ Given('que soy un usuario con datos:', async function (dataTable) {
         .post('/v1/users')
         .type('json')
         .send(this.currentUser);
-});
+}
 
-When('inicio sesión con email {string} y contraseña {string}', async function (email, password) {
+export async function iniciarSesion(this: any, email: string, password: string) {
     this.last_response = await chai.request(this.app)
         .post('/v1/sessions')
         .type('json')
@@ -31,9 +28,15 @@ When('inicio sesión con email {string} y contraseña {string}', async function 
             email: email,
             password: password
         })
+}
+
+Given('que soy un usuario con datos:', async function (dataTable) {
+    await crearUsuario.bind(this)(dataTable.rowsHash())
 });
 
-Given('inicié mi sesión correctamente', async function () {
+When('inicio sesión con email {string} y contraseña {string}', iniciarSesion);
+
+Given('que inicié mi sesión correctamente', async function () {
     this.last_response = await chai.request(this.app)
         .post('/v1/sessions')
         .type('json')
@@ -47,25 +50,16 @@ Given('inicié mi sesión correctamente', async function () {
     this.sessionToken = this.last_response.body.token;
 });
 
-Given('mi sesión expiró', function () {
-    const session: SessionDTO = new SessionDTO(this.sessionToken);
-    const payload: SessionPayloadDTO = session.getPayload();
-
-    const newPayload: SessionPayloadDTO = new SessionPayloadDTO(
-        payload.email,
-        payload.role,
-        Date.now()
-    )
-
-    this.sessionToken = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken(newPayload.toPlainObject());
+Given('que mi sesión expiró', function () {
+    this.reloj.setAhora(Date.now() + 61 * 60000)
 });
 
 Then('obtengo un token con:', function (dataTable: TableDefinition) {
     const data = dataTable.rowsHash();
 
     const token: string = this.last_response.body.token;
-    const session: SessionDTO = new SessionDTO(token);
-    const payload: SessionPayloadDTO = session.getPayload();
+    const session: Session = new Session(token);
+    const payload: SessionPayload = session.getPayload();
 
     expect(payload).to.have.property('email').to.be.equal(data.email)
     expect(payload).to.have.property('role').to.be.equal(data.rol)

@@ -1,6 +1,6 @@
 import { UseCase } from "../../UseCase";
 import CrearSessionDTO from "../dtos/CrearSessionDTO";
-import { SessionDTO, SessionPayloadDTO } from "../dtos/SessionDTO";
+import { Session} from "../entidades/Session";
 import IJWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IUserService from "../servicios/UserService";
 
@@ -11,13 +11,9 @@ export class CrearSession implements UseCase {
     ) {
     }
 
-    async execute(body: CrearSessionDTO): Promise<SessionDTO> {
-        const userSession: SessionDTO = await this.usersService.crearSession(body);
+    async execute(body: CrearSessionDTO): Promise<Session> {
+        const userSession: Session = await this.usersService.crearSession(body);
 
-        const payload: SessionPayloadDTO = userSession.getPayload();
-
-        const newToken: string = this.jwtTokenBuilder.buildToken(payload.toPlainObject());
-
-        return new SessionDTO(newToken);
+        return userSession.getNewToken(this.jwtTokenBuilder);
     }
 }
