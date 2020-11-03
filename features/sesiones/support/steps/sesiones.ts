@@ -6,9 +6,7 @@ import {Session, SessionPayload} from "../../../../src/domain/sesiones/entidades
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-Given('que soy un usuario con datos:', async function (dataTable) {
-    const data = dataTable.rowsHash();
-
+export async function crearUsuario(this: any, data: { nombre: string, email: string, password: string, role: string }) {
     this.currentUser = {
         nombre: data.nombre,
         email: data.email,
@@ -20,9 +18,9 @@ Given('que soy un usuario con datos:', async function (dataTable) {
         .post('/v1/users')
         .type('json')
         .send(this.currentUser);
-});
+}
 
-When('inicio sesión con email {string} y contraseña {string}', async function (email, password) {
+export async function iniciarSesion(this: any, email: string, password: string) {
     this.last_response = await chai.request(this.app)
         .post('/v1/sessions')
         .type('json')
@@ -30,7 +28,13 @@ When('inicio sesión con email {string} y contraseña {string}', async function 
             email: email,
             password: password
         })
+}
+
+Given('que soy un usuario con datos:', async function (dataTable) {
+    await crearUsuario.bind(this)(dataTable.rowsHash())
 });
+
+When('inicio sesión con email {string} y contraseña {string}', iniciarSesion);
 
 Given('que inicié mi sesión correctamente', async function () {
     this.last_response = await chai.request(this.app)
