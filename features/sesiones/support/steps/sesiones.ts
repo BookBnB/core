@@ -1,13 +1,13 @@
 import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
-import {Session, SessionPayload} from "../../../../src/domain/sesiones/entidades/Session";
+import {Sesion, SesionPayload} from "../../../../src/domain/sesiones/entidades/Sesion";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
 export async function crearUsuario(this: any, data: { nombre: string, email: string, password: string, role: string }) {
-    this.currentUser = {
+    this.usuarioActual = {
         nombre: data.nombre,
         email: data.email,
         password: data.password,
@@ -17,12 +17,12 @@ export async function crearUsuario(this: any, data: { nombre: string, email: str
     this.last_response = await chai.request(this.app)
         .post('/v1/users')
         .type('json')
-        .send(this.currentUser);
+        .send(this.usuarioActual);
 }
 
 export async function iniciarSesion(this: any, email: string, password: string) {
     this.last_response = await chai.request(this.app)
-        .post('/v1/sessions')
+        .post('/v1/sesiones')
         .type('json')
         .send({
             email: email,
@@ -38,16 +38,16 @@ When('inicio sesión con email {string} y contraseña {string}', iniciarSesion);
 
 Given('que inicié mi sesión correctamente', async function () {
     this.last_response = await chai.request(this.app)
-        .post('/v1/sessions')
+        .post('/v1/sesiones')
         .type('json')
         .send({
-            email: this.currentUser.email,
-            password: this.currentUser.password
+            email: this.usuarioActual.email,
+            password: this.usuarioActual.password
         });
 
     expect(this.last_response).to.have.status(200)
 
-    this.sessionToken = this.last_response.body.token;
+    this.tokenSesion = this.last_response.body.token;
 });
 
 Given('que mi sesión expiró', function () {
@@ -58,8 +58,8 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
     const data = dataTable.rowsHash();
 
     const token: string = this.last_response.body.token;
-    const session: Session = new Session(token);
-    const payload: SessionPayload = session.getPayload();
+    const sesion: Sesion = new Sesion(token);
+    const payload: SesionPayload = sesion.getPayload();
 
     expect(payload).to.have.property('email').to.be.equal(data.email)
     expect(payload).to.have.property('role').to.be.equal(data.rol)

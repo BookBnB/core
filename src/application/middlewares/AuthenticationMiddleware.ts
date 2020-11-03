@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { ExpressMiddlewareInterface } from 'routing-controllers';
-import { Session} from '../../domain/sesiones/entidades/Session';
+import { Sesion} from '../../domain/sesiones/entidades/Sesion';
 import IReloj from "../../domain/common/servicios/Reloj";
 
 export default class AuthenticationMiddleware implements ExpressMiddlewareInterface {
@@ -9,9 +9,9 @@ export default class AuthenticationMiddleware implements ExpressMiddlewareInterf
     use(req: Request, resp: Response, next: NextFunction) {
         const token: string = req.get('authorization') || '';
 
-        const session: Session = new Session(token);
+        const sesion: Sesion = new Sesion(token);
 
-        if (session.expirado(this.reloj)) {
+        if (sesion.expirado(this.reloj)) {
             resp.status(401)
                 .json({
                     'message': 'Sesión expirada'

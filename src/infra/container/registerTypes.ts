@@ -8,10 +8,10 @@ import PublicacionRepositorio from "../repositories/PublicacionRepositorio";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import {VerPublicacion} from "../../domain/publicaciones/casos-uso/VerPublicacion";
-import { SessionController } from "../../application/SessionController";
-import { CrearSession } from "../../domain/sesiones/casos-uso/CrearSession";
-import UserService from "../servicios/UserService";
-import IUserService from "../../domain/sesiones/servicios/UserService";
+import { SesionController } from "../../application/SesionController";
+import { CrearSesion } from "../../domain/sesiones/casos-uso/CrearSesion";
+import ServicioUsuarios from "../servicios/ServicioUsuarios";
+import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios";
 import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
 import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
@@ -59,14 +59,14 @@ export default class Registry {
     }
 
     protected async registrarSesiones(container: DIContainer) {
-        const usersService = new UserService(<string>process.env.USERS_SERVICE_URL);
-        container.registerSingleton<IUserService>(() => usersService);
+        const servicioUsuarios = new ServicioUsuarios(<string>process.env.USERS_SERVICE_URL);
+        container.registerSingleton<IServicioUsuarios>(() => servicioUsuarios);
 
         const tokenBuilder = new JWTTokenBuilder(<string>process.env.SECRET_KEY);
         container.registerSingleton<IJWTTokenBuilder>(() => tokenBuilder);
 
-        container.registerSingleton<SessionController>();
-        container.registerSingleton<CrearSession>();
+        container.registerSingleton<SesionController>();
+        container.registerSingleton<CrearSesion>();
 
         container.registerSingleton<AuthenticationMiddleware>(() =>
             new AuthenticationMiddleware(container.get<IReloj>()));

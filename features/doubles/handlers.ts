@@ -1,9 +1,9 @@
 import { rest } from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
-import CrearSessionDTO from "../../src/domain/sesiones/dtos/CrearSessionDTO";
+import CrearSesionDTO from "../../src/domain/sesiones/dtos/CrearSesionDTO";
 import Store from '../util/Store';
 
-interface User {
+interface Usuario {
     email: string,
     password: string,
     name: string,
@@ -19,20 +19,20 @@ function userCreationHandler() {
     // que msw por alguna razón no llega a capturar. Lo que hacemos es capturar
     // la llamada a la aplicación en lugar al destino del proxy
     return rest.post(`*/v1/users`, (req, res, ctx) => {
-        const user: User = <User>req.body;
+        const usuario: Usuario = <Usuario>req.body;
 
-        Store.getInstance().set(user.email, user);
+        Store.getInstance().set(usuario.email, usuario);
 
         return res(
             ctx.status(200),
-            ctx.json(user)
+            ctx.json(usuario)
         );
     })
 }
 
-function sessionCreationHandler() {
+function sesionCreationHandler() {
     return rest.post(`${process.env.USERS_SERVICE_URL}/v1/sessions`, (req, res, ctx) => {
-        const requestBody: CrearSessionDTO = <CrearSessionDTO>req.body;
+        const requestBody: CrearSesionDTO = <CrearSesionDTO>req.body;
 
         if (!Store.getInstance().has(requestBody.email)) {
             return res(
@@ -43,9 +43,9 @@ function sessionCreationHandler() {
             )
         }
 
-        const user: User = Store.getInstance().get(requestBody.email);
+        const usuario: Usuario = Store.getInstance().get(requestBody.email);
 
-        if (user.password != requestBody.password) {
+        if (usuario.password != requestBody.password) {
             return res(
                 ctx.status(401),
                 ctx.json({
@@ -55,8 +55,8 @@ function sessionCreationHandler() {
         }
 
         const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken({
-            email: user.email,
-            role: user.role,
+            email: usuario.email,
+            role: usuario.role,
             exp: Date.now() + hours(1)
         });
 
@@ -71,7 +71,7 @@ function sessionCreationHandler() {
 
 export function buildHandlers() {
     return [
-        sessionCreationHandler(),
+        sesionCreationHandler(),
         userCreationHandler()
     ]
 }

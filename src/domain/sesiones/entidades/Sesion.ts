@@ -2,7 +2,7 @@ import {IsJWT} from "class-validator";
 import IJWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IReloj from "../../common/servicios/Reloj";
 
-export class SessionPayload {
+export class SesionPayload {
     public email!: string;
     public role!: string;
     public exp!: number;
@@ -22,7 +22,7 @@ export class SessionPayload {
     }
 }
 
-export class Session {
+export class Sesion {
     @IsJWT() public token!: string;
 
     private static readonly PAYLOAD_INDEX = 1;
@@ -31,22 +31,22 @@ export class Session {
         this.token = token;
     }
 
-    public getPayload(): SessionPayload {
+    public getPayload(): SesionPayload {
         const parts: string[] = this.token.split('.');
 
-        const payloadString: string = Buffer.from(parts[Session.PAYLOAD_INDEX], 'base64').toString('ascii');
+        const payloadString: string = Buffer.from(parts[Sesion.PAYLOAD_INDEX], 'base64').toString('ascii');
 
         const payload = JSON.parse(payloadString);
 
-        return new SessionPayload(
+        return new SesionPayload(
             payload.email,
             payload.role,
             payload.exp
         );
     }
 
-    public getNewToken(tokenBuilder: IJWTTokenBuilder): Session {
-        return new Session(tokenBuilder.buildToken(this.getPayload().toPlainObject()));
+    public getNewToken(tokenBuilder: IJWTTokenBuilder): Sesion {
+        return new Sesion(tokenBuilder.buildToken(this.getPayload().toPlainObject()));
     }
 
     public expirado(reloj: IReloj): boolean {

@@ -14,14 +14,14 @@ Given('que soy {string}', async function (rol: string) {
         role: rol
     })
     await iniciarSesion.bind(this)('john@doe.com', 'password')
-    this.sessionToken = this.last_response.body.token;
+    this.tokenSesion = this.last_response.body.token;
 });
 
 const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
     const data = dataTable.rowsHash();
     this.last_response = await chai.request(this.app)
         .post('/v1/publicaciones')
-        .set('authorization', this.sessionToken)
+        .set('authorization', this.tokenSesion)
         .type("json")
         .send({
             titulo: data.titulo,
@@ -73,7 +73,7 @@ When('ingreso a la publicación con título {string}', async function (titulo: s
     this.last_response =
         await chai.request(this.app)
             .get(`/v1/publicaciones/${this.last_response.body.id}`)
-            .set('authorization', this.sessionToken)
+            .set('authorization', this.tokenSesion)
 });
 
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
@@ -95,7 +95,7 @@ When('creo una publicación sin {string}:', {timeout: 2000 * 1000}, async functi
     }, campo)
     this.last_response = await chai.request(this.app)
         .post('/v1/publicaciones')
-        .set('authorization', this.sessionToken)
+        .set('authorization', this.tokenSesion)
         .type("json")
         .send(data)
 });
@@ -109,12 +109,12 @@ Then('veo un error indicado en el campo {string}', function (campoError: string)
 Then('veo que no hay publicaciones', async function () {
     const response = await chai.request(this.app)
         .get(`/v1/publicaciones`)
-        .set('authorization', this.sessionToken)
+        .set('authorization', this.tokenSesion)
     expect(response.body).to.eql([])
 });
 
 When('listo las publicaciones', async function () {
     this.last_response = await chai.request(this.app)
         .get(`/v1/publicaciones`)
-        .set('authorization', this.sessionToken)
+        .set('authorization', this.tokenSesion)
 });
