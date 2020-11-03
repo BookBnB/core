@@ -5,7 +5,7 @@ Característica:
   Para que realicen reservas del mismo y poder cobrar su uso
 
   Escenario: Creación exitosa
-    Dado que soy anfitrión
+    Dado que soy "anfitrión"
     Cuando creo una publicación con:
       | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
@@ -24,7 +24,7 @@ Característica:
       | cantidadDeHuespedes | 2                                                      |
 
   Esquema del escenario: Campos faltantes
-    Dado que soy anfitrión
+    Dado que soy "anfitrión"
     Cuando creo una publicación sin "<campo>":
     Entonces veo un error indicado en el campo "<campo>"
     Y veo que no hay publicaciones
@@ -39,7 +39,7 @@ Característica:
       | cantidadDeHuespedes |
 
   Esquema del escenario: Campos vacíos
-    Dado que soy anfitrión
+    Dado que soy "anfitrión"
     Cuando creo una publicación con:
       | campo               | valor                 |
       | titulo              | <titulo>              |

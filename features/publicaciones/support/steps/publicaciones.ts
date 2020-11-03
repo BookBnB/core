@@ -1,19 +1,27 @@
 import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
+import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-Given('que soy anfitrión', function () {
-})
-Given('que soy huesped', function () {
+Given('que soy {string}', async function (rol: string) {
+    await crearUsuario.bind(this)({
+        nombre: 'John Doe',
+        email: 'john@doe.com',
+        password: 'password',
+        role: rol
+    })
+    await iniciarSesion.bind(this)('john@doe.com', 'password')
+    this.tokenSesion = this.last_response.body.token;
 });
 
 const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
     const data = dataTable.rowsHash();
     this.last_response = await chai.request(this.app)
         .post('/v1/publicaciones')
+        .set('authorization', this.tokenSesion)
         .type("json")
         .send({
             titulo: data.titulo,
@@ -31,7 +39,7 @@ function deletePropertyPath(obj: any, path: string): any {
     const paths = path.split('.')
     let nestedObj = obj
     paths.forEach((attribute: string, n) => {
-        if(n === paths.length -1)
+        if (n === paths.length - 1)
             delete nestedObj[attribute]
         else
             nestedObj = nestedObj[attribute]
@@ -58,14 +66,14 @@ Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
     validarPublicacion.bind(this)(dataTable)
 })
 
-Given('que existe una publicacion con:', async function (dataTable: TableDefinition) {
-    await crearPublicacion.bind(this)(dataTable)
-});
+Given('que existe una publicacion con:', crearPublicacion);
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
-    if(this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
-    this.last_response = await chai.request(this.app)
-        .get(`/v1/publicaciones/${this.last_response.body.id}`)
+    if (this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
+    this.last_response =
+        await chai.request(this.app)
+            .get(`/v1/publicaciones/${this.last_response.body.id}`)
+            .set('authorization', this.tokenSesion)
 });
 
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
@@ -74,7 +82,7 @@ Then('veo una publicación con:', function (dataTable: TableDefinition) {
     validarPublicacion.bind(this)(dataTable)
 })
 
-When('creo una publicación sin {string}:', {timeout : 2000 * 1000}, async function (campo: string) {
+When('creo una publicación sin {string}:', {timeout: 2000 * 1000}, async function (campo: string) {
     const data = deletePropertyPath({
         titulo: 'Departamento con vista',
         descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
@@ -87,6 +95,7 @@ When('creo una publicación sin {string}:', {timeout : 2000 * 1000}, async funct
     }, campo)
     this.last_response = await chai.request(this.app)
         .post('/v1/publicaciones')
+        .set('authorization', this.tokenSesion)
         .type("json")
         .send(data)
 });
@@ -98,7 +107,14 @@ Then('veo un error indicado en el campo {string}', function (campoError: string)
 });
 
 Then('veo que no hay publicaciones', async function () {
-    const response = await chai.request(this.app).get(`/v1/publicaciones`)
+    const response = await chai.request(this.app)
+        .get(`/v1/publicaciones`)
+        .set('authorization', this.tokenSesion)
     expect(response.body).to.eql([])
 });
 
+When('listo las publicaciones', async function () {
+    this.last_response = await chai.request(this.app)
+        .get(`/v1/publicaciones`)
+        .set('authorization', this.tokenSesion)
+});
