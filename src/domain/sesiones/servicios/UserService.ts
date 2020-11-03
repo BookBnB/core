@@ -1,4 +1,4 @@
-import CrearSessionDTO from "../casos-uso/CrearSession";
+import CrearSessionDTO from "../dtos/CrearSessionDTO";
 import { SessionDTO } from "../dtos/SessionDTO";
 
 export default interface IUserService {

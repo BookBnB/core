@@ -1,10 +1,10 @@
 # language: es
 Característica:
-  Como huesped
-  Quiero poder visualizar una publicacion de un alojamiento
-  Para ver sus fotos y/o videos y revisar sus características.
+  Como usuario
+  Quiero poder acceder usando mi usuario y contraseña
+  Para poder hacer uso de las funcionalidades de la plataforma
 
-  Antecedentes:
+  Escenario: Expiración de sesión
     Dado que soy un usuario con datos:
       | nombre              | John Doe                                               |
       | email               | john@doe.com                                           |
@@ -19,15 +19,6 @@ Característica:
       | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
       | numero              | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
-
-  Escenario: Ver una publicacion
-    Dado que soy huesped
+    Y mi sesión expiró
     Cuando ingreso a la publicación con título "Departamento con vista"
-    Entonces veo una publicación con:
-      | campo               | valor                                                  |
-      | titulo              | Departamento con vista                                 |
-      | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
-      | precioPorNoche      | 10                                                     |
-      | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
-      | numero              | 4799                                                   |
-      | cantidadDeHuespedes | 2                                                      |
+    Entonces obtengo un error 401 con mensaje 'Sesión expirada'

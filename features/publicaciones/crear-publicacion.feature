@@ -4,8 +4,15 @@ Característica:
   Quiero poder dar de alta una publicacion de mi alojamiento
   Para que realicen reservas del mismo y poder cobrar su uso
 
+  Antecedentes:
+    Dado que soy un usuario con datos:
+      | nombre              | John Doe                                               |
+      | email               | john@doe.com                                           |
+      | password            | password                                               |
+      | role                | host                                                   |
+    Y inicié mi sesión correctamente
+
   Escenario: Creación exitosa
-#    Dado que soy anfitrión
     Cuando creo una publicación con:
       | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |

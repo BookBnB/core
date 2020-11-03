@@ -14,6 +14,7 @@ import UserService from "../servicios/UserService";
 import IUserService from "../../domain/sesiones/servicios/UserService";
 import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
+import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -29,6 +30,7 @@ export default async (container: DIContainer): Promise<IContainer> => {
     await registrarServicios(container);
     await registrarPublicaciones(container);
     await registrarSesiones(container);
+    await registrarMiddlewares(container);
 
     // Return
     return container
@@ -55,11 +57,14 @@ const registrarServicios = async (container: DIContainer) => {
     container.registerSingleton<IUserService>(() => usersService);
 
     const tokenBuilder = new JWTTokenBuilder(<string>process.env.SECRET_KEY);
-    container.registerSingleton<IJWTTokenBuilder>(() => tokenBuilder)
+    container.registerSingleton<IJWTTokenBuilder>(() => tokenBuilder);
 }
 
 const registrarSesiones = async (container: DIContainer) => {
-    container.registerSingleton<SessionController>()
-    container.registerSingleton<CrearSession>()
+    container.registerSingleton<SessionController>();
+    container.registerSingleton<CrearSession>();
 }
 
+const registrarMiddlewares = async (container: DIContainer) => {
+    container.registerSingleton<AuthenticationMiddleware>(() => new AuthenticationMiddleware());
+}

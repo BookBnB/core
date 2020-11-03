@@ -14,6 +14,7 @@ const crearPublicacion = async function (this: any, dataTable: TableDefinition) 
     const data = dataTable.rowsHash();
     this.last_response = await chai.request(this.app)
         .post('/v1/publicaciones')
+        .set('authorization', this.sessionToken)
         .type("json")
         .send({
             titulo: data.titulo,
@@ -64,8 +65,10 @@ Given('que existe una publicacion con:', async function (dataTable: TableDefinit
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
     if(this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
-    this.last_response = await chai.request(this.app)
-        .get(`/v1/publicaciones/${this.last_response.body.id}`)
+    this.last_response =
+        await chai.request(this.app)
+            .get(`/v1/publicaciones/${this.last_response.body.id}`)
+            .set('authorization', this.sessionToken)
 });
 
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
@@ -87,6 +90,7 @@ When('creo una publicación sin {string}:', {timeout : 2000 * 1000}, async funct
     }, campo)
     this.last_response = await chai.request(this.app)
         .post('/v1/publicaciones')
+        .set('authorization', this.sessionToken)
         .type("json")
         .send(data)
 });
