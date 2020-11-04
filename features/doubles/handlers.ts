@@ -14,6 +14,10 @@ function hours(n: number) {
     return n * 60 * 60 * 1000;
 }
 
+function toSeconds(millis: number) {
+    return millis / 1000;
+}
+
 function userCreationHandler() {
     // wildcard * necesario porque el endpoint /v1/users esta cubierto por un proxy
     // que msw por alguna razón no llega a capturar. Lo que hacemos es capturar
@@ -57,7 +61,7 @@ function sesionCreationHandler() {
         const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken({
             email: usuario.email,
             role: usuario.role,
-            exp: Date.now() + hours(1)
+            exp: Math.trunc(toSeconds(Date.now() + hours(24)))
         });
 
         return res(

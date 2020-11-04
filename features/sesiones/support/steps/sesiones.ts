@@ -51,7 +51,7 @@ Given('que inicié mi sesión correctamente', async function () {
 });
 
 Given('que mi sesión expiró', function () {
-    this.reloj.setAhora(Date.now() + 61 * 60000)
+    this.reloj.setAhora(Date.now() + 24 * 60 * 60 * 1000 + 1)
 });
 
 Then('obtengo un token con:', function (dataTable: TableDefinition) {

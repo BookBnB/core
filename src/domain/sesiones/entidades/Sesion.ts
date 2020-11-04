@@ -50,6 +50,9 @@ export class Sesion {
     }
 
     public expirado(reloj: IReloj): boolean {
-        return this.getPayload().exp < reloj.ahora()
+        // El RFC7519 establece que el claim exp es en segundos
+        // IReloj devuelve valores en millis
+        const expMillis: number = this.getPayload().exp * 1000;
+        return expMillis < reloj.ahora();
     }
 }
