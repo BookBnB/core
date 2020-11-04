@@ -18,3 +18,8 @@ Característica:
     Dado que soy "anfitrión"
     Cuando busco una dirección por "una dirección inexistente"
     Entonces no encuentro direcciones
+
+  Escenario: Buscar dirección sin consulta
+    Dado que soy "anfitrión"
+    Cuando busco una dirección por ""
+    Entonces veo un error indicado en el campo "consulta"
