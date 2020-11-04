@@ -9,6 +9,14 @@ export default class AuthenticationMiddleware implements ExpressMiddlewareInterf
     use(req: Request, resp: Response, next: NextFunction) {
         const token: string = req.get('authorization') || '';
 
+        if (!token) {
+            resp.status(401)
+                .json({
+                    'message': 'Sesión no existente'
+                });
+            return;
+        }
+
         const sesion: Sesion = new Sesion(token);
 
         if (sesion.expirado(this.reloj)) {

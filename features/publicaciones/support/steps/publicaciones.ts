@@ -116,5 +116,5 @@ Then('veo que no hay publicaciones', async function () {
 When('listo las publicaciones', async function () {
     this.last_response = await chai.request(this.app)
         .get(`/v1/publicaciones`)
-        .set('authorization', this.tokenSesion)
+        .set('authorization', this.tokenSesion || '')
 });
