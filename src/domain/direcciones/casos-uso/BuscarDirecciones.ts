@@ -55,7 +55,7 @@ export class BuscarDirecciones implements UseCase {
     constructor(private readonly direcciones: IServicioDirecciones) {
     }
 
-    async execute(consulta: ConsultaDeDireccion): Promise<Direccion[]> {
-        return this.direcciones.buscarDirecciones(consulta)
+    async execute(consulta: ConsultaDeDireccion, ip: string): Promise<Direccion[]> {
+        return this.direcciones.buscarDirecciones(consulta, ip)
     }
 }

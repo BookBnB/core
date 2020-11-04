@@ -52,12 +52,16 @@ export default class ServicioDirecciones implements IServicioDirecciones {
         })
     }
 
-    async buscarDirecciones(consulta: ConsultaDeDireccion): Promise<Direccion[]> {
+    async buscarDirecciones(consulta: ConsultaDeDireccion, ip: string): Promise<Direccion[]> {
         const resultado = await this.index.transporter.read({
             method: 'POST',
             path: '1/places/query',
             data: new ConsultaDeDireccionAlgolia(consulta),
             cacheable: true
+        }, {
+            headers: {
+                'X-Forwarded-For': ip
+            }
         }) as {hits: DireccionAlgolia[]};
 
         return resultado.hits.map(direccion => new Direccion({
