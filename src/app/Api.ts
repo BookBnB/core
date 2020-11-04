@@ -60,7 +60,16 @@ export default class Api {
             this.options(),
             {
                 ...this.openApiInfo,
-                components: {schemas},
+                components: {
+                    schemas,
+                    securitySchemes: {
+                        token: {
+                            type: 'apiKey',
+                            in: 'header',
+                            name: 'Authorization'
+                        }
+                    }
+                },
             }
         )
 

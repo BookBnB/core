@@ -7,6 +7,7 @@ import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 import {ListarPublicaciones} from "../domain/publicaciones/casos-uso/ListarPublicaciones";
 
+@OpenAPI({security: [{token: []}]})
 @UseBefore(AuthenticationMiddleware)
 @JsonController('/publicaciones')
 export class PublicacionController {

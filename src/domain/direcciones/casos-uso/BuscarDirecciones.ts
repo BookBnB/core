@@ -2,7 +2,6 @@ import {UseCase} from "../../UseCase";
 import {
     IsBoolean,
     IsInt,
-    IsISO31661Alpha2,
     IsLatLong, IsOptional, IsString, Length,
     Max,
     Min, MinLength, ValidateNested,
@@ -34,7 +33,6 @@ export class ConsultaDeDireccion {
     public lenguaje?: string = 'es'
 
     @IsOptional()
-    @IsISO31661Alpha2({each: true})
     @ValidateNested({each: true})
     @Type(() => String)
     public paises?: string[]

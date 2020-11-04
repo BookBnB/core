@@ -5,6 +5,7 @@ import {BuscarDirecciones, ConsultaDeDireccion} from "../domain/direcciones/caso
 import Direccion from "../domain/direcciones/entidades/Direccion";
 
 @UseBefore(AuthenticationMiddleware)
+@OpenAPI({security: [{token: []}]})
 @JsonController('/direcciones')
 export class DireccionController {
     constructor(private readonly buscarDirecciones: BuscarDirecciones) {
