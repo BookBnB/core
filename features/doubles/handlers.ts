@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import {rest} from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
 import CrearSesionDTO from "../../src/domain/sesiones/dtos/CrearSesionDTO";
 import Store from '../util/Store';
@@ -69,9 +69,51 @@ function sesionCreationHandler() {
     })
 }
 
+function buscarDireccionHandler() {
+    return rest.post(`*/1/places/query`, (req, res, ctx) => {
+        const body = JSON.parse(<string>req.body)
+        if (body.query.includes('paseo colon')) {
+            return res(
+                ctx.status(200),
+                ctx.json({
+                    hits: [
+                        {
+                            "country": "Argentina",
+                            "city": [
+                                "Buenos Aires",
+                                "Capital Federal",
+                                "CABA"
+                            ],
+                            "postcode": [
+                                "1063",
+                                "C1063ADN",
+                            ],
+                            "country_code": "ar",
+                            "locale_names": [
+                                "Avenida Paseo Colón 850"
+                            ],
+                            "_geoloc": {
+                                "lat": -34.6092,
+                                "lng": -58.3697
+                            },
+                            "objectID": "100403312_83432703",
+                        }
+                    ]
+                })
+            )
+        } else if (body.query.includes('una dirección inexistente')) {
+            return res(
+                ctx.status(200),
+                ctx.json({hits: []})
+            )
+        }
+    })
+}
+
 export function buildHandlers() {
     return [
         sesionCreationHandler(),
-        userCreationHandler()
+        userCreationHandler(),
+        buscarDireccionHandler()
     ]
 }

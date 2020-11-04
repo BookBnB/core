@@ -1,4 +1,4 @@
-import {Authorized, Body, Get, HttpCode, JsonController, Param, Post, Put, QueryParams, UseAfter, UseBefore} from 'routing-controllers'
+import {Body, Get, HttpCode, JsonController, Param, Post, Put, QueryParams, UseBefore} from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
 import {ConsultaConPaginacion} from "./helpers/helpers";
 import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";

@@ -8,8 +8,8 @@ import PublicacionRepositorio from "../repositories/PublicacionRepositorio";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import {VerPublicacion} from "../../domain/publicaciones/casos-uso/VerPublicacion";
-import { SesionController } from "../../application/SesionController";
-import { CrearSesion } from "../../domain/sesiones/casos-uso/CrearSesion";
+import {SesionController} from "../../application/SesionController";
+import {CrearSesion} from "../../domain/sesiones/casos-uso/CrearSesion";
 import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios";
 import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
@@ -18,6 +18,11 @@ import AuthenticationMiddleware from "../../application/middlewares/Authenticati
 import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicaciones";
 import IReloj from "../../domain/common/servicios/Reloj";
 import Reloj from "../servicios/Reloj";
+import IServicioDirecciones from "../../domain/direcciones/servicios/ServicioDirecciones";
+import ServicioDirecciones from "../servicios/ServicioDirecciones";
+import {DireccionController} from "../../application/DireccionController";
+import {BuscarDirecciones} from "../../domain/direcciones/casos-uso/BuscarDirecciones";
+import {ErrorHandler} from "../ErrorHandler";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -32,14 +37,20 @@ export default class Registry {
     public async registrar(container: DIContainer): Promise<IContainer> {
         await this.registrarTypeOrmConnection(container)
         await this.registrarReloj(container)
+        await this.registrarErrorHandler(container)
         await this.registrarPublicaciones(container)
         await this.registrarSesiones(container)
+        await this.registrarDirecciones(container)
         return container
     }
 
     protected async registrarTypeOrmConnection(container: DIContainer) {
         const connection = await typeOrmConnection();
         container.registerSingleton<Connection>(() => connection);
+    }
+
+    protected async registrarErrorHandler(container: DIContainer) {
+        container.registerSingleton<ErrorHandler>()
     }
 
     protected async registrarReloj(container: DIContainer) {
@@ -54,7 +65,7 @@ export default class Registry {
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
-        container.registerSingleton<IPublicacionRepositorio>( () =>
+        container.registerSingleton<IPublicacionRepositorio>(() =>
             new PublicacionRepositorio(container.get<Repository<Publicacion>>()))
     }
 
@@ -66,9 +77,17 @@ export default class Registry {
         container.registerSingleton<IJWTTokenBuilder>(() => tokenBuilder);
 
         container.registerSingleton<SesionController>();
-        container.registerSingleton<CrearSesion>();
+        container.registerTransient<CrearSesion>();
 
         container.registerSingleton<AuthenticationMiddleware>(() =>
             new AuthenticationMiddleware(container.get<IReloj>()));
+    }
+
+    protected async registrarDirecciones(container: DIContainer) {
+        container.registerSingleton<DireccionController>();
+        container.registerSingleton<IServicioDirecciones>(() =>
+            new ServicioDirecciones(process.env.ALGOLIA_APPLICATION_ID as string, process.env.ALGOLIA_ADMIN_API_KEY as string))
+
+        container.registerTransient<BuscarDirecciones>();
     }
 }
