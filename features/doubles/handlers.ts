@@ -59,7 +59,7 @@ function sesionCreationHandler() {
         }
 
         const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken({
-            email: usuario.email,
+            id: usuario.email,
             role: usuario.role,
             exp: Math.trunc(toSeconds(Date.now() + hours(24)))
         });

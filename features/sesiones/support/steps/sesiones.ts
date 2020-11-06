@@ -68,7 +68,7 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
     const sesion: Sesion = new Sesion(token);
     const payload: SesionPayload = sesion.getPayload();
 
-    expect(payload).to.have.property('email').to.be.equal(data.email)
+    expect(payload).to.have.property('id').to.be.equal(data.id)
     expect(payload).to.have.property('role').to.be.equal(data.rol)
     expect(payload).to.have.property('exp')
 });
