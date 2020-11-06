@@ -2,6 +2,7 @@ import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
 import {Sesion, SesionPayload} from "../../../../src/domain/sesiones/entidades/Sesion";
+import JWTTokenBuilder from "../../../../src/infra/servicios/JWTTokenBuilder";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -52,6 +53,12 @@ Given('que inicié mi sesión correctamente', async function () {
 
 Given('que mi sesión expiró', function () {
     this.reloj.setAhora(Date.now() + 24 * 60 * 60 * 1000 + 1)
+});
+
+Given('que mi sesión es inválida', function () {
+    const builder: JWTTokenBuilder = new JWTTokenBuilder('fake_secret');
+    const sesion: Sesion = new Sesion(this.tokenSesion).getNewToken(builder);
+    this.tokenSesion = sesion.token;
 });
 
 Then('obtengo un token con:', function (dataTable: TableDefinition) {
