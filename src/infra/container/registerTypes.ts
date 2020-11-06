@@ -23,6 +23,8 @@ import ServicioDirecciones from "../servicios/ServicioDirecciones";
 import {DireccionController} from "../../application/DireccionController";
 import {BuscarDirecciones} from "../../domain/direcciones/casos-uso/BuscarDirecciones";
 import {ErrorHandler} from "../ErrorHandler";
+import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
+import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -76,11 +78,18 @@ export default class Registry {
         const tokenBuilder = new JWTTokenBuilder(<string>process.env.SECRET_KEY);
         container.registerSingleton<IJWTTokenBuilder>(() => tokenBuilder);
 
+        const tokenVerifier = new JWTTokenVerifier(<string>process.env.SECRET_KEY);
+        container.registerSingleton<IJWTTokenVerifier>(() => tokenVerifier);
+
         container.registerSingleton<SesionController>();
         container.registerTransient<CrearSesion>();
 
         container.registerSingleton<AuthenticationMiddleware>(() =>
-            new AuthenticationMiddleware(container.get<IReloj>()));
+            new AuthenticationMiddleware(
+                container.get<IReloj>(),
+                container.get<IJWTTokenVerifier>()
+            )
+        );
     }
 
     protected async registrarDirecciones(container: DIContainer) {
