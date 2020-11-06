@@ -12,7 +12,7 @@ Característica:
       | role                | host                                                   |
     Cuando inicio sesión con email 'john@doe.com' y contraseña 'password'
     Entonces obtengo un token con:
-      | email               | john@doe.com                                           |
+      | id                  | john@doe.com                                           |
       | rol                 | host                                                   |
 
   Escenario: Creación fallida - Contraseña incorrecta

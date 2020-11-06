@@ -4,19 +4,19 @@ import IReloj from "../../common/servicios/Reloj";
 import IJWTTokenVerifier from "../servicios/JWTTokenVerifier";
 
 export class SesionPayload {
-    public email!: string;
+    public id!: string;
     public role!: string;
     public exp!: number;
 
-    constructor(email: string, role: string, exp: number) {
-        this.email = email;
+    constructor(id: string, role: string, exp: number) {
+        this.id = id;
         this.role = role;
         this.exp = exp;
     }
 
     public toPlainObject(): Object {
         return {
-            email: this.email,
+            id: this.id,
             role: this.role,
             exp: this.exp
         }
@@ -40,7 +40,7 @@ export class Sesion {
         const payload = JSON.parse(payloadString);
 
         return new SesionPayload(
-            payload.email,
+            payload.id,
             payload.role,
             payload.exp
         );
