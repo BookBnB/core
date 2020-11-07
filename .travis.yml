@@ -18,7 +18,7 @@ addons:
 
 before_script:
   - . features/.env
-  - export DB_PASSWORD='' DB_HOSTNAME='localhost'
+  - export DB_PASSWORD='' DB_HOSTNAME='localhost' DB_PORT=$PGPORT
   - psql -c "CREATE EXTENSION IF NOT EXISTS postgis" -U postgres
   - psql -c "CREATE DATABASE $DB_NAME;" -U postgres
 
@@ -33,3 +33,7 @@ deploy:
   on:
     all_branches: true
     condition: $TRAVIS_BRANCH = master || $TRAVIS_BRANCH = develop
+
+env:
+  global:
+    - PGPORT=5433
