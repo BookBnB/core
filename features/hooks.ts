@@ -11,7 +11,7 @@ import Store from "./util/Store";
 import RelojFake from "./doubles/RelojFake";
 import TestRegistry from "./doubles/TestRegistry";
 
-dotenvExpand(dotenv.config())
+dotenvExpand(dotenv.config({path: 'features/.env'}))
 
 const mockServer = buildServer();
 
@@ -20,11 +20,6 @@ BeforeAll(async function () {
 });
 
 Before(async function () {
-    process.env.TYPEORM_CONNECTION = 'sqlite'
-    process.env.TYPEORM_DATABASE = ':memory:'
-    process.env.TYPEORM_SYNCHRONIZE = 'true'
-    process.env.TYPEORM_ENTITIES = './src/domain/**/entidades/**/*'
-    process.env.NODE_ENV = 'test'
 
     const app = express()
     this.app = app

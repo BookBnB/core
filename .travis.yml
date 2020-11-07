@@ -6,6 +6,26 @@ node_js:
 
 services:
   - docker
+  - postgresql
+
+addons:
+  postgresql: "13"
+  apt:
+    packages:
+      - postgresql-13
+      - postgresql-client-13
+      - postgresql-13-postgis-3
+
+before_install:
+  - sudo sed -i -e '/local.*peer/s/postgres/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
+  - sudo systemctl restart postgresql@13-main
+  - sleep 1
+
+before_script:
+  - . features/.env
+  - export DB_PASSWORD='' DB_HOSTNAME='localhost' DB_PORT=$PGPORT
+  - psql -c "CREATE EXTENSION IF NOT EXISTS postgis" -U postgres
+  - psql -c "CREATE DATABASE $DB_NAME;" -U postgres
 
 script:
   - npm run test:coverage
@@ -18,3 +38,7 @@ deploy:
   on:
     all_branches: true
     condition: $TRAVIS_BRANCH = master || $TRAVIS_BRANCH = develop
+
+env:
+  global:
+    - PGPORT=5433
