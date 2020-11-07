@@ -12,12 +12,13 @@ services:
       - postgres
 
   postgres:
-    image: postgres:13.0-alpine
+    build: docker/postgres
     hostname: "${DB_HOSTNAME}"
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+      - TEST_DB_NAME=${TEST_DB_NAME}
     volumes:
       - bookbnb-postgres13-data:/var/lib/postgresql/data
     command: -p "${DB_PORT}"
