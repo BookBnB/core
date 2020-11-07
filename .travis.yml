@@ -9,11 +9,12 @@ services:
   - postgresql
 
 addons:
-  postgresql: "13.0"
+  postgresql: "13"
   apt:
     packages:
       - postgresql-13
       - postgresql-client-13
+      - postgresql-server-dev-13
       - postgresql-13-postgis-3
 
 before_script:
