@@ -1,3 +1,3 @@
 #!/bin/sh
-docker-compose run app npm install && npm run build
+docker run node:12.19.0-alpine3.12 npm install && npm run build
 docker build . -f docker/Dockerfile -t bookbnb
