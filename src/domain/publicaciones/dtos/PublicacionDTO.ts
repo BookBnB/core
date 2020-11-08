@@ -10,6 +10,7 @@ class PublicacionDTO {
     @JSONSchema({example: 2})  @IsInt() public precioPorNoche!: number
     @ValidateNested() public direccion!: DireccionDTO
     @JSONSchema({example: 2})  @IsInt() public cantidadDeHuespedes!: number
+    @IsString() public anfitrionId!: string
 
     constructor(publicacion: Publicacion) {
         Object.assign(this, publicacion)

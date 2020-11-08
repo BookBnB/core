@@ -56,6 +56,7 @@ const validarPublicacion = function (this: any, dataTable: TableDefinition) {
     expect(this.last_response.body).to.have.nested.property('direccion.numero').to.be.equal(parseFloat(data.numero))
     expect(this.last_response.body).to.have.property('cantidadDeHuespedes').to.be.equal(parseInt(data.cantidadDeHuespedes))
     expect(this.last_response.body).to.have.property('id')
+    expect(this.last_response.body).to.have.property('anfitrionId').to.be.equal(data.anfitrionId)
 }
 
 When('creo una publicación con:', crearPublicacion)

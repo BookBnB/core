@@ -6,6 +6,7 @@ import {JSONSchema} from "class-validator-jsonschema";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion from "../entidades/Publicacion";
 import {Type} from "class-transformer";
+import { Sesion } from "../../sesiones/entidades/Sesion";
 
 export interface CrearPublicacionDTOConstructor {
     titulo: string
@@ -40,8 +41,11 @@ export class CrearPublicacion implements UseCase {
     constructor(private readonly publicaciones: IPublicacionRepositorio) {
     }
 
-    async execute(pedido: CrearPublicacionDTO): Promise<PublicacionDTO> {
-        const publicacion = new Publicacion(pedido)
+    async execute(sesion: Sesion, pedido: CrearPublicacionDTO): Promise<PublicacionDTO> {
+        const publicacion = new Publicacion({
+            ...pedido,
+            anfitrionId: sesion.getId()
+        })
         await this.publicaciones.guardar(publicacion)
         return new PublicacionDTO(publicacion)
     }

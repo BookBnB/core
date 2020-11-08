@@ -23,3 +23,4 @@ Característica:
       | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
       | numero              | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
+      | anfitrionId         | john@doe.com                                           |

@@ -46,6 +46,10 @@ export class Sesion {
         );
     }
 
+    getId(): string {
+        return this.getPayload().id;
+    }
+
     public getNewToken(tokenBuilder: IJWTTokenBuilder): Sesion {
         return new Sesion(tokenBuilder.buildToken(this.getPayload().toPlainObject()));
     }

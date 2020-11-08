@@ -11,6 +11,7 @@ export interface PublicacionConstructor {
     precioPorNoche: number
     direccion: DireccionConstructor
     cantidadDeHuespedes: number
+    anfitrionId: string
 }
 
 export class Direccion {
@@ -44,6 +45,9 @@ export default class Publicacion {
 
     @Column("int")
     public cantidadDeHuespedes!: number;
+
+    @Column({ nullable: false })
+    public anfitrionId!: string;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
