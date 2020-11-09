@@ -1,4 +1,4 @@
-import {Body, Get, HttpCode, JsonController, Param, Post, Put, QueryParams, UseBefore} from 'routing-controllers'
+import {Body, CurrentUser, Get, HttpCode, JsonController, Param, Post, Put, QueryParams, UseBefore} from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
 import {ConsultaConPaginacion} from "./helpers/helpers";
 import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
@@ -6,6 +6,7 @@ import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 import {ListarPublicaciones} from "../domain/publicaciones/casos-uso/ListarPublicaciones";
+import Usuario from '../domain/usuarios/entidades/Usuario';
 
 @OpenAPI({security: [{token: []}]})
 @UseBefore(AuthenticationMiddleware)
@@ -36,8 +37,8 @@ export class PublicacionController {
     @HttpCode(201)
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Crea una publicación'})
-    crear(@Body() body: CrearPublicacionDTO): Promise<PublicacionDTO> {
-        return this.crearPublicacion.execute(body)
+    crear(@CurrentUser() usuario: Usuario, @Body() body: CrearPublicacionDTO): Promise<PublicacionDTO> {
+        return this.crearPublicacion.execute(usuario, body)
     }
 
     @Put('/:id')

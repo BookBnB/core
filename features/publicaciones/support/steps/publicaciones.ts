@@ -2,6 +2,7 @@ import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
 import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
+import {deletePropertyByDotPath} from "../../../util/DotNotation";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -28,35 +29,22 @@ const crearPublicacion = async function (this: any, dataTable: TableDefinition) 
             descripcion: data.descripcion,
             precioPorNoche: parseFloat(data.precioPorNoche),
             direccion: {
-                calle: data.calle,
-                numero: parseInt(data.numero),
+                calle: data['direccion.calle'],
+                numero: parseInt(data['direccion.numero']),
             },
             cantidadDeHuespedes: parseInt(data.cantidadDeHuespedes)
         })
 }
 
-function deletePropertyPath(obj: any, path: string): any {
-    const paths = path.split('.')
-    let nestedObj = obj
-    paths.forEach((attribute: string, n) => {
-        if (n === paths.length - 1)
-            delete nestedObj[attribute]
-        else
-            nestedObj = nestedObj[attribute]
-    });
-    return obj;
+const validarPublicacion = function (this: any, dataTable: TableDefinition) {
+    Object.entries(dataTable.rowsHash()).forEach(([propiedad, valor]) => {
+        expect(this.last_response.body).to.have.nested.property(propiedad).satisfy((prop: any) => prop == valor)
+    })
 }
 
-const validarPublicacion = function (this: any, dataTable: TableDefinition) {
-    const data = dataTable.rowsHash()
-    expect(this.last_response.body).to.have.property('titulo').to.be.equal(data.titulo)
-    expect(this.last_response.body).to.have.property('descripcion').to.be.equal(data.descripcion)
-    expect(this.last_response.body).to.have.property('precioPorNoche').to.be.equal(parseFloat(data.precioPorNoche))
-    expect(this.last_response.body).to.have.nested.property('direccion.calle').to.be.equal(data.calle)
-    expect(this.last_response.body).to.have.nested.property('direccion.numero').to.be.equal(parseFloat(data.numero))
-    expect(this.last_response.body).to.have.property('cantidadDeHuespedes').to.be.equal(parseInt(data.cantidadDeHuespedes))
-    expect(this.last_response.body).to.have.property('id')
-}
+Then('veo que está a mí nombre', function () {
+    expect(this.last_response.body).to.have.nested.property('anfitrion.email', this.usuarioActual.email)
+});
 
 When('creo una publicación con:', crearPublicacion)
 
@@ -83,7 +71,7 @@ Then('veo una publicación con:', function (dataTable: TableDefinition) {
 })
 
 When('creo una publicación sin {string}:', {timeout: 2000 * 1000}, async function (campo: string) {
-    const data = deletePropertyPath({
+    const data = deletePropertyByDotPath({
         titulo: 'Departamento con vista',
         descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
         precioPorNoche: 0.05,

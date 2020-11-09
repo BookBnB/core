@@ -7,21 +7,21 @@ Característica:
   Escenario: Creación exitosa
     Dado que soy "anfitrión"
     Cuando creo una publicación con:
-      | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
       | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
       | precioPorNoche      | 10                                                     |
-      | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
-      | numero              | 4799                                                   |
+      | direccion.calle     | Av. Bv. Marítimo Patricio Peralta Ramos                |
+      | direccion.numero    | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
     Entonces veo una nueva publicación con:
-      | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
       | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
       | precioPorNoche      | 10                                                     |
-      | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
-      | numero              | 4799                                                   |
+      | direccion.calle     | Av. Bv. Marítimo Patricio Peralta Ramos                |
+      | direccion.numero    | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
+      | anfitrion.email     | john@doe.com                                           |
+    Y veo que está a mí nombre
 
   Esquema del escenario: Campos faltantes
     Dado que soy "anfitrión"
@@ -45,8 +45,8 @@ Característica:
       | titulo              | <titulo>              |
       | descripcion         | <descripcion>         |
       | precioPorNoche      | <precioPorNoche>      |
-      | calle               | <calle>               |
-      | numero              | <numero>              |
+      | direccion.calle     | <calle>               |
+      | direccion.numero    | <numero>              |
       | cantidadDeHuespedes | <cantidadDeHuespedes> |
     Entonces veo un error indicado en el campo "<campoError>"
     Y veo que no hay publicaciones

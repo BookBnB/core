@@ -12,7 +12,11 @@ describe("Publicacion", () => {
 				numero: 6587
 			},
 			cantidadDeHuespedes: 2,
-			precioPorNoche: 10
+			precioPorNoche: 10,
+			anfitrion: {
+				email: "unanfitrion@bbnb.test",
+				rol: "anfitrion"
+			}
 		});
 
 		expect(publicacion.titulo).to.equal("un titulo");
