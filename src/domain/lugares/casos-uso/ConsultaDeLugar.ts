@@ -1,4 +1,3 @@
-import {UseCase} from "../../UseCase";
 import {
     IsBoolean,
     IsInt,
@@ -7,11 +6,9 @@ import {
     Min, MinLength, ValidateNested,
 } from "class-validator";
 import {JSONSchema} from "class-validator-jsonschema";
-import Direccion from "../entidades/Direccion";
 import {Type} from "class-transformer";
-import IServicioDirecciones from "../servicios/ServicioDirecciones";
 
-export interface ConsultaDeDireccionConstructor {
+export interface ConsultaDeLugarConstructor {
     consulta: string
     limite?: number
     lenguaje?: string
@@ -20,7 +17,7 @@ export interface ConsultaDeDireccionConstructor {
     conInfoDeRanking?: boolean
 }
 
-export class ConsultaDeDireccion {
+export default class ConsultaDeLugar {
     @IsString() @MinLength(1)
     public consulta!: string
 
@@ -35,6 +32,7 @@ export class ConsultaDeDireccion {
     @IsOptional()
     @ValidateNested({each: true})
     @Type(() => String)
+    @JSONSchema({description: 'Restringe los resultados a estos países. Deben ser letras en ISO 3166-1.'})
     public paises?: string[]
 
     @IsLatLong() @IsOptional()
@@ -46,16 +44,7 @@ export class ConsultaDeDireccion {
     @IsBoolean() @IsOptional()
     public conInfoDeRanking?: boolean
 
-    constructor(args: ConsultaDeDireccionConstructor) {
+    constructor(args: ConsultaDeLugarConstructor) {
         Object.assign(this, args);
-    }
-}
-
-export class BuscarDirecciones implements UseCase {
-    constructor(private readonly direcciones: IServicioDirecciones) {
-    }
-
-    async execute(consulta: ConsultaDeDireccion, ip: string): Promise<Direccion[]> {
-        return this.direcciones.buscarDirecciones(consulta, ip)
     }
 }

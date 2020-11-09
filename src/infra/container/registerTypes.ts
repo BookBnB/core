@@ -18,10 +18,10 @@ import AuthenticationMiddleware from "../../application/middlewares/Authenticati
 import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicaciones";
 import IReloj from "../../domain/common/servicios/Reloj";
 import Reloj from "../servicios/Reloj";
-import IServicioDirecciones from "../../domain/direcciones/servicios/ServicioDirecciones";
+import IServicioDirecciones from "../../domain/lugares/servicios/ServicioDirecciones";
 import ServicioDirecciones from "../servicios/ServicioDirecciones";
-import {DireccionController} from "../../application/DireccionController";
-import {BuscarDirecciones} from "../../domain/direcciones/casos-uso/BuscarDirecciones";
+import {LugarController} from "../../application/LugarController";
+import {BuscarDirecciones} from "../../domain/lugares/casos-uso/BuscarDirecciones";
 import {ErrorHandler} from "../ErrorHandler";
 import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
 import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
@@ -93,7 +93,7 @@ export default class Registry {
     }
 
     protected async registrarDirecciones(container: DIContainer) {
-        container.registerSingleton<DireccionController>();
+        container.registerSingleton<LugarController>();
         container.registerSingleton<IServicioDirecciones>(() =>
             new ServicioDirecciones(process.env.ALGOLIA_APPLICATION_ID as string, process.env.ALGOLIA_ADMIN_API_KEY as string))
 
