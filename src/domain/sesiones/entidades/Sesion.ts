@@ -50,6 +50,10 @@ export class Sesion {
         return this.getPayload().id;
     }
 
+    getRol(): any {
+        return this.getPayload().role;
+    }
+
     public getNewToken(tokenBuilder: IJWTTokenBuilder): Sesion {
         return new Sesion(tokenBuilder.buildToken(this.getPayload().toPlainObject()));
     }
