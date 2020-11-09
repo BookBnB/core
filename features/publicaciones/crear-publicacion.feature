@@ -13,7 +13,6 @@ Característica:
       | direccion.pais                 | Argentina                                              |
       | direccion.provincia            | Buenos Aires                                           |
       | direccion.ciudad               | Mar del Plata                                          |
-      | direccion.municipio            | Mar del Plata                                          |
       | direccion.direccion            | Avenida Patricio Peralta Ramos 4799                    |
       | direccion.coordenadas.latitud  | -38.0083                                               |
       | direccion.coordenadas.longitud | -57.5385                                               |
@@ -25,7 +24,6 @@ Característica:
       | direccion.pais                 | Argentina                                              |
       | direccion.provincia            | Buenos Aires                                           |
       | direccion.ciudad               | Mar del Plata                                          |
-      | direccion.municipio            | Mar del Plata                                          |
       | direccion.direccion            | Avenida Patricio Peralta Ramos 4799                    |
       | direccion.coordenadas.latitud  | -38.0083                                               |
       | direccion.coordenadas.longitud | -57.5385                                               |
@@ -56,6 +54,9 @@ Característica:
     Cuando creo una publicación con el "<campo>" vacío
     Entonces veo un error indicado en el campo "<campoError>"
     Y veo que no hay publicaciones
+
+    Ejemplos:
+      | campo                          | campoError          |
       | titulo                         | titulo              |
       | descripcion                    | descripcion         |
       | precioPorNoche                 | precioPorNoche      |
