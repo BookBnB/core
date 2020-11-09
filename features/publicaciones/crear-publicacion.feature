@@ -7,55 +7,63 @@ Característica:
   Escenario: Creación exitosa
     Dado que soy "anfitrión"
     Cuando creo una publicación con:
-      | titulo              | Departamento con vista                                 |
-      | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
-      | precioPorNoche      | 10                                                     |
-      | direccion.calle     | Av. Bv. Marítimo Patricio Peralta Ramos                |
-      | direccion.numero    | 4799                                                   |
-      | cantidadDeHuespedes | 2                                                      |
+      | titulo                         | Departamento con vista                                 |
+      | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
+      | precioPorNoche                 | 10                                                     |
+      | direccion.pais                 | Argentina                                              |
+      | direccion.provincia            | Buenos Aires                                           |
+      | direccion.ciudad               | Mar del Plata                                          |
+      | direccion.municipio            | Mar del Plata                                          |
+      | direccion.direccion            | Avenida Patricio Peralta Ramos 4799                    |
+      | direccion.coordenadas.latitud  | -38.0083                                               |
+      | direccion.coordenadas.longitud | -57.5385                                               |
+      | cantidadDeHuespedes            | 2                                                      |
     Entonces veo una nueva publicación con:
-      | titulo              | Departamento con vista                                 |
-      | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
-      | precioPorNoche      | 10                                                     |
-      | direccion.calle     | Av. Bv. Marítimo Patricio Peralta Ramos                |
-      | direccion.numero    | 4799                                                   |
-      | cantidadDeHuespedes | 2                                                      |
-      | anfitrion.email     | john@doe.com                                           |
+      | titulo                         | Departamento con vista                                 |
+      | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
+      | precioPorNoche                 | 10                                                     |
+      | direccion.pais                 | Argentina                                              |
+      | direccion.provincia            | Buenos Aires                                           |
+      | direccion.ciudad               | Mar del Plata                                          |
+      | direccion.municipio            | Mar del Plata                                          |
+      | direccion.direccion            | Avenida Patricio Peralta Ramos 4799                    |
+      | direccion.coordenadas.latitud  | -38.0083                                               |
+      | direccion.coordenadas.longitud | -57.5385                                               |
+      | cantidadDeHuespedes            | 2                                                      |
     Y veo que está a mí nombre
 
   Esquema del escenario: Campos faltantes
     Dado que soy "anfitrión"
-    Cuando creo una publicación sin "<campo>":
-    Entonces veo un error indicado en el campo "<campo>"
-    Y veo que no hay publicaciones
-
-    Ejemplos:
-      | campo               |
-      | titulo              |
-      | descripcion         |
-      | precioPorNoche      |
-      | direccion.calle     |
-      | direccion.numero    |
-      | cantidadDeHuespedes |
-
-  Esquema del escenario: Campos vacíos
-    Dado que soy "anfitrión"
-    Cuando creo una publicación con:
-      | campo               | valor                 |
-      | titulo              | <titulo>              |
-      | descripcion         | <descripcion>         |
-      | precioPorNoche      | <precioPorNoche>      |
-      | direccion.calle     | <calle>               |
-      | direccion.numero    | <numero>              |
-      | cantidadDeHuespedes | <cantidadDeHuespedes> |
+    Cuando creo una publicación sin "<campo>"
     Entonces veo un error indicado en el campo "<campoError>"
     Y veo que no hay publicaciones
 
     Ejemplos:
-      | campoError          | titulo                 | descripcion          | precioPorNoche | calle                  | numero | cantidadDeHuespedes |
-      | titulo              |                        | Hermoso departamento | 10             | Patricio Peralta Ramos | 4799   | 2                   |
-      | descripcion         | Departamento con vista |                      | 10             | Patricio Peralta Ramos | 4799   | 2                   |
-      | precioPorNoche      | Departamento con vista | Hermoso departamento |                | Patricio Peralta Ramos | 4799   | 2                   |
-      | direccion           | Departamento con vista | Hermoso departamento | 10             |                        | 4799   | 2                   |
-      | direccion           | Departamento con vista | Hermoso departamento | 10             | Patricio Peralta Ramos |        | 2                   |
-      | cantidadDeHuespedes | Departamento con vista | Hermoso departamento | 10             | Patricio Peralta Ramos | 4799   |                     |
+      | campo                          | campoError          |
+      | titulo                         | titulo              |
+      | descripcion                    | descripcion         |
+      | precioPorNoche                 | precioPorNoche      |
+      | direccion.pais                 | <direccion>         |
+      | direccion.provincia            | <direccion>         |
+      | direccion.ciudad               | <direccion>         |
+      | direccion.direccion            | <direccion>         |
+      | direccion.coordenadas.latitud  | <direccion>         |
+      | direccion.coordenadas.longitud | <direccion>         |
+      | cantidadDeHuespedes            | cantidadDeHuespedes |
+
+  Esquema del escenario: Campos vacíos
+    Dado que soy "anfitrión"
+    Cuando creo una publicación con el "<campo>" vacío
+    Entonces veo un error indicado en el campo "<campoError>"
+    Y veo que no hay publicaciones
+      | titulo                         | titulo              |
+      | descripcion                    | descripcion         |
+      | precioPorNoche                 | precioPorNoche      |
+      | direccion.pais                 | <direccion>         |
+      | direccion.provincia            | <direccion>         |
+      | direccion.ciudad               | <direccion>         |
+      | direccion.municipio            | <direccion>         |
+      | direccion.direccion            | <direccion>         |
+      | direccion.coordenadas.latitud  | <direccion>         |
+      | direccion.coordenadas.longitud | <direccion>         |
+      | cantidadDeHuespedes            | cantidadDeHuespedes |

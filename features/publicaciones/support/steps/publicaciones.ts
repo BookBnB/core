@@ -2,10 +2,37 @@ import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
 import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
-import {deletePropertyByDotPath} from "../../../util/DotNotation";
+import _ from "lodash"
 
 chai.use(chaiHttp);
 const expect = chai.expect;
+
+function publicacionEjemplo() {
+    return {
+        titulo: 'Departamento con vista',
+        descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
+        precioPorNoche: 0.05,
+        direccion: {
+            pais: 'Argentina',
+            provincia: 'Buenos Aires',
+            ciudad: 'Mar del Plata',
+            direccion: 'Av. Bv. Marítimo Patricio Peralta Ramos 4799',
+            coordenadas: {
+                latitud: -38.0083,
+                longitud: -57.5385
+            },
+        },
+        cantidadDeHuespedes: 2
+    }
+}
+
+async function postPublicacion(this: any, publicacion: any) {
+    this.last_response = await chai.request(this.app)
+        .post('/v1/publicaciones')
+        .set('authorization', this.tokenSesion)
+        .type("json")
+        .send(publicacion)
+}
 
 Given('que soy {string}', async function (rol: string) {
     await crearUsuario.bind(this)({
@@ -19,21 +46,16 @@ Given('que soy {string}', async function (rol: string) {
 });
 
 const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
-    const data = dataTable.rowsHash();
-    this.last_response = await chai.request(this.app)
-        .post('/v1/publicaciones')
-        .set('authorization', this.tokenSesion)
-        .type("json")
-        .send({
-            titulo: data.titulo,
-            descripcion: data.descripcion,
-            precioPorNoche: parseFloat(data.precioPorNoche),
-            direccion: {
-                calle: data['direccion.calle'],
-                numero: parseInt(data['direccion.numero']),
-            },
-            cantidadDeHuespedes: parseInt(data.cantidadDeHuespedes)
-        })
+    const publicacion: any = {}
+    dataTable.raw().forEach(([clave, valor]) => {
+        _.set(publicacion, clave, valor)
+    })
+    publicacion.precioPorNoche = parseFloat(publicacion.precioPorNoche)
+    publicacion.cantidadDeHuespedes = parseFloat(publicacion.cantidadDeHuespedes)
+    publicacion.direccion.coordenadas.latitud = parseFloat(publicacion.direccion.coordenadas.latitud)
+    publicacion.direccion.coordenadas.longitud = parseFloat(publicacion.direccion.coordenadas.longitud)
+
+    await postPublicacion.bind(this)(publicacion)
 }
 
 const validarPublicacion = function (this: any, dataTable: TableDefinition) {
@@ -58,10 +80,9 @@ Given('que existe una publicacion con:', crearPublicacion);
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
     if (this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
-    this.last_response =
-        await chai.request(this.app)
-            .get(`/v1/publicaciones/${this.last_response.body.id}`)
-            .set('authorization', this.tokenSesion)
+    this.last_response = await chai.request(this.app)
+        .get(`/v1/publicaciones/${this.last_response.body.id}`)
+        .set('authorization', this.tokenSesion)
 });
 
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
@@ -70,22 +91,16 @@ Then('veo una publicación con:', function (dataTable: TableDefinition) {
     validarPublicacion.bind(this)(dataTable)
 })
 
-When('creo una publicación sin {string}:', {timeout: 2000 * 1000}, async function (campo: string) {
-    const data = deletePropertyByDotPath({
-        titulo: 'Departamento con vista',
-        descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
-        precioPorNoche: 0.05,
-        direccion: {
-            calle: 'Av. Bv. Marítimo Patricio Peralta Ramos',
-            numero: 4799,
-        },
-        cantidadDeHuespedes: 2
-    }, campo)
-    this.last_response = await chai.request(this.app)
-        .post('/v1/publicaciones')
-        .set('authorization', this.tokenSesion)
-        .type("json")
-        .send(data)
+When('creo una publicación sin {string}', async function (campo: string) {
+    const publicacion = publicacionEjemplo()
+    _.unset(publicacion, campo)
+    await postPublicacion.bind(this)(publicacion)
+});
+
+When('creo una publicación con el {string} vacío', async function (campo: string) {
+    const publicacion = publicacionEjemplo()
+    _.set(publicacion, campo, "")
+    await postPublicacion.bind(this)(publicacion)
 });
 
 Then('veo un error indicado en el campo {string}', function (campoError: string) {

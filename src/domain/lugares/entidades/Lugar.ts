@@ -1,9 +1,30 @@
 import {IsLatitude, IsLongitude, IsString, ValidateNested} from "class-validator";
 import {Column} from "typeorm";
+import {ValueTransformer} from "typeorm/decorator/options/ValueTransformer";
+import {Point} from "geojson";
+import {Type} from "class-transformer";
+
+class CoordenadasTransformer implements ValueTransformer {
+    to(coordenadas: Coordenadas): Point {
+        return {
+            type: "Point",
+            coordinates: [coordenadas.latitud, coordenadas.longitud]
+        }
+    }
+
+    from(value: Point): Coordenadas {
+        return new Coordenadas(value.coordinates[0], value.coordinates[1])
+    }
+}
 
 export class Coordenadas {
-    @IsLatitude() private latitud!: number
-    @IsLongitude() private longitud!: number
+    @IsLatitude() public latitud!: number
+    @IsLongitude() public longitud!: number
+
+    constructor(latitud: number, longitud: number) {
+        this.latitud = latitud
+        this.longitud = longitud
+    }
 }
 
 export interface LugarConstructor {
@@ -23,7 +44,11 @@ export default class Lugar {
     @IsString() @Column()
     private provincia!: string
 
-    @ValidateNested() @Column(type => Coordenadas)
+    @ValidateNested() @Type(() => Coordenadas)
+    @Column("geometry", {
+        spatialFeatureType: "Point", srid: 4326,
+        transformer: new CoordenadasTransformer()
+    })
     private coordenadas!: Coordenadas
 
     constructor(args: LugarConstructor) {
