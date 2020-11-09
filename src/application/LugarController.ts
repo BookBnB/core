@@ -8,12 +8,12 @@ import ConsultaDeLugar from "../domain/lugares/casos-uso/ConsultaDeLugar";
 
 @UseBefore(AuthenticationMiddleware)
 @OpenAPI({security: [{token: []}]})
-@JsonController('/direcciones')
+@JsonController('/lugares')
 export class LugarController {
     constructor(private readonly buscarDirecciones: BuscarDirecciones) {
     }
 
-    @Post('/consulta')
+    @Post('/direcciones/consulta')
     @OpenAPI({summary: 'Muestra una lista de posibles direcciones que coinciden con la búsqueda'})
     @ResponseSchema(Direccion, {isArray: true})
     listar(@Body() consulta: ConsultaDeLugar, @Req() request: Request): Promise<Direccion[]> {
