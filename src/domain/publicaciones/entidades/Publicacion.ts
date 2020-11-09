@@ -1,4 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn} from "typeorm";
+import Usuario from "../../usuarios/entidades/Usuario";
 
 export interface DireccionConstructor {
     calle: string
@@ -11,7 +12,7 @@ export interface PublicacionConstructor {
     precioPorNoche: number
     direccion: DireccionConstructor
     cantidadDeHuespedes: number
-    anfitrionId: string
+    anfitrion: Usuario
 }
 
 export class Direccion {
@@ -46,8 +47,8 @@ export default class Publicacion {
     @Column("int")
     public cantidadDeHuespedes!: number;
 
-    @Column({ nullable: false })
-    public anfitrionId!: string;
+    @Column(type => Usuario)
+    public anfitrion!: Usuario;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);

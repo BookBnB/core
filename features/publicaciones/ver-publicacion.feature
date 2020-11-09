@@ -11,16 +11,14 @@ Característica:
       | titulo              | Departamento con vista                                 |
       | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
       | precioPorNoche      | 10                                                     |
-      | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
-      | numero              | 4799                                                   |
+      | direccion.calle     | Av. Bv. Marítimo Patricio Peralta Ramos                |
+      | direccion.numero    | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
     Cuando ingreso a la publicación con título "Departamento con vista"
     Entonces veo una publicación con:
-      | campo               | valor                                                  |
       | titulo              | Departamento con vista                                 |
       | descripcion         | Hermoso departamento con vista al mar en Mar del Plata |
       | precioPorNoche      | 10                                                     |
-      | calle               | Av. Bv. Marítimo Patricio Peralta Ramos                |
-      | numero              | 4799                                                   |
+      | direccion.calle     | Av. Bv. Marítimo Patricio Peralta Ramos                |
+      | direccion.numero    | 4799                                                   |
       | cantidadDeHuespedes | 2                                                      |
-      | anfitrionId         | john@doe.com                                           |

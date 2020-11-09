@@ -6,7 +6,6 @@ import {JSONSchema} from "class-validator-jsonschema";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion from "../entidades/Publicacion";
 import {Type} from "class-transformer";
-import { Sesion } from "../../sesiones/entidades/Sesion";
 import Usuario from "../../usuarios/entidades/Usuario";
 
 export interface CrearPublicacionDTOConstructor {
@@ -45,7 +44,7 @@ export class CrearPublicacion implements UseCase {
     async execute(usuario: Usuario, pedido: CrearPublicacionDTO): Promise<PublicacionDTO> {
         const publicacion = new Publicacion({
             ...pedido,
-            anfitrionId: usuario.email
+            anfitrion: usuario
         })
         await this.publicaciones.guardar(publicacion)
         return new PublicacionDTO(publicacion)
