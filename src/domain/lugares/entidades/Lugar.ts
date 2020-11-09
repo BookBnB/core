@@ -8,6 +8,7 @@ export class Coordenadas {
 
 export interface LugarConstructor {
     pais: string
+    provincia: string
     coordenadas: {
         latitud: number,
         longitud: number
@@ -18,6 +19,9 @@ export default class Lugar {
 
     @IsString() @Column()
     private pais!: string
+
+    @IsString() @Column()
+    private provincia!: string
 
     @ValidateNested() @Column(type => Coordenadas)
     private coordenadas!: Coordenadas
