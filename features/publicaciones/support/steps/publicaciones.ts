@@ -39,6 +39,11 @@ Then('veo que está publicada a mí nombre', function () {
 
 When('creo una publicación con:', crearPublicacion)
 
+Given('que existe una publicacion', async function() {
+    const publicacion = Publicaciones.ejemplo()
+    await Publicaciones.crear(this, publicacion)
+});
+
 Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json

@@ -1,7 +1,9 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
 import { When, Then, TableDefinition } from 'cucumber';
+import _ from "lodash";
 import { validarObjeto } from "../../../util/Validacion";
+import Reservas from "../Reservas";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -16,11 +18,34 @@ When('intento hacer una reserva del {string} al {string}', async function (fecha
         publicacionId: this.last_response.body.id
     }
 
-    this.last_response = await chai.request(this.app)
-        .post('/v1/reservas')
-        .set('authorization', this.tokenSesion)
-        .type('json')
-        .send(reserva)
+    await Reservas.crear(this, reserva);
+});
+
+When('intento hacer una reserva sin {string}', async function (campo) {
+    const publicacionId = this.last_response.body.id;
+    const reserva = Reservas.ejemplo(publicacionId);
+
+    _.unset(reserva, campo);
+
+    await Reservas.crear(this, reserva);
+});
+
+When('intento hacer una reserva con {string} vacío', async function (campo) {
+    const publicacionId = this.last_response.body.id;
+    const reserva = Reservas.ejemplo(publicacionId);
+
+    _.set(reserva, campo, '');
+
+    await Reservas.crear(this, reserva);
+});
+
+When('intento hacer una reserva con {string} {string}', async function (campo, valor) {
+    const publicacionId = this.last_response.body.id;
+    const reserva = Reservas.ejemplo(publicacionId);
+
+    _.set(reserva, campo, valor);
+
+    await Reservas.crear(this, reserva);
 });
 
 Then('veo una nueva reserva con:', function (dataTable: TableDefinition) {
