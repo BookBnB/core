@@ -40,7 +40,8 @@ export default class Publicaciones {
                     longitud: -57.5385
                 },
             },
-            cantidadDeHuespedes: 2
+            cantidadDeHuespedes: 2,
+            imagenes: []
         }
     }
 }

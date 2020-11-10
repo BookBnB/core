@@ -63,6 +63,10 @@ Then('veo una publicación con:', function (dataTable: TableDefinition) {
     validarPublicacion.bind(this)(dataTable)
 })
 
+Then('veo una nueva publicación con {string} nulo', function (campo: string) {
+    expect(this.last_response.body).to.have.nested.property(campo).be.null
+});
+
 When('creo una publicación sin {string}', async function (campo: string) {
     const publicacion = Publicaciones.ejemplo()
     _.unset(publicacion, campo)
