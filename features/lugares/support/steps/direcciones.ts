@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 chai.use(chaiSubset);
 const expect = chai.expect;
 
-const urlBase = '/v1/direcciones'
+const urlBase = '/v1/lugares/direcciones'
 
 When('busco una dirección por {string}', async function (consulta: string) {
     this.last_response = await chai.request(this.app)

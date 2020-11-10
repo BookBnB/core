@@ -2,7 +2,8 @@ import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
 import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
-import {deletePropertyByDotPath} from "../../../util/DotNotation";
+import _ from "lodash"
+import Publicaciones from "../Publicaciones";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -19,21 +20,16 @@ Given('que soy {string}', async function (rol: string) {
 });
 
 const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
-    const data = dataTable.rowsHash();
-    this.last_response = await chai.request(this.app)
-        .post('/v1/publicaciones')
-        .set('authorization', this.tokenSesion)
-        .type("json")
-        .send({
-            titulo: data.titulo,
-            descripcion: data.descripcion,
-            precioPorNoche: parseFloat(data.precioPorNoche),
-            direccion: {
-                calle: data['direccion.calle'],
-                numero: parseInt(data['direccion.numero']),
-            },
-            cantidadDeHuespedes: parseInt(data.cantidadDeHuespedes)
-        })
+    const publicacion: any = {}
+    dataTable.raw().forEach(([clave, valor]) => {
+        _.set(publicacion, clave, valor)
+    })
+    publicacion.precioPorNoche = parseFloat(publicacion.precioPorNoche)
+    publicacion.cantidadDeHuespedes = parseFloat(publicacion.cantidadDeHuespedes)
+    publicacion.direccion.coordenadas.latitud = parseFloat(publicacion.direccion.coordenadas.latitud)
+    publicacion.direccion.coordenadas.longitud = parseFloat(publicacion.direccion.coordenadas.longitud)
+
+    await Publicaciones.crear(this, publicacion)
 }
 
 const validarPublicacion = function (this: any, dataTable: TableDefinition) {
@@ -58,10 +54,7 @@ Given('que existe una publicacion con:', crearPublicacion);
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
     if (this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
-    this.last_response =
-        await chai.request(this.app)
-            .get(`/v1/publicaciones/${this.last_response.body.id}`)
-            .set('authorization', this.tokenSesion)
+    await Publicaciones.obtener(this, this.last_response.body.id)
 });
 
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
@@ -70,22 +63,16 @@ Then('veo una publicación con:', function (dataTable: TableDefinition) {
     validarPublicacion.bind(this)(dataTable)
 })
 
-When('creo una publicación sin {string}:', {timeout: 2000 * 1000}, async function (campo: string) {
-    const data = deletePropertyByDotPath({
-        titulo: 'Departamento con vista',
-        descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
-        precioPorNoche: 0.05,
-        direccion: {
-            calle: 'Av. Bv. Marítimo Patricio Peralta Ramos',
-            numero: 4799,
-        },
-        cantidadDeHuespedes: 2
-    }, campo)
-    this.last_response = await chai.request(this.app)
-        .post('/v1/publicaciones')
-        .set('authorization', this.tokenSesion)
-        .type("json")
-        .send(data)
+When('creo una publicación sin {string}', async function (campo: string) {
+    const publicacion = Publicaciones.ejemplo()
+    _.unset(publicacion, campo)
+    await Publicaciones.crear(this, publicacion)
+});
+
+When('creo una publicación con el {string} vacío', async function (campo: string) {
+    const publicacion = Publicaciones.ejemplo()
+    _.set(publicacion, campo, "")
+    await Publicaciones.crear(this, publicacion)
 });
 
 Then('veo un error indicado en el campo {string}', function (campoError: string) {
@@ -95,14 +82,10 @@ Then('veo un error indicado en el campo {string}', function (campoError: string)
 });
 
 Then('veo que no hay publicaciones', async function () {
-    const response = await chai.request(this.app)
-        .get(`/v1/publicaciones`)
-        .set('authorization', this.tokenSesion)
-    expect(response.body).to.eql([])
+    await Publicaciones.listar(this)
+    expect(this.last_response.body).to.eql([])
 });
 
 When('listo las publicaciones', async function () {
-    this.last_response = await chai.request(this.app)
-        .get(`/v1/publicaciones`)
-        .set('authorization', this.tokenSesion || '')
+    await Publicaciones.listar(this)
 });

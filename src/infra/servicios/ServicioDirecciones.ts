@@ -1,18 +1,16 @@
 import algoliasearch, {SearchClient} from "algoliasearch";
 import { shuffle } from '@algolia/client-common';
-import IServicioDirecciones from "../../domain/direcciones/servicios/ServicioDirecciones";
-import {ConsultaDeDireccion} from "../../domain/direcciones/casos-uso/BuscarDirecciones";
-import Direccion from "../../domain/direcciones/entidades/Direccion"
+import IServicioDirecciones from "../../domain/lugares/servicios/ServicioDirecciones";
+import Direccion from "../../domain/lugares/entidades/Direccion"
+import ConsultaDeLugar from "../../domain/lugares/casos-uso/ConsultaDeLugar";
 
 interface DireccionAlgolia {
-    locale_names: string[]
     country: string
+    administrative: string[]
     city: string[]
-    postcode: string[]
     county?: string[]
-    country_code: string
+    locale_names: string[]
     _geoloc: {lat: number, lng: number}
-    objectID: string
 }
 
 class ConsultaDeDireccionAlgolia {
@@ -25,7 +23,7 @@ class ConsultaDeDireccionAlgolia {
     private aroundRadius?: number;
     private getRankingInfo?: boolean;
 
-    constructor(consulta: ConsultaDeDireccion) {
+    constructor(consulta: ConsultaDeLugar) {
         this.query = consulta.consulta
         this.type = 'address'
         this.hitsPerPage = consulta.limite
@@ -52,7 +50,7 @@ export default class ServicioDirecciones implements IServicioDirecciones {
         })
     }
 
-    async buscarDirecciones(consulta: ConsultaDeDireccion, ip: string): Promise<Direccion[]> {
+    async buscarDirecciones(consulta: ConsultaDeLugar, ip: string): Promise<Direccion[]> {
         const resultado = await this.index.transporter.read({
             method: 'POST',
             path: '1/places/query',
@@ -65,13 +63,11 @@ export default class ServicioDirecciones implements IServicioDirecciones {
         }) as {hits: DireccionAlgolia[]};
 
         return resultado.hits.map(direccion => new Direccion({
-            id: direccion.objectID,
             pais: direccion.country,
-            codigoDePais: direccion.country_code,
-            ciudad: direccion.city[0],
-            municipio: direccion.county?.[0],
-            codigoPostal: direccion.postcode[0],
-            direccion: direccion.locale_names[0],
+            provincia: direccion?.administrative[0],
+            ciudad: direccion?.city[0],
+            municipio: direccion?.county?.[0],
+            direccion: direccion?.locale_names[0],
             coordenadas: {
                 latitud: direccion._geoloc.lat,
                 longitud: direccion._geoloc.lng,

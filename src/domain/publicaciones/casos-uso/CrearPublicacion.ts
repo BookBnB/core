@@ -1,18 +1,18 @@
 import {UseCase} from "../../UseCase";
 import PublicacionDTO from "../dtos/PublicacionDTO";
-import DireccionDTO from "../dtos/DireccionDTO";
 import {IsPositive, IsString, MinLength, ValidateNested} from "class-validator";
 import {JSONSchema} from "class-validator-jsonschema";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Usuario from "../../usuarios/entidades/Usuario";
+import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 
 export interface CrearPublicacionDTOConstructor {
     titulo: string
     descripcion: string
     precioPorNoche: number
-    direccion: DireccionDTO,
+    direccion: Direccion,
     cantidadDeHuespedes: number
 }
 
@@ -26,8 +26,8 @@ export class CrearPublicacionDTO {
     @JSONSchema({example: 2}) @IsPositive()
     public precioPorNoche!: number
 
-    @ValidateNested() @Type(() => DireccionDTO)
-    public direccion!: DireccionDTO
+    @ValidateNested() @Type(() => Direccion)
+    public direccion!: DireccionConstructor
 
     @JSONSchema({example: 2}) @IsPositive()
     public cantidadDeHuespedes!: number

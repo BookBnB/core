@@ -88,11 +88,6 @@ function buscarDireccionHandler() {
                                 "Capital Federal",
                                 "CABA"
                             ],
-                            "postcode": [
-                                "1063",
-                                "C1063ADN",
-                            ],
-                            "country_code": "ar",
                             "locale_names": [
                                 "Avenida Paseo Colón 850"
                             ],
@@ -100,7 +95,9 @@ function buscarDireccionHandler() {
                                 "lat": -34.6092,
                                 "lng": -58.3697
                             },
-                            "objectID": "100403312_83432703",
+                            "administrative": [
+                                "Ciudad Autónoma de Buenos Aires"
+                            ]
                         }
                     ]
                 })
