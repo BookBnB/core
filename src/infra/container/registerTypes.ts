@@ -25,6 +25,11 @@ import {BuscarDirecciones} from "../../domain/lugares/casos-uso/BuscarDireccione
 import {ErrorHandler} from "../ErrorHandler";
 import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
 import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
+import { ReservaController } from "../../application/ReservaController";
+import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
+import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
+import ReservaRepositorio from "../repositories/ReservaRepositorio";
+import Reserva from "../../domain/reservas/entidades/Reserva";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -43,6 +48,7 @@ export default class Registry {
         await this.registrarPublicaciones(container)
         await this.registrarSesiones(container)
         await this.registrarDirecciones(container)
+        await this.registrarReservas(container)
         return container
     }
 
@@ -98,5 +104,15 @@ export default class Registry {
             new ServicioDirecciones(process.env.ALGOLIA_APPLICATION_ID as string, process.env.ALGOLIA_ADMIN_API_KEY as string))
 
         container.registerTransient<BuscarDirecciones>();
+    }
+
+    protected async registrarReservas(container: DIContainer) {
+        container.registerSingleton<ReservaController>();
+        container.registerTransient<CrearReserva>();
+
+        const reservasRepo: Repository<Reserva> = await container.get<Connection>().getRepository(Reserva);
+        container.registerSingleton<Repository<Reserva>>(() => reservasRepo);
+        container.registerSingleton<IReservaRepositorio>(() => 
+            new ReservaRepositorio(container.get<Repository<Reserva>>()));
     }
 }

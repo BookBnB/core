@@ -4,6 +4,7 @@ import chaiHttp from "chai-http"
 import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
 import _ from "lodash"
 import Publicaciones from "../Publicaciones";
+import { validarObjeto } from "../../../util/Validacion";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -32,13 +33,7 @@ const crearPublicacion = async function (this: any, dataTable: TableDefinition) 
     await Publicaciones.crear(this, publicacion)
 }
 
-const validarPublicacion = function (this: any, dataTable: TableDefinition) {
-    Object.entries(dataTable.rowsHash()).forEach(([propiedad, valor]) => {
-        expect(this.last_response.body).to.have.nested.property(propiedad).satisfy((prop: any) => prop == valor)
-    })
-}
-
-Then('veo que está a mí nombre', function () {
+Then('veo que está publicada a mí nombre', function () {
     expect(this.last_response.body).to.have.nested.property('anfitrion.email', this.usuarioActual.email)
 });
 
@@ -47,7 +42,7 @@ When('creo una publicación con:', crearPublicacion)
 Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
-    validarPublicacion.bind(this)(dataTable)
+    validarObjeto.bind(this)(dataTable)
 })
 
 Given('que existe una publicacion con:', crearPublicacion);
@@ -60,7 +55,7 @@ When('ingreso a la publicación con título {string}', async function (titulo: s
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json
-    validarPublicacion.bind(this)(dataTable)
+    validarObjeto.bind(this)(dataTable)
 })
 
 Then('veo una nueva publicación con {string} nulo', function (campo: string) {
