@@ -4,7 +4,7 @@
   "description": "Servicio principal para BookBnB",
   "main": "index.js",
   "scripts": {
-    "devStart": "npm run migration:run && nodemon --exec 'node -r @wessberg/di-compiler/register' ./src/App.ts",
+    "devStart": "npm run migration:run && nodemon --watch src --exec 'node -r @wessberg/di-compiler/register' ./src/App.ts",
     "start": "dotenv -- typeorm migration:run && node ./build/App.js",
     "build": "npm run clean && ttsc",
     "clean": "rm -rf build",
