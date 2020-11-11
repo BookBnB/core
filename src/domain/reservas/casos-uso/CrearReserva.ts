@@ -1,4 +1,4 @@
-import { IsDateString, IsUUID } from "class-validator";
+import { IsDateString, IsPositive, IsUUID } from "class-validator";
 import Publicacion from "../../publicaciones/entidades/Publicacion";
 import IPublicacionRepositorio from "../../publicaciones/repositorios/PublicacionRepositorio";
 import Usuario from "../../usuarios/entidades/Usuario";
@@ -15,6 +15,9 @@ export class CrearReservaDTO {
 
     @IsDateString()
     public fechaFin!: string;
+
+    @IsPositive()
+    public precioPorNoche!: number;
 }
 
 export class CrearReserva {
@@ -30,6 +33,7 @@ export class CrearReserva {
         const reserva: Reserva = new Reserva({
             fechaInicio: new Date(body.fechaInicio),
             fechaFin: new Date(body.fechaFin),
+            precioPorNoche: body.precioPorNoche,
             publicacion: publicacion,
             huesped: usuario,
             estado: EstadoReserva.PENDIENTE

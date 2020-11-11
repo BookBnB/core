@@ -8,6 +8,7 @@ export interface ReservaConstructor {
     huesped: Usuario;
     publicacion: Publicacion;
     estado: EstadoReserva;
+    precioPorNoche: number;
 }
 
 export enum EstadoReserva {
@@ -33,6 +34,9 @@ export default class Reserva {
 
     @Column('text')
     public estado!: EstadoReserva;
+
+    @Column('int')
+    public precioPorNoche!: number;
 
     public constructor(args: ReservaConstructor) {
         Object.assign(this, args);

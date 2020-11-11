@@ -8,14 +8,15 @@ import Reservas from "../Reservas";
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-When('intento hacer una reserva del {string} al {string}', async function (fechaInicioStr, fechaFinStr) {
+When('intento hacer una reserva del {string} al {string} con precio {int}', async function (fechaInicioStr, fechaFinStr, precio) {
     const fechaInicio: Date = new Date(fechaInicioStr);
     const fechaFin: Date = new Date(fechaFinStr);
 
     const reserva = {
         fechaInicio: fechaInicio.toISOString(),
         fechaFin: fechaFin.toISOString(),
-        publicacionId: this.last_response.body.id
+        publicacionId: this.last_response.body.id,
+        precioPorNoche: precio
     }
 
     await Reservas.crear(this, reserva);

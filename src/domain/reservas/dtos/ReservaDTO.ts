@@ -1,4 +1,4 @@
-import { IsDate, IsString, IsUUID } from "class-validator";
+import { IsDate, IsPositive, IsString, IsUUID } from "class-validator";
 import Reserva, { EstadoReserva } from "../entidades/Reserva"
 
 export default class ReservaDTO {
@@ -20,6 +20,9 @@ export default class ReservaDTO {
     @IsString()
     public estado!: EstadoReserva;
 
+    @IsPositive()
+    public precioPorNoche: number;
+
     constructor(reserva: Reserva) {
         this.id = reserva.id || '';
         this.publicacionId = reserva.publicacion.id || '';
@@ -27,5 +30,6 @@ export default class ReservaDTO {
         this.fechaInicio = reserva.fechaInicio;
         this.fechaFin = reserva.fechaFin;
         this.estado = reserva.estado;
+        this.precioPorNoche = reserva.precioPorNoche;
     }
 }
