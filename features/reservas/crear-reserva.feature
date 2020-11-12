@@ -15,6 +15,12 @@ Característica:
         | precioPorNoche | 200                      |
         Y veo que está reservada a mí nombre
 
+    Escenario: Creación de reserva con fechas invertidas
+        Dado que soy "huesped"
+        Y que existe una publicacion
+        Cuando intento hacer una reserva del '2020-12-07' al '2020-12-01' con precio 200
+        Entonces obtengo un mensaje de error "Fechas de reserva invertidas"
+
     Esquema del escenario: Campos de reserva faltantes
         Dado que soy "huesped"
         Y que existe una publicacion

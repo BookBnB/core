@@ -79,12 +79,6 @@ When('creo una publicación con el {string} vacío', async function (campo: stri
     await Publicaciones.crear(this, publicacion)
 });
 
-Then('veo un error indicado en el campo {string}', function (campoError: string) {
-    expect(this.last_response).to.have.status(400)
-    expect(this.last_response).to.be.json
-    expect(campoError).to.include(this.last_response.body.errors[0].property)
-});
-
 Then('veo que no hay publicaciones', async function () {
     await Publicaciones.listar(this)
     expect(this.last_response.body).to.eql([])

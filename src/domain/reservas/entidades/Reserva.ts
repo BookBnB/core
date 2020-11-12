@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import Publicacion from "../../publicaciones/entidades/Publicacion";
 import Usuario from "../../usuarios/entidades/Usuario";
+import FechasInvertidasError from "../excepciones/FechasInvertidasError";
 
 export interface ReservaConstructor {
     fechaInicio: Date;
@@ -40,5 +41,9 @@ export default class Reserva {
 
     public constructor(args: ReservaConstructor) {
         Object.assign(this, args);
+
+        if (this.fechaFin < this.fechaInicio) {
+            throw new FechasInvertidasError('Fechas de reserva invertidas');
+        }
     }
 }

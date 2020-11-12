@@ -72,9 +72,3 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
     expect(payload).to.have.property('role').to.be.equal(data.rol)
     expect(payload).to.have.property('exp')
 });
-
-Then('obtengo un error {int} con mensaje {string}', function (code, message) {
-    expect(this.last_response).to.be.json
-    expect(this.last_response).to.have.status(code)
-    expect(this.last_response.body.message).to.be.equal(message)
-});
