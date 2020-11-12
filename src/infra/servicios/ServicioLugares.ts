@@ -1,6 +1,6 @@
 import algoliasearch, {SearchClient} from "algoliasearch";
 import { shuffle } from '@algolia/client-common';
-import IServicioDirecciones from "../../domain/lugares/servicios/ServicioDirecciones";
+import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
 import Direccion from "../../domain/lugares/entidades/Direccion"
 import ConsultaDeLugar from "../../domain/lugares/casos-uso/ConsultaDeLugar";
 
@@ -35,7 +35,7 @@ class ConsultaDeDireccionAlgolia {
     }
 }
 
-export default class ServicioDirecciones implements IServicioDirecciones {
+export default class ServicioLugares implements IServicioLugares {
     private index: SearchClient;
 
     constructor(applicationId: string, adminKey: string) {
@@ -63,11 +63,11 @@ export default class ServicioDirecciones implements IServicioDirecciones {
         }) as {hits: DireccionAlgolia[]};
 
         return resultado.hits.map(direccion => new Direccion({
-            pais: direccion.country,
-            provincia: direccion?.administrative[0],
-            ciudad: direccion?.city[0],
+            pais: direccion?.country,
+            provincia: direccion?.administrative?.[0],
+            ciudad: direccion?.city?.[0],
             municipio: direccion?.county?.[0],
-            direccion: direccion?.locale_names[0],
+            direccion: direccion?.locale_names?.[0],
             coordenadas: {
                 latitud: direccion._geoloc.lat,
                 longitud: direccion._geoloc.lng,

@@ -1,6 +1,6 @@
 import {UseCase} from "../../UseCase";
 import Direccion from "../entidades/Direccion";
-import IServicioDirecciones from "../servicios/ServicioDirecciones";
+import IServicioDirecciones from "../servicios/ServicioLugares";
 import ConsultaDeLugar from "./ConsultaDeLugar";
 
 export class BuscarDirecciones implements UseCase {

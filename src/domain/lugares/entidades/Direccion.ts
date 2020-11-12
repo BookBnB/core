@@ -3,7 +3,7 @@ import {Column} from "typeorm";
 import Lugar, {LugarConstructor} from "./Lugar";
 
 export interface DireccionConstructor extends LugarConstructor {
-    ciudad: string
+    ciudad?: string
     municipio?: string
     direccion: string
 }
