@@ -1,6 +1,14 @@
 import {server} from "./mockHTTP";
-import {beforeEach} from "mocha";
+import {afterEach, before, after} from "mocha";
 
-beforeEach(async function () {
-    server.listen();
+before(() => {
+    server.listen()
 });
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+after(() => {
+    server.close()
+})

@@ -35,7 +35,7 @@ function userCreationHandler() {
 }
 
 function sesionCreationHandler() {
-    return rest.post(`${process.env.USERS_SERVICE_URL}/v1/sessions`, (req, res, ctx) => {
+    return rest.post(`*/v1/sessions`, (req, res, ctx) => {
         const requestBody: CrearSesionDTO = <CrearSesionDTO>req.body;
 
         if (!Store.getInstance().has(requestBody.email)) {
@@ -73,48 +73,9 @@ function sesionCreationHandler() {
     })
 }
 
-function buscarDireccionHandler() {
-    return rest.post(`*/1/places/query`, (req, res, ctx) => {
-        const body = JSON.parse(<string>req.body)
-        if (body.query.includes('paseo colon')) {
-            return res(
-                ctx.status(200),
-                ctx.json({
-                    hits: [
-                        {
-                            "country": "Argentina",
-                            "city": [
-                                "Buenos Aires",
-                                "Capital Federal",
-                                "CABA"
-                            ],
-                            "locale_names": [
-                                "Avenida Paseo Colón 850"
-                            ],
-                            "_geoloc": {
-                                "lat": -34.6092,
-                                "lng": -58.3697
-                            },
-                            "administrative": [
-                                "Ciudad Autónoma de Buenos Aires"
-                            ]
-                        }
-                    ]
-                })
-            )
-        } else if (body.query.includes('una dirección inexistente')) {
-            return res(
-                ctx.status(200),
-                ctx.json({hits: []})
-            )
-        }
-    })
-}
-
 export function buildHandlers() {
     return [
         sesionCreationHandler(),
-        userCreationHandler(),
-        buscarDireccionHandler()
+        userCreationHandler()
     ]
 }
