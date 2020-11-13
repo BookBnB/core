@@ -30,7 +30,7 @@ export default class Lugares extends Recurso {
     }
 
     public static mockPaseoColon() {
-        return rest.post(`*/1/places/query`, (req, res, ctx) => {
+        mockServer.use(rest.post(`*/1/places/query`, (req, res, ctx) => {
             return res(
                 ctx.json({
                     hits: [{
@@ -42,7 +42,7 @@ export default class Lugares extends Recurso {
                     }]
                 })
             )
-        })
+        }))
     }
 
     public static mockPotrerillos() {
