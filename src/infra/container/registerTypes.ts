@@ -26,6 +26,11 @@ import {ErrorHandler} from "../ErrorHandler";
 import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
 import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
 import {BuscarCiudades} from "../../domain/lugares/casos-uso/BuscarCiudades";
+import { ReservaController } from "../../application/ReservaController";
+import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
+import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
+import ReservaRepositorio from "../repositories/ReservaRepositorio";
+import Reserva from "../../domain/reservas/entidades/Reserva";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -44,6 +49,7 @@ export default class Registry {
         await this.registrarPublicaciones(container)
         await this.registrarSesiones(container)
         await this.registrarLugares(container)
+        await this.registrarReservas(container)
         return container
     }
 
@@ -100,5 +106,15 @@ export default class Registry {
 
         container.registerTransient<BuscarDirecciones>();
         container.registerTransient<BuscarCiudades>();
+    }
+
+    protected async registrarReservas(container: DIContainer) {
+        container.registerSingleton<ReservaController>();
+        container.registerTransient<CrearReserva>();
+
+        const reservasRepo: Repository<Reserva> = await container.get<Connection>().getRepository(Reserva);
+        container.registerSingleton<Repository<Reserva>>(() => reservasRepo);
+        container.registerSingleton<IReservaRepositorio>(() => 
+            new ReservaRepositorio(container.get<Repository<Reserva>>()));
     }
 }

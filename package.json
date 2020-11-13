@@ -13,7 +13,7 @@
     "test:aceptance": "cucumber-js --require-module @wessberg/di-compiler/register features/**/*.feature -r features/hooks.ts -r features/**/steps/*.ts --format progress-bar --exit",
     "test:coverage": "rm -rf coverage && nyc --nycrc-path config/nycrc-config.json npm run test",
     "typeorm": "dotenv -- ts-node ./node_modules/typeorm/cli.js",
-    "migration:create": "npm run typeorm migration:create -- -n",
+    "migration:generate": "npm run typeorm migration:generate -- -n",
     "migration:run": "npm run typeorm migration:run --",
     "migration:revert": "npm run typeorm migration:revert --"
   },

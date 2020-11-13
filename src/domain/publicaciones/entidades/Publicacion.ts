@@ -2,6 +2,7 @@ import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
+import Reserva from "../../reservas/entidades/Reserva";
 
 export interface PublicacionConstructor {
     titulo: string
@@ -38,6 +39,9 @@ export default class Publicacion {
 
     @OneToMany(() => Imagen, imagen => imagen.publicacion, {cascade: true, eager: true})
     public imagenes!: Imagen[];
+
+    @OneToMany(() => Reserva, reserva => reserva.publicacion)
+    public reservas!: Reserva[];
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
