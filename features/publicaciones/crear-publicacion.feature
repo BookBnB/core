@@ -34,7 +34,7 @@ Característica:
       | direccion.coordenadas.longitud | -57.5385                                               |
       | cantidadDeHuespedes            | 2                                                      |
       | imagenes[0].url                | google.com                                             |
-    Y veo que está a mí nombre
+    Y veo que está publicada a mí nombre
 
   Escenario: Municipio opcional
     Cuando creo una publicación sin "direccion.municipio"
