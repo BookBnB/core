@@ -4,7 +4,7 @@ import Api from "../src/app/Api";
 import Log4JSLogger from "../src/infra/logging/Logger";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
-import {buildServer} from './doubles/server';
+import {mockServer} from './doubles/server';
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import Store from "./util/Store";
@@ -13,14 +13,26 @@ import TestRegistry from "./doubles/TestRegistry";
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
-const mockServer = buildServer();
-
-BeforeAll(async function () {
-    mockServer.listen();
+/**
+ * Setup mock server
+ */
+BeforeAll(() => {
+    mockServer.listen()
 });
 
-Before(async function () {
+After(() => {
+    mockServer.resetHandlers();
+});
 
+AfterAll(() => {
+    mockServer.close();
+    Store.reset();
+});
+
+/**
+ * Setup api
+ */
+Before(async function () {
     const app = express()
     this.app = app
     this.reloj = new RelojFake();
@@ -35,14 +47,6 @@ Before(async function () {
 });
 
 After(async function () {
-    Store.reset();
-
-    mockServer.resetHandlers();
-
     const container: DIContainer = this.container;
     return await container.get<Connection>().close()
-});
-
-AfterAll(async function () {
-    mockServer.close();
 });

@@ -18,13 +18,14 @@ import AuthenticationMiddleware from "../../application/middlewares/Authenticati
 import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicaciones";
 import IReloj from "../../domain/common/servicios/Reloj";
 import Reloj from "../servicios/Reloj";
-import IServicioDirecciones from "../../domain/lugares/servicios/ServicioLugares";
+import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
 import ServicioLugares from "../servicios/ServicioLugares";
 import {LugarController} from "../../application/LugarController";
 import {BuscarDirecciones} from "../../domain/lugares/casos-uso/BuscarDirecciones";
 import {ErrorHandler} from "../ErrorHandler";
 import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
 import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
+import {BuscarCiudades} from "../../domain/lugares/casos-uso/BuscarCiudades";
 import { ReservaController } from "../../application/ReservaController";
 import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
 import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
@@ -47,7 +48,7 @@ export default class Registry {
         await this.registrarErrorHandler(container)
         await this.registrarPublicaciones(container)
         await this.registrarSesiones(container)
-        await this.registrarDirecciones(container)
+        await this.registrarLugares(container)
         await this.registrarReservas(container)
         return container
     }
@@ -98,12 +99,13 @@ export default class Registry {
         );
     }
 
-    protected async registrarDirecciones(container: DIContainer) {
+    protected async registrarLugares(container: DIContainer) {
         container.registerSingleton<LugarController>();
-        container.registerSingleton<IServicioDirecciones>(() =>
+        container.registerSingleton<IServicioLugares>(() =>
             new ServicioLugares(process.env.ALGOLIA_APPLICATION_ID as string, process.env.ALGOLIA_ADMIN_API_KEY as string))
 
         container.registerTransient<BuscarDirecciones>();
+        container.registerTransient<BuscarCiudades>();
     }
 
     protected async registrarReservas(container: DIContainer) {
