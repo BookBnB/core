@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "devStart": "npm run migration:run && nodemon --watch src --exec 'node -r @wessberg/di-compiler/register' ./src/App.ts",
-    "start": "dotenv -- typeorm migration:run && node ./build/App.js",
+    "start": "dotenv -- typeorm migration:run && node ./build/src/App.js",
     "build": "npm run clean && ttsc",
     "build:watch": "npm run clean && ttsc --watch --inlineSourceMap",
     "clean": "rm -rf build",
