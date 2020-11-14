@@ -1,10 +1,10 @@
 import {UseCase} from "../../UseCase";
 import Direccion from "../entidades/Direccion";
-import IServicioDirecciones from "../servicios/ServicioLugares";
+import IServicioLugares from "../servicios/ServicioLugares";
 import ConsultaDeLugar from "./ConsultaDeLugar";
 
 export class BuscarDirecciones implements UseCase {
-    constructor(private readonly direcciones: IServicioDirecciones) {
+    constructor(private readonly direcciones: IServicioLugares) {
     }
 
     async execute(consulta: ConsultaDeLugar, ip: string): Promise<Direccion[]> {

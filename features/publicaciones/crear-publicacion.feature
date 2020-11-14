@@ -55,12 +55,12 @@ Característica:
       | titulo                         | titulo              |
       | descripcion                    | descripcion         |
       | precioPorNoche                 | precioPorNoche      |
-      | direccion.pais                 | <direccion>         |
-      | direccion.provincia            | <direccion>         |
-      | direccion.ciudad               | <direccion>         |
-      | direccion.direccion            | <direccion>         |
-      | direccion.coordenadas.latitud  | <direccion>         |
-      | direccion.coordenadas.longitud | <direccion>         |
+      | direccion.pais                 | direccion           |
+      | direccion.provincia            | direccion           |
+      | direccion.ciudad               | direccion           |
+      | direccion.direccion            | direccion           |
+      | direccion.coordenadas.latitud  | direccion           |
+      | direccion.coordenadas.longitud | direccion           |
       | cantidadDeHuespedes            | cantidadDeHuespedes |
 
   Esquema del escenario: Campos vacíos
@@ -73,11 +73,11 @@ Característica:
       | titulo                         | titulo              |
       | descripcion                    | descripcion         |
       | precioPorNoche                 | precioPorNoche      |
-      | direccion.pais                 | <direccion>         |
-      | direccion.provincia            | <direccion>         |
-      | direccion.ciudad               | <direccion>         |
-      | direccion.municipio            | <direccion>         |
-      | direccion.direccion            | <direccion>         |
-      | direccion.coordenadas.latitud  | <direccion>         |
-      | direccion.coordenadas.longitud | <direccion>         |
+      | direccion.pais                 | direccion           |
+      | direccion.provincia            | direccion           |
+      | direccion.ciudad               | direccion           |
+      | direccion.municipio            | direccion           |
+      | direccion.direccion            | direccion           |
+      | direccion.coordenadas.latitud  | direccion           |
+      | direccion.coordenadas.longitud | direccion           |
       | cantidadDeHuespedes            | cantidadDeHuespedes |
