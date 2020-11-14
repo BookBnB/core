@@ -1,4 +1,15 @@
-import {Body, CurrentUser, Get, HttpCode, JsonController, Param, Post, Put, QueryParams, UseBefore} from 'routing-controllers'
+import {
+    Body,
+    CurrentUser,
+    Get,
+    HttpCode,
+    JsonController,
+    Param,
+    Post,
+    Put,
+    QueryParams,
+    UseBefore
+} from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
 import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
@@ -19,9 +30,12 @@ export class PublicacionController {
     }
 
     @Get('/')
-    @OpenAPI({summary: 'Muestra una lista de publicaciones'})
+    @OpenAPI({
+        summary: 'Muestra una lista de publicaciones',
+        parameters: [{in: "query", name: "coordenadas", style: "deepObject", explode: true}]
+    })
     @ResponseSchema(PublicacionDTO)
-    listar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
+    async listar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
         return this.listarPublicaciones.execute(consulta)
     }
 

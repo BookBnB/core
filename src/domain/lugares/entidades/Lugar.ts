@@ -1,4 +1,4 @@
-import {IsLatitude, IsLongitude, IsNotEmpty, ValidateNested} from "class-validator";
+import {IsLatitude, IsLongitude, IsNotEmpty, IsString, ValidateNested} from "class-validator";
 import {Column} from "typeorm";
 import {ValueTransformer} from "typeorm/decorator/options/ValueTransformer";
 import {Point} from "geojson";
@@ -38,10 +38,10 @@ export interface LugarConstructor {
 
 export default class Lugar {
 
-    @IsNotEmpty() @Column()
+    @IsNotEmpty() @IsString() @Column()
     private pais!: string
 
-    @IsNotEmpty() @Column()
+    @IsNotEmpty() @IsString() @Column()
     private provincia!: string
 
     @ValidateNested() @Type(() => Coordenadas)

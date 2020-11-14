@@ -3,13 +3,13 @@ import PublicacionDTO from "../dtos/PublicacionDTO";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion from "../entidades/Publicacion";
 import ConsultaConPaginacion from "../../common/ConsultaConPaginacion";
-import {IsInt, IsOptional, IsPositive, ValidateNested} from "class-validator";
+import {IsDefined, IsInt, IsOptional, IsPositive, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
 import {Coordenadas} from "../../lugares/entidades/Lugar";
 import {JSONSchema} from "class-validator-jsonschema";
 
 export class ConsultaDePublicaciones extends ConsultaConPaginacion {
-    @ValidateNested() @Type(() => Coordenadas)
+    @ValidateNested() @IsDefined() @Type(() => Coordenadas)
     public coordenadas!: Coordenadas
 
     @IsInt() @IsPositive() @IsOptional()

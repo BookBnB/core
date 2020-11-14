@@ -5,8 +5,10 @@ import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesio
 import _ from "lodash"
 import Publicaciones from "../Publicaciones";
 import { validarObjeto } from "../../../util/Validacion";
+import chaiSubset from "chai-subset";
 
 chai.use(chaiHttp);
+chai.use(chaiSubset);
 const expect = chai.expect;
 
 async function crearUsuarioConRol(this: any, rol: string) {
@@ -23,7 +25,7 @@ async function crearUsuarioConRol(this: any, rol: string) {
 Given('que soy {string}', crearUsuarioConRol);
 
 const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
-    const publicacion: any = {}
+    const publicacion: any = Publicaciones.ejemplo()
     dataTable.raw().forEach(([clave, valor]) => {
         _.set(publicacion, clave, valor)
     })
@@ -93,10 +95,23 @@ When('listo las publicaciones', async function () {
     await Publicaciones.listar(this)
 });
 
-When('busco las primeras {int} publicaciones en un radio de {int}m a {float}, {float}', function (cantidad: number, radio: number, latitud: number, longitud: number) {
-    throw Error('No implementado')
+When('busco las primeras {int} publicaciones en un radio de {int} metros a {float}, {float}', async function (cantidad: number, radio: number, latitud: number, longitud: number) {
+    await Publicaciones.listar(this, cantidad, latitud, longitud, radio)
 });
 
-Then('veo las publicaciones:', function (publicaciones: TableDefinition) {
-    throw Error('No implementado')
+Then('veo las publicaciones:', function (dataTable: TableDefinition) {
+    let publicaciones: any = dataTable.hashes()
+    publicaciones = publicaciones.map((publicacion: any) => {
+        const publicacionParseada: any = {}
+        Object.entries(publicacion).forEach(([clave, valor]) => {
+            _.set(publicacionParseada, clave, valor)
+        })
+        publicacionParseada.direccion.coordenadas = {
+            latitud: parseFloat(publicacionParseada.direccion.coordenadas.latitud),
+            longitud: parseFloat(publicacionParseada.direccion.coordenadas.longitud)
+        }
+        return {...publicacionParseada}
+    })
+    expect(this.last_response.body).to.lengthOf(publicaciones.length)
+    expect(this.last_response.body).to.containSubset(publicaciones)
 });

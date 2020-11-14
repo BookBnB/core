@@ -16,4 +16,11 @@ export default class Recurso {
             .type("json")
             .send(data)
     }
+
+    protected static async get(context: any, path: string, query: object = {}) {
+        context.last_response = await chai.request(context.app)
+            .get(`${this.baseUlr()}${path}`)
+            .query(query)
+            .set('authorization', context.tokenSesion || '')
+    }
 }
