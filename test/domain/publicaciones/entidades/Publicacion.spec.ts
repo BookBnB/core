@@ -1,7 +1,7 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import Publicacion from "../src/domain/publicaciones/entidades/Publicacion";
-import Publicaciones from "../features/publicaciones/support/Publicaciones";
+import Publicacion from "../../../../src/domain/publicaciones/entidades/Publicacion";
+import Publicaciones from "../../../../features/publicaciones/support/Publicaciones";
 
 describe("Publicacion", () => {
 	it("se crea correctamente", () => {

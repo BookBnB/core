@@ -1,28 +1,26 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
+import Recurso from "../../util/Recurso";
 
 chai.use(chaiHttp);
 
-export default class Publicaciones {
+export default class Publicaciones  extends Recurso {
     static readonly BASE_URL: string = '/v1/publicaciones'
 
+    protected static baseUlr(): string {
+        return this.BASE_URL;
+    }
+
     public static async crear(context: any, publicacion: any) {
-        context.last_response = await chai.request(context.app)
-            .post(Publicaciones.BASE_URL)
-            .set('authorization', context.tokenSesion)
-            .send(publicacion)
+        await this.post(context, '/', publicacion)
     }
 
     public static async obtener(context: any, idPublicacion: string) {
-        context.last_response = await chai.request(context.app)
-            .get(`${Publicaciones.BASE_URL}/${idPublicacion}`)
-            .set('authorization', context.tokenSesion)
+        await this.get(context, `/${idPublicacion}`)
     }
 
-    public static async listar(context: any) {
-        context.last_response = await chai.request(context.app)
-            .get(Publicaciones.BASE_URL)
-            .set('authorization', context.tokenSesion || '')
+    public static async listar(context: any, cantidad: number = 1, latitud: number = 0, longitud: number = 0, radio: number = 10) {
+        await this.get(context, '/', {offset: 0, limit: cantidad, coordenadas: {latitud, longitud}, radio})
     }
 
     public static ejemplo() {

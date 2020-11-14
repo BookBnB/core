@@ -5,11 +5,13 @@ import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesio
 import _ from "lodash"
 import Publicaciones from "../Publicaciones";
 import { validarObjeto } from "../../../util/Validacion";
+import chaiSubset from "chai-subset";
 
 chai.use(chaiHttp);
+chai.use(chaiSubset);
 const expect = chai.expect;
 
-Given('que soy {string}', async function (rol: string) {
+async function crearUsuarioConRol(this: any, rol: string) {
     await crearUsuario.bind(this)({
         nombre: 'John Doe',
         email: 'john@doe.com',
@@ -18,10 +20,12 @@ Given('que soy {string}', async function (rol: string) {
     })
     await iniciarSesion.bind(this)('john@doe.com', 'password')
     this.tokenSesion = this.last_response.body.token;
-});
+}
+
+Given('que soy {string}', crearUsuarioConRol);
 
 const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
-    const publicacion: any = {}
+    const publicacion: any = Publicaciones.ejemplo()
     dataTable.raw().forEach(([clave, valor]) => {
         _.set(publicacion, clave, valor)
     })
@@ -50,7 +54,10 @@ Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
     validarObjeto.bind(this)(dataTable)
 })
 
-Given('que existe una publicacion con:', crearPublicacion);
+Given('que existe una publicacion con:', async function (publicacion: TableDefinition) {
+    await crearUsuarioConRol.bind(this)("anfitrión")
+    await crearPublicacion.bind(this)(publicacion)
+});
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
     if (this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
@@ -86,4 +93,21 @@ Then('veo que no hay publicaciones', async function () {
 
 When('listo las publicaciones', async function () {
     await Publicaciones.listar(this)
+});
+
+When('busco las primeras {int} publicaciones en un radio de {int} metros a {float}, {float}', async function (cantidad: number, radio: number, latitud: number, longitud: number) {
+    await Publicaciones.listar(this, cantidad, latitud, longitud, radio)
+});
+
+Then('veo las publicaciones:', function (dataTable: TableDefinition) {
+    let publicaciones: any = dataTable.hashes()
+    publicaciones = publicaciones.map((publicacion: any) => {
+        const publicacionParseada: any = {}
+        Object.entries(publicacion).forEach(([clave, valor]) => {
+            _.set(publicacionParseada, clave, valor)
+        })
+        return {...publicacionParseada}
+    })
+    expect(this.last_response.body).to.lengthOf(publicaciones.length)
+    expect(this.last_response.body).to.containSubset(publicaciones)
 });
