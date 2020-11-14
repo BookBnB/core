@@ -1,11 +1,10 @@
 import {Body, CurrentUser, Get, HttpCode, JsonController, Param, Post, Put, QueryParams, UseBefore} from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
-import {ConsultaConPaginacion} from "./helpers/helpers";
 import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
-import {ListarPublicaciones} from "../domain/publicaciones/casos-uso/ListarPublicaciones";
+import {ConsultaDePublicaciones, ListarPublicaciones} from "../domain/publicaciones/casos-uso/ListarPublicaciones";
 import Usuario from '../domain/usuarios/entidades/Usuario';
 
 @OpenAPI({security: [{token: []}]})
@@ -22,7 +21,7 @@ export class PublicacionController {
     @Get('/')
     @OpenAPI({summary: 'Muestra una lista de publicaciones'})
     @ResponseSchema(PublicacionDTO)
-    listar(@QueryParams() consulta: ConsultaConPaginacion): Promise<PublicacionDTO[]> {
+    listar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
         return this.listarPublicaciones.execute(consulta)
     }
 

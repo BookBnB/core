@@ -19,7 +19,7 @@ Característica:
 
   Escenario: Buscar en Buenos Aires
     Dado que soy "huesped"
-    Cuando busco las primeras 5 publicaciones en un radio de 5km a -34.6076, -58.4371
+    Cuando busco las primeras 5 publicaciones en un radio de 3000m a -34.6076, -58.4371
     Entonces veo las publicaciones:
       | titulo                  | direccion.coordenadas.latitud | direccion.coordenadas.longitud |
       | Departamento en Palermo | -38.0083                      | -57.5385                       |

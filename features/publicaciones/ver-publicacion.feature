@@ -5,7 +5,7 @@ Característica:
   Para ver sus fotos y/o videos y revisar sus características.
 
   Escenario: Ver una publicacion
-    Dado que soy "huesped"
+    Dado que soy "anfitrión"
     Y que existe una publicacion con:
       | titulo                         | Departamento con vista                                 |
       | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
