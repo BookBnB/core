@@ -2,8 +2,11 @@ import {rest} from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
 import CrearSesionDTO from "../../src/domain/sesiones/dtos/CrearSesionDTO";
 import Store from '../util/Store';
+import { SesionPayload } from '../../src/domain/sesiones/entidades/Sesion';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Usuario {
+    id: string,
     email: string,
     password: string,
     name: string,
@@ -24,6 +27,8 @@ function userCreationHandler() {
     // la llamada a la aplicación en lugar al destino del proxy
     return rest.post(`*/v1/users`, (req, res, ctx) => {
         const usuario: Usuario = <Usuario>req.body;
+
+        usuario.id = uuidv4()
 
         Store.getInstance().set(usuario.email, usuario);
 
@@ -58,11 +63,14 @@ function sesionCreationHandler() {
             )
         }
 
-        const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken({
-            id: usuario.email,
-            role: usuario.role,
-            exp: Math.trunc(toSeconds(Date.now() + hours(24)))
-        });
+        const payload = new SesionPayload(
+            usuario.id,
+            usuario.email,
+            usuario.role,
+            Math.trunc(toSeconds(Date.now() + hours(24)))
+        );
+
+        const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken(payload);
 
         return res(
             ctx.status(200),
