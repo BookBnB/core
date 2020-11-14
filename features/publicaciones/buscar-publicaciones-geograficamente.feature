@@ -1,4 +1,5 @@
 # language: es
+@only
 Característica:
   Como huesped
   Quiero poder realizar búsquedas de alojamientos geograficamente
@@ -13,16 +14,37 @@ Característica:
     Dado que existe una publicacion con:
       | titulo                         | Departamento en Palermo |
       | direccion.ciudad               | Buenos Aires            |
-      | direccion.coordenadas.latitud  | -38.0083                |
-      | direccion.coordenadas.longitud | -57.5385                |
+      | direccion.coordenadas.latitud  | -34.6002                |
+      | direccion.coordenadas.longitud | -58.3909                |
 
-  @wip
+  Escenario: Buscar en las mismas coordenadas
+    Dado que soy "huesped"
+    Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a -34.6002, -58.3909
+    Entonces veo las publicaciones:
+      | titulo                  |
+      | Departamento en Palermo |
+
   Escenario: Buscar en Buenos Aires
     Dado que soy "huesped"
-    Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a -34.6076, -58.4371
+    Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a -34.6009, -58.3912
     Entonces veo las publicaciones:
-      | titulo                  | direccion.coordenadas.latitud | direccion.coordenadas.longitud |
-      | Departamento en Palermo | -38.0083                      | -57.5385                       |
+      | titulo                  |
+      | Departamento en Palermo |
+
+  Escenario: Buscar en Argentina
+    Dado que soy "huesped"
+    Cuando busco las primeras 5 publicaciones en un radio de 3000000 metros a -34.6002, -58.3909
+    Entonces veo las publicaciones:
+      | titulo                  |
+      | Departamento en Palermo |
+      | Casa en Salta           |
+
+  Escenario: Paginado
+    Dado que soy "huesped"
+    Cuando busco las primeras 1 publicaciones en un radio de 3000000 metros a -34.6002, -58.3909
+    Entonces veo las publicaciones:
+      | titulo        |
+      | Casa en Salta |
 
   Escenario: Falla si las coordenadas son inválidas
     Dado que soy "huesped"

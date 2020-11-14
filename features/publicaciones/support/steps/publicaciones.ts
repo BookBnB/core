@@ -106,10 +106,6 @@ Then('veo las publicaciones:', function (dataTable: TableDefinition) {
         Object.entries(publicacion).forEach(([clave, valor]) => {
             _.set(publicacionParseada, clave, valor)
         })
-        publicacionParseada.direccion.coordenadas = {
-            latitud: parseFloat(publicacionParseada.direccion.coordenadas.latitud),
-            longitud: parseFloat(publicacionParseada.direccion.coordenadas.longitud)
-        }
         return {...publicacionParseada}
     })
     expect(this.last_response.body).to.lengthOf(publicaciones.length)
