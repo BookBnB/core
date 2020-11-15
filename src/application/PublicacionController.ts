@@ -4,7 +4,7 @@ import {
     Get,
     HttpCode,
     JsonController, NotFoundError,
-    Param,
+    Param, Params,
     Post,
     Put,
     QueryParams,
@@ -18,6 +18,12 @@ import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 import {ConsultaDePublicaciones, ListarPublicaciones} from "../domain/publicaciones/casos-uso/ListarPublicaciones";
 import Usuario from '../domain/usuarios/entidades/Usuario';
 import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
+import {IsUUID} from "class-validator";
+
+class UUID {
+    @IsUUID(4)
+    public id!: string
+}
 
 @OpenAPI({security: [{token: []}]})
 @UseBefore(AuthenticationMiddleware)
@@ -43,7 +49,7 @@ export class PublicacionController {
     @Get('/:id')
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Muestra una publicación'})
-    async mostrarUno(@Param('id') id: string): Promise<PublicacionDTO> {
+    async mostrarUno(@Params() {id}: UUID): Promise<PublicacionDTO> {
         try {
             return await this.verPublicacion.execute(id)
         } catch (e) {
