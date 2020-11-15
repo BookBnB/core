@@ -9,7 +9,7 @@ export default class ReservaDTO {
     public publicacionId!: string;
 
     @IsString()
-    public huespedEmail!: string;
+    public huespedId!: string;
 
     @IsDate()
     public fechaInicio!: Date;
@@ -26,7 +26,7 @@ export default class ReservaDTO {
     constructor(reserva: Reserva) {
         this.id = reserva.id || '';
         this.publicacionId = reserva.publicacion.id || '';
-        this.huespedEmail = reserva.huesped.email;
+        this.huespedId = reserva.huesped.id;
         this.fechaInicio = reserva.fechaInicio;
         this.fechaFin = reserva.fechaFin;
         this.estado = reserva.estado;

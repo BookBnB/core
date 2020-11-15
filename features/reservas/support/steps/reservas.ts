@@ -56,5 +56,5 @@ Then('veo una nueva reserva con:', function (dataTable: TableDefinition) {
 });
 
 Then('veo que está reservada a mí nombre', function () {
-    expect(this.last_response.body).to.have.property('huespedEmail', this.usuarioActual.email)
+    expect(this.last_response.body).to.have.property('huespedId', this.usuarioActual.id)
 });

@@ -1,6 +1,6 @@
 import {IsInt, IsOptional, IsPositive, Max, Min} from "class-validator";
 
-export class ConsultaConPaginacion {
+export default class ConsultaConPaginacion {
     @IsOptional()
     @IsInt()
     @IsPositive()

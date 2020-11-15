@@ -1,7 +1,8 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import Publicacion from "../src/domain/publicaciones/entidades/Publicacion";
-import Publicaciones from "../features/publicaciones/support/Publicaciones";
+import Publicacion from "../../../../src/domain/publicaciones/entidades/Publicacion";
+import Publicaciones from "../../../../features/publicaciones/support/Publicaciones";
+import { v4 as uuidv4 } from 'uuid';
 
 describe("Publicacion", () => {
 	it("se crea correctamente", () => {
@@ -9,7 +10,7 @@ describe("Publicacion", () => {
 		const publicacion: Publicacion = new Publicacion({
 			...publicacionEjemplo,
 			anfitrion: {
-				email: "unanfitrion@bbnb.test",
+				id: uuidv4(),
 				rol: "anfitrion"
 			}
 		});

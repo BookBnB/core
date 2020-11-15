@@ -1,12 +1,12 @@
-import { IsString } from "class-validator";
+import { IsString, IsUUID } from "class-validator";
 import {Column} from "typeorm";
 
 export default class Usuario {
-    @IsString() @Column() public email!: string;
+    @IsUUID() @Column() public id!: string;
     @IsString() public rol!: string;
 
-    constructor(email: string, rol: string) {
-        this.email = email;
+    constructor(id: string, rol: string) {
+        this.id = id;
         this.rol = rol;
     }
 }

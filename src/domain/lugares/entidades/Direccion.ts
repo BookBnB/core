@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsOptional} from "class-validator";
+import {IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {Column} from "typeorm";
 import Lugar, {LugarConstructor} from "./Lugar";
 
@@ -10,13 +10,13 @@ export interface DireccionConstructor extends LugarConstructor {
 
 export default class Direccion extends Lugar {
 
-    @IsNotEmpty() @Column()
+    @IsNotEmpty() @IsString() @Column()
     private ciudad!: string
 
-    @IsNotEmpty() @IsOptional() @Column({nullable: true})
+    @IsNotEmpty() @IsString() @IsOptional() @Column({nullable: true})
     private municipio?: string
 
-    @IsNotEmpty() @Column()
+    @IsNotEmpty() @IsString() @Column()
     private direccion!: string
 
     constructor(args: DireccionConstructor) {

@@ -1,3 +1,5 @@
+import { SesionPayload } from "../entidades/Sesion";
+
 export default interface IJWTTokenBuilder {
-    buildToken(payload: Object): string;
+    buildToken(payload: SesionPayload): string;
 }

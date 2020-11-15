@@ -5,11 +5,13 @@ import IJWTTokenVerifier from "../servicios/JWTTokenVerifier";
 
 export class SesionPayload {
     public id!: string;
+    public email!: string;
     public role!: string;
     public exp!: number;
 
-    constructor(id: string, role: string, exp: number) {
+    constructor(id: string, email: string, role: string, exp: number) {
         this.id = id;
+        this.email = email;
         this.role = role;
         this.exp = exp;
     }
@@ -17,6 +19,7 @@ export class SesionPayload {
     public toPlainObject(): Object {
         return {
             id: this.id,
+            email: this.email,
             role: this.role,
             exp: this.exp
         }
@@ -41,6 +44,7 @@ export class Sesion {
 
         return new SesionPayload(
             payload.id,
+            payload.email,
             payload.role,
             payload.exp
         );
@@ -55,7 +59,7 @@ export class Sesion {
     }
 
     public getNewToken(tokenBuilder: IJWTTokenBuilder): Sesion {
-        return new Sesion(tokenBuilder.buildToken(this.getPayload().toPlainObject()));
+        return new Sesion(tokenBuilder.buildToken(this.getPayload()));
     }
 
     public valido(tokenVerifier: IJWTTokenVerifier): boolean {
