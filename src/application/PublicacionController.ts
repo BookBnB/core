@@ -3,7 +3,7 @@ import {
     CurrentUser,
     Get,
     HttpCode,
-    JsonController,
+    JsonController, NotFoundError,
     Param,
     Post,
     Put,
@@ -17,6 +17,7 @@ import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 import {ConsultaDePublicaciones, ListarPublicaciones} from "../domain/publicaciones/casos-uso/ListarPublicaciones";
 import Usuario from '../domain/usuarios/entidades/Usuario';
+import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
 
 @OpenAPI({security: [{token: []}]})
 @UseBefore(AuthenticationMiddleware)
@@ -42,8 +43,13 @@ export class PublicacionController {
     @Get('/:id')
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Muestra una publicación'})
-    mostrarUno(@Param('id') id: string): Promise<PublicacionDTO> {
-        return this.verPublicacion.execute(id)
+    async mostrarUno(@Param('id') id: string): Promise<PublicacionDTO> {
+        try {
+            return await this.verPublicacion.execute(id)
+        } catch (e) {
+            if (e instanceof PublicacionInexistenteError) throw new NotFoundError(e.message)
+            throw e
+        }
     }
 
     @Post('/')
