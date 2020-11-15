@@ -3,6 +3,7 @@ import chai from "chai"
 import chaiHttp from "chai-http"
 import {Sesion, SesionPayload} from "../../../../src/domain/sesiones/entidades/Sesion";
 import JWTTokenBuilder from "../../../../src/infra/servicios/JWTTokenBuilder";
+import { v4 as uuidv4 } from 'uuid';
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -19,6 +20,8 @@ export async function crearUsuario(this: any, data: { nombre: string, email: str
         .post('/v1/users')
         .type('json')
         .send(this.usuarioActual);
+
+    this.usuarioActual.id = this.last_response.body.id;
 }
 
 export async function iniciarSesion(this: any, email: string, password: string) {
@@ -68,7 +71,8 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
     const sesion: Sesion = new Sesion(token);
     const payload: SesionPayload = sesion.getPayload();
 
-    expect(payload).to.have.property('id').to.be.equal(data.id)
+    expect(payload).to.have.property('id')
+    expect(payload).to.have.property('email').to.be.equal(data.email)
     expect(payload).to.have.property('role').to.be.equal(data.rol)
     expect(payload).to.have.property('exp')
 });

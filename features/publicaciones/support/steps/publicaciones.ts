@@ -38,7 +38,7 @@ const crearPublicacion = async function (this: any, dataTable: TableDefinition) 
 }
 
 Then('veo que está publicada a mí nombre', function () {
-    expect(this.last_response.body).to.have.nested.property('anfitrion.email', this.usuarioActual.email)
+    expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.usuarioActual.id)
 });
 
 When('creo una publicación con:', crearPublicacion)
