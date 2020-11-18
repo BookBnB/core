@@ -115,3 +115,7 @@ Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     expect(this.last_response.body).to.lengthOf(publicaciones.length)
     expect(this.last_response.body).to.containSubset(publicaciones)
 });
+
+When('ingreso a la publicación con id {string}', async function (id: string) {
+    await Publicaciones.obtener(this, id)
+});
