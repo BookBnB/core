@@ -99,6 +99,10 @@ When('busco las primeras {int} publicaciones en un radio de {int} metros a {floa
     await Publicaciones.listar(this, cantidad, latitud, longitud, radio)
 });
 
+When('busco las primeras {int} publicaciones', async function (cantidad: number) {
+    await Publicaciones.listar(this, cantidad, 0, 0, 3000000000)
+});
+
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     let publicaciones: any = dataTable.hashes()
     publicaciones = publicaciones.map((publicacion: any) => {

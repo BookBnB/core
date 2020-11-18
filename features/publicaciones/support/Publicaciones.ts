@@ -19,7 +19,7 @@ export default class Publicaciones  extends Recurso {
         await this.get(context, `/${idPublicacion}`)
     }
 
-    public static async listar(context: any, cantidad: number = 1, latitud: number = 0, longitud: number = 0, radio: number = 10) {
+    public static async listar(context: any, cantidad: number = 1, latitud: number = 0, longitud: number = 0, radio: number = 300000000) {
         await this.get(context, '/', {offset: 0, limit: cantidad, coordenadas: {latitud, longitud}, radio})
     }
 

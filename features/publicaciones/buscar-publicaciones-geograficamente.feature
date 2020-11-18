@@ -1,5 +1,4 @@
 # language: es
-@only
 Característica:
   Como huesped
   Quiero poder realizar búsquedas de alojamientos geograficamente

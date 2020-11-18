@@ -20,10 +20,12 @@ export default class PublicacionRepositorio implements IPublicacionRepositorio {
     }
 
     listar(consulta: ConsultaDePublicaciones): Promise<Publicacion[]> {
-        return this.repo.createQueryBuilder()
+        return this.repo.createQueryBuilder("publicacion")
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
+            .orderBy("publicacion.titulo")
             .skip(consulta.offset)
             .take(consulta.limit)
+            .leftJoinAndSelect("publicacion.imagenes", "imagenes")
             .setParameters({
                 latitud: consulta.coordenadas.latitud,
                 longitud: consulta.coordenadas.longitud,
