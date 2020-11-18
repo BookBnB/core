@@ -1,5 +1,4 @@
 # language: es
-@only
 Característica:
   Como huespued
   Quiero poder ver las publicaciones disponibles
