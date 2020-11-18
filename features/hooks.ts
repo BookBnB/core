@@ -10,6 +10,7 @@ import dotenvExpand from 'dotenv-expand';
 import Store from "./util/Store";
 import RelojFake from "./doubles/RelojFake";
 import TestRegistry from "./doubles/TestRegistry";
+import GestorDeSesiones from "./util/GestorDeSesiones";
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
@@ -37,6 +38,7 @@ Before(async function () {
     this.app = app
     this.reloj = new RelojFake();
     this.container = new DIContainer()
+    this.gestorDeSesiones = new GestorDeSesiones();
     return await new TestRegistry(this.reloj).registrar(this.container).then(container => {
         new Api({
             app,

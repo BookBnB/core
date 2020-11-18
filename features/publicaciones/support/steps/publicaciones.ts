@@ -6,23 +6,27 @@ import _ from "lodash"
 import Publicaciones from "../Publicaciones";
 import { validarObjeto } from "../../../util/Validacion";
 import chaiSubset from "chai-subset";
+import Usuarios from "../../../usuarios/support/Usuarios";
+import { v4 as uuidv4 } from 'uuid';
+import Store from "../../../util/Store";
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 const expect = chai.expect;
 
-async function crearUsuarioConRol(this: any, rol: string) {
+async function crearUsuarioConRol(this: any, rol: string, email: string = 'john@doe.com') {
     await crearUsuario.bind(this)({
         nombre: 'John Doe',
-        email: 'john@doe.com',
+        email: email,
         password: 'password',
         role: rol
     })
-    await iniciarSesion.bind(this)('john@doe.com', 'password')
-    this.tokenSesion = this.last_response.body.token;
+    await iniciarSesion.bind(this)(email, 'password')
 }
 
-Given('que soy {string}', crearUsuarioConRol);
+Given('que soy {string}', async function (rol: string) { 
+    await crearUsuarioConRol.bind(this)(rol);
+});
 
 const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
     const publicacion: any = Publicaciones.ejemplo()
@@ -91,6 +95,10 @@ Then('veo que no hay publicaciones', async function () {
     expect(this.last_response.body).to.eql([])
 });
 
+Then('no obtengo publicaciones', async function () {
+    expect(this.last_response.body).to.eql([])
+});
+
 When('listo las publicaciones', async function () {
     await Publicaciones.listar(this)
 });
@@ -118,4 +126,30 @@ Then('veo las publicaciones:', function (dataTable: TableDefinition) {
 
 When('ingreso a la publicación con id {string}', async function (id: string) {
     await Publicaciones.obtener(this, id)
+});
+
+When('listo mis publicaciones', async function () {
+    await Usuarios.listarPublicaciones(this, this.usuarioActual.id);
+});
+
+When('listo las publicaciones del anfitrion {string}', async function (email) {
+    const usuario = this.gestorDeSesiones.obtenerUsuario(email)
+    
+    const id = usuario ? usuario.id : uuidv4()
+    
+    await Usuarios.listarPublicaciones(this, id)
+});
+
+When('listo las publicaciones del anfitrion de id {string}', async function (id) {
+    await Usuarios.listarPublicaciones(this, id);
+});
+
+Given('que existe un anfitrión {string}', async function (email) {
+    await crearUsuarioConRol.bind(this)('anfitrión', email)
+});
+
+Given('que el anfitrión {string} tiene una publicación con:', async function (email, dataTable) {
+    await this.gestorDeSesiones.ejecutarBajoSesion(this, async () => {
+        await crearPublicacion.bind(this)(dataTable)
+    }, email);
 });

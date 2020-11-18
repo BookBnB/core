@@ -4,14 +4,7 @@ import CrearSesionDTO from "../../src/domain/sesiones/dtos/CrearSesionDTO";
 import Store from '../util/Store';
 import { SesionPayload } from '../../src/domain/sesiones/entidades/Sesion';
 import { v4 as uuidv4 } from 'uuid';
-
-interface Usuario {
-    id: string,
-    email: string,
-    password: string,
-    name: string,
-    role: string
-}
+import { Usuario } from '../usuarios/support/Usuarios';
 
 function hours(n: number) {
     return n * 60 * 60 * 1000;
