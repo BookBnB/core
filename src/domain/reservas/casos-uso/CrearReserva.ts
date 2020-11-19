@@ -1,20 +1,21 @@
 import { Type } from "class-transformer";
-import { IsDate, IsDateString, IsPositive, IsUUID } from "class-validator";
+import { IsDate, IsPositive, IsUUID } from "class-validator";
 import Publicacion from "../../publicaciones/entidades/Publicacion";
 import IPublicacionRepositorio from "../../publicaciones/repositorios/PublicacionRepositorio";
 import Usuario from "../../usuarios/entidades/Usuario";
 import ReservaDTO from "../dtos/ReservaDTO";
 import Reserva, { EstadoReserva } from "../entidades/Reserva";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
+import {JSONSchema} from "class-validator-jsonschema";
 
 export class CrearReservaDTO {
     @IsUUID()
     public publicacionId!: string;
 
-    @IsDate() @Type(() => Date)
+    @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-19"})
     public fechaInicio!: Date;
 
-    @IsDate() @Type(() => Date)
+    @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-21"})
     public fechaFin!: Date;
 
     @IsPositive()

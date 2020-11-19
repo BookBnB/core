@@ -1,8 +1,9 @@
 import { IsDate, IsPositive, IsString, IsUUID } from "class-validator";
 import Reserva, { EstadoReserva } from "../entidades/Reserva"
+import {JSONSchema} from "class-validator-jsonschema";
 
 export default class ReservaDTO {
-    @IsUUID()
+    @IsString() @JSONSchema({example: "AL6KS8"})
     public id!: string
 
     @IsUUID()
