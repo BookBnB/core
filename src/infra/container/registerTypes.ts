@@ -15,7 +15,7 @@ import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios"
 import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
 import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
-import {ListarPublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicaciones";
+import {ListarPublicacionesGeograficamente} from "../../domain/publicaciones/casos-uso/ListarPublicacionesGeograficamente";
 import IReloj from "../../domain/common/servicios/Reloj";
 import Reloj from "../servicios/Reloj";
 import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
@@ -31,6 +31,8 @@ import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
 import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
 import ReservaRepositorio from "../repositories/ReservaRepositorio";
 import Reserva from "../../domain/reservas/entidades/Reserva";
+import { UsuarioController } from "../../application/UsuariosController";
+import { ListarPublicacionesPorAnfitrion } from "../../domain/publicaciones/casos-uso/ListarPublicacionesPorAnfitrion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -50,6 +52,7 @@ export default class Registry {
         await this.registrarSesiones(container)
         await this.registrarLugares(container)
         await this.registrarReservas(container)
+        await this.registrarUsuarios(container)
         return container
     }
 
@@ -70,7 +73,7 @@ export default class Registry {
         container.registerSingleton<PublicacionController>()
         container.registerTransient<CrearPublicacion>()
         container.registerTransient<VerPublicacion>()
-        container.registerTransient<ListarPublicaciones>()
+        container.registerTransient<ListarPublicacionesGeograficamente>()
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
@@ -116,5 +119,10 @@ export default class Registry {
         container.registerSingleton<Repository<Reserva>>(() => reservasRepo);
         container.registerSingleton<IReservaRepositorio>(() => 
             new ReservaRepositorio(container.get<Repository<Reserva>>()));
+    }
+
+    protected async registrarUsuarios(container: DIContainer) {
+        container.registerTransient<ListarPublicacionesPorAnfitrion>();
+        container.registerSingleton<UsuarioController>();
     }
 }

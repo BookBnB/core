@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 export async function crearUsuario(this: any, data: { nombre: string, email: string, password: string, role: string }) {
-    this.usuarioActual = {
+    const usuario: any = {
         nombre: data.nombre,
         email: data.email,
         password: data.password,
@@ -19,9 +19,13 @@ export async function crearUsuario(this: any, data: { nombre: string, email: str
     this.last_response = await chai.request(this.app)
         .post('/v1/users')
         .type('json')
-        .send(this.usuarioActual);
+        .send(usuario);
 
-    this.usuarioActual.id = this.last_response.body.id;
+    usuario.id = this.last_response.body.id;
+
+    this.gestorDeSesiones.registrarUsuario(usuario);
+
+    this.usuarioActual = usuario;
 }
 
 export async function iniciarSesion(this: any, email: string, password: string) {
@@ -31,7 +35,13 @@ export async function iniciarSesion(this: any, email: string, password: string) 
         .send({
             email: email,
             password: password
-        })
+        });
+
+    const token: string = this.last_response.body.token;
+
+    this.gestorDeSesiones.registrarSesion(email, token)
+
+    this.tokenSesion = token;
 }
 
 Given('que soy un usuario con datos:', async function (dataTable) {
