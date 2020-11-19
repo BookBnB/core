@@ -36,7 +36,7 @@ export default class Reserva {
     @Column('text')
     public estado!: EstadoReserva;
 
-    @Column('int')
+    @Column('float')
     public precioPorNoche!: number;
 
     public constructor(args: ReservaConstructor) {
