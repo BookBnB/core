@@ -15,6 +15,17 @@ Característica:
       | precioPorNoche | 200                      |
     Y veo que está reservada a mí nombre
 
+  Escenario: Creación de reserva exitosa (fechas ISO)
+    Dado que soy "huesped"
+    Y que existe una publicacion
+    Cuando intento hacer una reserva del '2020-12-01T00:00:00.000Z' al '2020-12-07T00:00:00.000Z' con precio 200
+    Entonces veo una nueva reserva con:
+      | estado         | pendiente                |
+      | fechaInicio    | 2020-12-01T00:00:00.000Z |
+      | fechaFin       | 2020-12-07T00:00:00.000Z |
+      | precioPorNoche | 200                      |
+    Y veo que está reservada a mí nombre
+
   Escenario: Creación de reserva con fechas invertidas
     Dado que soy "huesped"
     Y que existe una publicacion
