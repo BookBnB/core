@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryColumn} from "typeorm";
 import Publicacion from "../../publicaciones/entidades/Publicacion";
 import Usuario from "../../usuarios/entidades/Usuario";
 import FechasInvertidasError from "../excepciones/FechasInvertidasError";
@@ -18,7 +18,9 @@ export enum EstadoReserva {
 
 @Entity()
 export default class Reserva {
-    @PrimaryGeneratedColumn("uuid")
+    static LONGITUD_ID: number = 6
+
+    @PrimaryColumn("varchar", {length: Reserva.LONGITUD_ID})
     public id?: string;
 
     @Column('date')
