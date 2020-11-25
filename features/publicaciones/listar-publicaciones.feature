@@ -2,7 +2,7 @@
 Característica:
   Como huespued
   Quiero poder ver las publicaciones disponibles
-  Para tomar una desición de reserva
+  Para tomar una decisión de reserva
 
   Escenario: Ver publicaciones con imágenes
     Dado que soy "huesped"

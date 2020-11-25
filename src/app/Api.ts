@@ -1,7 +1,7 @@
 import {Application} from "express";
 import {ILogger} from "../infra/logging/Logger";
 import "reflect-metadata"; // Necesario para routing-controllers
-import {Action, getMetadataArgsStorage, RoutingControllersOptions, useContainer, useExpressServer} from "routing-controllers";
+import {getMetadataArgsStorage, RoutingControllersOptions, useContainer, useExpressServer} from "routing-controllers";
 import {routingControllersToSpec} from 'routing-controllers-openapi';
 import {validationMetadatasToSchemas} from 'class-validator-jsonschema'
 import swaggerUi from 'swagger-ui-express';
@@ -9,7 +9,7 @@ import ContainerAdapter from "../infra/container/ContainerAdapter";
 import {IContainer} from "../infra/container/Container";
 import {OpenAPIObject} from "openapi3-ts";
 import {defaultMetadataStorage} from "class-transformer/storage";
-import { currentUserChecker } from "./currentUserChecker";
+import {authorizationChecker, currentUserChecker} from "./checkers";
 
 export interface ApiConstructor {
     app: Application,
@@ -89,7 +89,8 @@ export default class Api {
             controllers: [__dirname + "/../application/**/*Controller.?s"],
             validation: true,
             defaultErrorHandler: false,
-            currentUserChecker: currentUserChecker
+            currentUserChecker: currentUserChecker,
+            authorizationChecker: authorizationChecker
         }
     }
 }

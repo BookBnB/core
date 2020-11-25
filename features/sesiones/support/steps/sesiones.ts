@@ -8,12 +8,17 @@ import { v4 as uuidv4 } from 'uuid';
 chai.use(chaiHttp);
 const expect = chai.expect;
 
+const roles = new Map([
+    ["anfitrión", "host"],
+    ["huesped", "guest"]
+])
+
 export async function crearUsuario(this: any, data: { nombre: string, email: string, password: string, role: string }) {
     const usuario: any = {
         nombre: data.nombre,
         email: data.email,
         password: data.password,
-        role: data.role
+        role: roles.get(data.role)
     }
 
     this.last_response = await chai.request(this.app)
@@ -83,6 +88,6 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
 
     expect(payload).to.have.property('id')
     expect(payload).to.have.property('email').to.be.equal(data.email)
-    expect(payload).to.have.property('role').to.be.equal(data.rol)
+    expect(payload).to.have.property('role').to.be.equal(roles.get(data.rol))
     expect(payload).to.have.property('exp')
 });

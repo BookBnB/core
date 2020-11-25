@@ -81,3 +81,20 @@ Característica:
       | direccion.coordenadas.latitud  | direccion           |
       | direccion.coordenadas.longitud | direccion           |
       | cantidadDeHuespedes            | cantidadDeHuespedes |
+
+  Escenario: Un huesped no puede crear publicaciones
+    Dado que soy "huesped"
+    Cuando creo una publicación con:
+      | titulo                         | Departamento con vista                                 |
+      | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
+      | precioPorNoche                 | 10                                                     |
+      | direccion.pais                 | Argentina                                              |
+      | direccion.provincia            | Buenos Aires                                           |
+      | direccion.ciudad               | Mar del Plata                                          |
+      | direccion.municipio            | Mar del Plata                                          |
+      | direccion.direccion            | Avenida Patricio Peralta Ramos 4799                    |
+      | direccion.coordenadas.latitud  | -38.0083                                               |
+      | direccion.coordenadas.longitud | -57.5385                                               |
+      | cantidadDeHuespedes            | 2                                                      |
+      | imagenes[0].url                | google.com                                             |
+    Entonces obtengo un error 403 con mensaje "Access is denied"

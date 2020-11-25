@@ -1,4 +1,4 @@
-import { IsString, IsUUID } from "class-validator";
+import {IsString, IsUUID} from "class-validator";
 import {Column} from "typeorm";
 
 export default class Usuario {
@@ -8,5 +8,9 @@ export default class Usuario {
     constructor(id: string, rol: string) {
         this.id = id;
         this.rol = rol;
+    }
+
+    public tieneRol(rol: string): boolean {
+        return this.rol === rol
     }
 }

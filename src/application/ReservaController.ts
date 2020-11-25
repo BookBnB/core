@@ -1,4 +1,13 @@
-import { BadRequestError, Body, CurrentUser, HttpCode, JsonController, Post, UseBefore } from "routing-controllers";
+import {
+    Authorized,
+    BadRequestError,
+    Body,
+    CurrentUser,
+    HttpCode,
+    JsonController,
+    Post,
+    UseBefore
+} from "routing-controllers";
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 import { CrearReserva, CrearReservaDTO } from "../domain/reservas/casos-uso/CrearReserva";
 import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
@@ -17,6 +26,7 @@ export class ReservaController {
 
     @Post('/')
     @HttpCode(201)
+    @Authorized("guest")
     @ResponseSchema(ReservaDTO)
     @OpenAPI({summary: 'Crea una reserva para una publicación'})
     async crear(@CurrentUser() usuario: Usuario, @Body() body: CrearReservaDTO): Promise<ReservaDTO> {

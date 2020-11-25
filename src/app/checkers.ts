@@ -9,3 +9,8 @@ export function currentUserChecker(action: Action): Usuario {
 
     return new Usuario(sesion.getId(), sesion.getRol());
 }
+
+export function authorizationChecker(action: Action, roles: string[]): boolean {
+    const usuario: Usuario = currentUserChecker(action);
+    return roles.some(rol => usuario.tieneRol(rol));
+}
