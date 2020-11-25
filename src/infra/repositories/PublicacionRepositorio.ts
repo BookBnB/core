@@ -24,7 +24,6 @@ export default class PublicacionRepositorio implements IPublicacionRepositorio {
             .orderBy("publicacion.titulo")
             .skip(consulta.offset)
             .take(consulta.limit)
-            .leftJoinAndSelect("publicacion.anfitrion", "anfitrion")
             .leftJoinAndSelect("publicacion.imagenes", "imagenes")
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
             .setParameters({

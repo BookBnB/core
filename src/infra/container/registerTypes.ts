@@ -1,6 +1,6 @@
 import {DIContainer} from "@wessberg/di";
 import typeOrmConnection from "../typeOrmConnection";
-import {Connection, Repository} from "typeorm";
+import {Connection, EntityManager, Repository} from "typeorm";
 import {IContainer} from "./Container";
 import {PublicacionController} from "../../application/PublicacionController";
 import {CrearPublicacion} from "../../domain/publicaciones/casos-uso/CrearPublicacion";
@@ -32,7 +32,6 @@ import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepos
 import ReservaRepositorio from "../repositories/ReservaRepositorio";
 import Reserva from "../../domain/reservas/entidades/Reserva";
 import { UsuarioController } from "../../application/UsuariosController";
-import Usuario from "../../domain/usuarios/entidades/Usuario";
 import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
 import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
 import {ListarPublicacionesPorAnfitrion} from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
@@ -128,9 +127,9 @@ export default class Registry {
         container.registerTransient<ListarPublicacionesPorAnfitrion>();
         container.registerSingleton<UsuarioController>();
 
-        const usuariosRepo: Repository<Usuario> = await container.get<Connection>().getRepository(Usuario);
-        container.registerSingleton<Repository<Usuario>>(() => usuariosRepo);
+        const manager: EntityManager = await container.get<Connection>().manager;
+        container.registerSingleton<EntityManager>(() => manager);
         container.registerSingleton<IUsuarioRepositorio>(() =>
-            new UsuarioRepositorio(container.get<Repository<Usuario>>()));
+            new UsuarioRepositorio(manager));
     }
 }

@@ -34,7 +34,7 @@ export default class Publicacion {
     @Column("int")
     public cantidadDeHuespedes!: number;
 
-    @ManyToOne(type => Usuario, usuario => usuario.publicaciones, {cascade: true, eager: true})
+    @Column(type => Usuario)
     public anfitrion!: Usuario;
 
     @OneToMany(() => Imagen, imagen => imagen.publicacion, {cascade: true, eager: true})
