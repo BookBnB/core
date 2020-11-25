@@ -1,4 +1,4 @@
-import { IsDate, IsPositive, IsString, IsUUID } from "class-validator";
+import {IsDate, IsEnum, IsPositive, IsString, IsUUID} from "class-validator";
 import Reserva, { EstadoReserva } from "../entidades/Reserva"
 import {JSONSchema} from "class-validator-jsonschema";
 
@@ -18,7 +18,7 @@ export default class ReservaDTO {
     @IsDate()
     public fechaFin!: Date;
 
-    @IsString()
+    @IsEnum(EstadoReserva)
     public estado!: EstadoReserva;
 
     @IsPositive()
