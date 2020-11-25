@@ -1,40 +1,29 @@
 # language: es
 Característica:
   Como anfitrion
-  Quiero poder listar mis publicaciones realizadas 
+  Quiero poder listar mis publicaciones realizadas
   Para administrarlas
 
   Antecedentes:
     Dado que existe un anfitrión "unanfitrion@test.test"
-    Y que existe un anfitrión "otroanfitrion@test.test"
     Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
-        | titulo                         | Casa en Salta           |
-        | direccion.ciudad               | Ciudad de Salta         |
-        | direccion.coordenadas.latitud  | -24.7893                |
-        | direccion.coordenadas.longitud | -65.4103                |
-        | imagenes[0].url                | google.com/una-imagen   |
+      | titulo                         | Casa en Salta         |
     Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
-        | titulo                         | Departamento en Palermo |
-        | direccion.ciudad               | Buenos Aires            |
-        | direccion.coordenadas.latitud  | -34.6002                |
-        | direccion.coordenadas.longitud | -58.3909                |
-        | imagenes[0].url                | google.com/otra-imagen  |
-    Y que el anfitrión "otroanfitrion@test.test" tiene una publicación con:
-        | titulo                         | Cabaña Tres Lagos |
-        | direccion.ciudad               | Miramar           |
-        | direccion.coordenadas.latitud  | -37.3420          |
-        | direccion.coordenadas.longitud | -57.0306          |
+      | titulo                         | Departamento en Palermo |
 
   Escenario: Listado de publicaciones de anfitrión específico
-    Cuando listo las publicaciones del anfitrion 'unanfitrion@test.test'
+    Dado que soy "anfitrión"
+    Cuando creo una publicación con:
+      | titulo | Cabaña Tres Lagos |
+    Y listo mis publicaciones
     Entonces veo las publicaciones:
-        | titulo                  | imagenes[0].url        |
-        | Casa en Salta           | google.com/una-imagen  |
-        | Departamento en Palermo | google.com/otra-imagen |
+      | titulo            |
+      | Cabaña Tres Lagos |
 
-  Escenario: Ver publicaciones de un anfitrión inexistente
-    Cuando listo las publicaciones del anfitrion "otro@test.test"
-    Entonces no obtengo publicaciones
+  Escenario: No puedo ver las publicaciones de otro anfitrión
+    Dado que soy "anfitrión"
+    Cuando listo las publicaciones del anfitrion "unanfitrion@test.test"
+    Entonces obtengo un error 403 con mensaje "Access is denied"
 
   Escenario: Ver publicaciones de un id inválido
     Cuando listo las publicaciones del anfitrion de id "uuidinvalido"
