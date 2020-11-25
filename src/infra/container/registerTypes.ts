@@ -32,7 +32,10 @@ import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepos
 import ReservaRepositorio from "../repositories/ReservaRepositorio";
 import Reserva from "../../domain/reservas/entidades/Reserva";
 import { UsuarioController } from "../../application/UsuariosController";
-import { ListarPublicacionesPorAnfitrion } from "../../domain/publicaciones/casos-uso/ListarPublicacionesPorAnfitrion";
+import Usuario from "../../domain/usuarios/entidades/Usuario";
+import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
+import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
+import {ListarPublicacionesPorAnfitrion} from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -124,5 +127,10 @@ export default class Registry {
     protected async registrarUsuarios(container: DIContainer) {
         container.registerTransient<ListarPublicacionesPorAnfitrion>();
         container.registerSingleton<UsuarioController>();
+
+        const usuariosRepo: Repository<Usuario> = await container.get<Connection>().getRepository(Usuario);
+        container.registerSingleton<Repository<Usuario>>(() => usuariosRepo);
+        container.registerSingleton<IUsuarioRepositorio>(() =>
+            new UsuarioRepositorio(container.get<Repository<Usuario>>()));
     }
 }

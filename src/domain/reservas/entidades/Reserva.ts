@@ -32,7 +32,7 @@ export default class Reserva {
     @ManyToOne(type => Publicacion, publicacion => publicacion.reservas)
     public publicacion!: Publicacion;
 
-    @Column(type => Usuario)
+    @ManyToOne(type => Usuario, usuario => usuario.reservas, {cascade: true, eager: true})
     public huesped!: Usuario;
 
     @Column('text')

@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne} from "typeorm";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
@@ -34,7 +34,7 @@ export default class Publicacion {
     @Column("int")
     public cantidadDeHuespedes!: number;
 
-    @Column(type => Usuario)
+    @ManyToOne(type => Usuario, usuario => usuario.publicaciones, {cascade: true, eager: true})
     public anfitrion!: Usuario;
 
     @OneToMany(() => Imagen, imagen => imagen.publicacion, {cascade: true, eager: true})
