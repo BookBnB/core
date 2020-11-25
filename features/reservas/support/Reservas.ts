@@ -8,8 +8,7 @@ export default class Reservas {
         return {
             publicacionId: publicacionId,
             fechaInicio: new Date('2020-12-01').toISOString(),
-            fechaFin: new Date('2020-12-07').toISOString(),
-            precioPorNoche: 200
+            fechaFin: new Date('2020-12-07').toISOString()
         }
     }
 

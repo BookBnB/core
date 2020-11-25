@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsPositive, IsUUID } from "class-validator";
+import { IsDate, IsUUID } from "class-validator";
 import Publicacion from "../../publicaciones/entidades/Publicacion";
 import IPublicacionRepositorio from "../../publicaciones/repositorios/PublicacionRepositorio";
 import Usuario from "../../usuarios/entidades/Usuario";
@@ -17,9 +17,6 @@ export class CrearReservaDTO {
 
     @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-21"})
     public fechaFin!: Date;
-
-    @IsPositive()
-    public precioPorNoche!: number;
 }
 
 export class CrearReserva {
@@ -35,7 +32,7 @@ export class CrearReserva {
         const reserva: Reserva = new Reserva({
             fechaInicio: body.fechaInicio,
             fechaFin: body.fechaFin,
-            precioPorNoche: body.precioPorNoche,
+            precioPorNoche: publicacion.precioPorNoche,
             publicacion: publicacion,
             huesped: usuario,
             estado: EstadoReserva.PENDIENTE

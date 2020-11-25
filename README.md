@@ -21,7 +21,7 @@ npm run start
 ```
 npm run test			# all tests, no coverage
 npm run test:unit		# unit tests only
-npm run test:acceptance # accepatance test only
+npm run test:acceptance # acceptance tests only
 npm run test:coverage	# all tests, with coverage
 ```
 

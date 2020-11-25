@@ -13,6 +13,7 @@ export default class Publicaciones  extends Recurso {
 
     public static async crear(context: any, publicacion: any) {
         await this.post(context, '/', publicacion)
+        context.last_publicacion = context.last_response
     }
 
     public static async obtener(context: any, idPublicacion: string) {
