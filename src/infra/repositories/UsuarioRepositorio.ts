@@ -8,6 +8,7 @@ export default class UsuarioRepositorio implements IUsuarioRepositorio {
 
     async obtenerPublicaciones(id: string): Promise<Publicacion[]> {
         return await this.em.createQueryBuilder(Publicacion, "publicacion")
+            .leftJoinAndSelect("publicacion.imagenes", "imagenes")
             .where("publicacion.anfitrion.id = :id", {id: id})
             .getMany()
     }

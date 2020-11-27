@@ -11,7 +11,6 @@ Característica:
     Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
       | titulo | Departamento en Palermo |
 
-  @only
   Escenario: Listado de mis publicaciones
     Dado que soy "anfitrión"
     Cuando creo una publicación con:
