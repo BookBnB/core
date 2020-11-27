@@ -118,6 +118,18 @@ When('busco las primeras {int} publicaciones con capacidad para al menos {int} h
     await Publicaciones.listar(this, {cantidad: cantidadPublicaciones, cantidadDeHuespedes})
 });
 
+When('busco las primeras {int} publicaciones con {float} como precio mínimo', async function (cantidad, precioPorNocheMinimo) {
+    await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo})
+});
+
+When('busco las primeras {int} publicaciones con {float} como precio máximo', async function (cantidad, precioPorNocheMaximo) {
+    await Publicaciones.listar(this, {cantidad, precioPorNocheMaximo})
+});
+
+When('busco las primeras {int} publicaciones con precio entre {float} y {float}', async function (cantidad, precioPorNocheMinimo, precioPorNocheMaximo) {
+    await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
+});
+
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     let publicaciones: any = dataTable.hashes()
     publicaciones = publicaciones.map((publicacion: any) => {

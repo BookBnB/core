@@ -28,7 +28,9 @@ export default class Publicaciones extends Recurso {
             longitud = 0,
             radio = 300000000,
             tipoDeAlojamiento = undefined,
-            cantidadDeHuespedes = undefined
+            cantidadDeHuespedes = undefined,
+            precioPorNocheMinimo = undefined,
+            precioPorNocheMaximo = undefined
         } = {}) {
 
         await this.get(context, '/', {
@@ -40,7 +42,9 @@ export default class Publicaciones extends Recurso {
             },
             radio,
             tipoDeAlojamiento,
-            cantidadDeHuespedes
+            cantidadDeHuespedes,
+            precioPorNocheMinimo,
+            precioPorNocheMaximo
         })
     }
 

@@ -1,6 +1,5 @@
 import {
-    Authorized,
-    Body,
+    Authorized, Body,
     CurrentUser,
     Get,
     HttpCode,
