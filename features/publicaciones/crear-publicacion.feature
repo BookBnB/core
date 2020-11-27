@@ -20,6 +20,7 @@ Característica:
       | direccion.coordenadas.latitud  | -38.0083                                               |
       | direccion.coordenadas.longitud | -57.5385                                               |
       | cantidadDeHuespedes            | 2                                                      |
+      | tipoDeAlojamiento              | Alojamiento entero                                     |
       | imagenes[0].url                | google.com                                             |
     Entonces veo una nueva publicación con:
       | titulo                         | Departamento con vista                                 |
@@ -33,6 +34,7 @@ Característica:
       | direccion.coordenadas.latitud  | -38.0083                                               |
       | direccion.coordenadas.longitud | -57.5385                                               |
       | cantidadDeHuespedes            | 2                                                      |
+      | tipoDeAlojamiento              | Alojamiento entero                                     |
       | imagenes[0].url                | google.com                                             |
     Y veo que está publicada a mí nombre
 
@@ -62,6 +64,7 @@ Característica:
       | direccion.coordenadas.latitud  | direccion           |
       | direccion.coordenadas.longitud | direccion           |
       | cantidadDeHuespedes            | cantidadDeHuespedes |
+      | tipoDeAlojamiento              | tipoDeAlojamiento   |
 
   Esquema del escenario: Campos vacíos
     Cuando creo una publicación con el "<campo>" vacío
@@ -81,6 +84,7 @@ Característica:
       | direccion.coordenadas.latitud  | direccion           |
       | direccion.coordenadas.longitud | direccion           |
       | cantidadDeHuespedes            | cantidadDeHuespedes |
+      | tipoDeAlojamiento              | tipoDeAlojamiento   |
 
   Escenario: Un huesped no puede crear publicaciones
     Dado que soy "huesped"
@@ -96,5 +100,6 @@ Característica:
       | direccion.coordenadas.latitud  | -38.0083                                               |
       | direccion.coordenadas.longitud | -57.5385                                               |
       | cantidadDeHuespedes            | 2                                                      |
+      | tipoDeAlojamiento              | Alojamiento entero                                     |
       | imagenes[0].url                | google.com                                             |
     Entonces obtengo un error 403 con mensaje "Access is denied"

@@ -1,6 +1,6 @@
 import {JSONSchema} from "class-validator-jsonschema";
-import {IsInt, IsString, IsUrl, ValidateNested} from "class-validator";
-import Publicacion from "../entidades/Publicacion";
+import {IsEnum, IsInt, IsString, IsUrl, ValidateNested} from "class-validator";
+import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Direccion from "../../lugares/entidades/Direccion";
 import Imagen from "../entidades/Imagen";
@@ -23,6 +23,9 @@ class PublicacionDTO {
 
     @JSONSchema({example: 2}) @IsInt()
     public cantidadDeHuespedes!: number
+
+    @IsEnum(TipoDeAlojamiento)
+    public tipoDeAlojamiento!: string
 
     @IsString()
     public anfitrionId!: string

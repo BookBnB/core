@@ -15,7 +15,7 @@ import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios"
 import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
 import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
-import {ListarPublicacionesGeograficamente} from "../../domain/publicaciones/casos-uso/ListarPublicacionesGeograficamente";
+import {BuscarPublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
 import IReloj from "../../domain/common/servicios/Reloj";
 import Reloj from "../servicios/Reloj";
 import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
@@ -75,7 +75,7 @@ export default class Registry {
         container.registerSingleton<PublicacionController>()
         container.registerTransient<CrearPublicacion>()
         container.registerTransient<VerPublicacion>()
-        container.registerTransient<ListarPublicacionesGeograficamente>()
+        container.registerTransient<BuscarPublicaciones>()
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)

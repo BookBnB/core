@@ -1,9 +1,9 @@
 import {UseCase} from "../../UseCase";
 import PublicacionDTO from "../dtos/PublicacionDTO";
-import {IsOptional, IsPositive, IsString, MinLength, ValidateNested} from "class-validator";
+import {IsEnum, IsOptional, IsPositive, IsString, MinLength, ValidateNested} from "class-validator";
 import {JSONSchema} from "class-validator-jsonschema";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
-import Publicacion from "../entidades/Publicacion";
+import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
@@ -33,6 +33,9 @@ export class CrearPublicacionDTO {
 
     @JSONSchema({example: 2}) @IsPositive()
     public cantidadDeHuespedes!: number
+
+    @IsEnum(TipoDeAlojamiento)
+    public tipoDeAlojamiento!: string
 
     @ValidateNested({each: true}) @Type(() => Imagen) @IsOptional()
     public imagenes!: Imagen[]
