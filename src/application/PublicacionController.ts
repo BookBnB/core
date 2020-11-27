@@ -1,6 +1,5 @@
 import {
-    Authorized, BadRequestError,
-    Body,
+    Authorized, Body,
     CurrentUser,
     Get,
     HttpCode,
@@ -20,7 +19,6 @@ import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import Usuario from '../domain/usuarios/entidades/Usuario';
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
-import PrecioPorNocheInvertido from "../domain/publicaciones/excepciones/PrecioPorNocheInvertido";
 
 @OpenAPI({security: [{token: []}]})
 @UseBefore(AuthenticationMiddleware)
@@ -40,13 +38,7 @@ export class PublicacionController {
     })
     @ResponseSchema(PublicacionDTO)
     async listar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
-        try {
-            return await this.listarPublicaciones.execute(consulta)
-        } catch (e) {
-            if (e instanceof PrecioPorNocheInvertido)
-                throw new BadRequestError(e.message)
-            throw e
-        }
+        return this.listarPublicaciones.execute(consulta)
     }
 
     @Get('/:id')
