@@ -118,6 +118,10 @@ When('busco las primeras {int} publicaciones con capacidad para al menos {int} h
     await Publicaciones.listar(this, {cantidad: cantidadPublicaciones, cantidadDeHuespedes})
 });
 
+When('busco las primeras {int} publicaciones con {int} como precio mínimo', async function (cantidad, precioMinimo) {
+    await Publicaciones.listar(this, {cantidad, precioMinimo})
+});
+
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     let publicaciones: any = dataTable.hashes()
     publicaciones = publicaciones.map((publicacion: any) => {

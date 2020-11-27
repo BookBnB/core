@@ -1,5 +1,4 @@
 # language: es
-@wip
 Característica:
   Como huesped
   Quiero poder realizar búsquedas de alojamientos por precio
@@ -19,6 +18,7 @@ Característica:
       | titulo        | Hostel en Congreso |
       | precioPoNoche | 30                 |
 
+  @wip
   Escenario: Buscar alojamientos por precio mínimo
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 20 como precio mínimo
@@ -28,11 +28,13 @@ Característica:
       | Hotel en Mar del Plata  |
       | Hostel en Congreso      |
 
+  @wip
   Escenario: Buscar alojamientos por precio mínimo sin resultados
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 31 como precio mínimo
     Entonces no obtengo publicaciones
 
+  @wip
   Escenario: Buscar alojamientos por precio máximo
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 25 como precio máximo
@@ -42,11 +44,13 @@ Característica:
       | Departamento en Palermo |
       | Hotel en Mar del Plata  |
 
+  @wip
   Escenario: Buscar alojamientos por precio máximo sin resultados
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 9 como precio máximo
     Entonces no obtengo publicaciones
 
+  @wip
   Escenario: Buscar alojamientos en rango de precios
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con precio entre 20 y 25
@@ -55,21 +59,25 @@ Característica:
       | Departamento en Palermo |
       | Hotel en Mar del Plata  |
 
+  @wip
   Escenario: Buscar alojamientos en rango de precios sin resultados
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con precio entre 31 y 32
     Entonces no obtengo publicaciones
 
+  @wip
   Escenario: Buscar alojamientos en rango de precios invertido
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con precio entre 10 y 9
     Entonces veo un error indicado en el campo "precio"
 
+  @wip
   Escenario: Buscar alojamientos por precio mínimo inválido
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con -1 como precio mínimo
     Entonces veo un error indicado en el campo "precio"
 
+  @wip
   Escenario: Buscar alojamientos por precio máximo inválido
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con -1 como precio máximo
