@@ -5,18 +5,17 @@ Característica:
   Para visualizar las publicaciones y así concretar una reserva
 
   Antecedentes:
-    Y que existe una publicacion con:
+    Dado que existe una publicacion con:
       | titulo                         | Casa en Salta   |
       | direccion.ciudad               | Ciudad de Salta |
       | direccion.coordenadas.latitud  | -24.7893        |
       | direccion.coordenadas.longitud | -65.4103        |
-    Dado que existe una publicacion con:
+    Y que existe una publicacion con:
       | titulo                         | Departamento en Palermo |
       | direccion.ciudad               | Buenos Aires            |
       | direccion.coordenadas.latitud  | -34.6002                |
       | direccion.coordenadas.longitud | -58.3909                |
 
-  @only
   Escenario: Buscar en las mismas coordenadas
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a -34.6002, -58.3909
