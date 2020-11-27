@@ -5,7 +5,9 @@ export class TipoDeAlojamiento1606448125698 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "publicacion_tipodealojamiento_enum" AS ENUM('Alojamiento entero', 'Habitación privada', 'Habitación compartida', 'Habitación de hotel')`);
-        await queryRunner.query(`ALTER TABLE "publicacion" ADD "tipoDeAlojamiento" "publicacion_tipodealojamiento_enum" NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "publicacion" ADD "tipoDeAlojamiento" "publicacion_tipodealojamiento_enum"`);
+        await queryRunner.query(`UPDATE "publicacion" SET "tipoDeAlojamiento" = 'Alojamiento entero'`);
+        await queryRunner.query(`ALTER TABLE "publicacion" ALTER COLUMN "tipoDeAlojamiento" SET NOT NULL`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
