@@ -122,8 +122,12 @@ When('busco las primeras {int} publicaciones con {float} como precio mínimo', a
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo})
 });
 
-When('busco las primeras {int} publicaciones con {int} como precio máximo', async function (cantidad, precioPorNocheMaximo) {
+When('busco las primeras {int} publicaciones con {float} como precio máximo', async function (cantidad, precioPorNocheMaximo) {
     await Publicaciones.listar(this, {cantidad, precioPorNocheMaximo})
+});
+
+When('busco las primeras {int} publicaciones con precio entre {float} y {float}', async function (cantidad, precioPorNocheMinimo, precioPorNocheMaximo) {
+    await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
 });
 
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
