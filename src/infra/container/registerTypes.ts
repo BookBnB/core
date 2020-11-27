@@ -1,6 +1,6 @@
 import {DIContainer} from "@wessberg/di";
 import typeOrmConnection from "../typeOrmConnection";
-import {Connection, Repository} from "typeorm";
+import {Connection, EntityManager, Repository} from "typeorm";
 import {IContainer} from "./Container";
 import {PublicacionController} from "../../application/PublicacionController";
 import {CrearPublicacion} from "../../domain/publicaciones/casos-uso/CrearPublicacion";
@@ -32,7 +32,9 @@ import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepos
 import ReservaRepositorio from "../repositories/ReservaRepositorio";
 import Reserva from "../../domain/reservas/entidades/Reserva";
 import { UsuarioController } from "../../application/UsuariosController";
-import { ListarPublicacionesPorAnfitrion } from "../../domain/publicaciones/casos-uso/ListarPublicacionesPorAnfitrion";
+import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
+import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
+import {ListarPublicacionesPorAnfitrion} from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -124,5 +126,10 @@ export default class Registry {
     protected async registrarUsuarios(container: DIContainer) {
         container.registerTransient<ListarPublicacionesPorAnfitrion>();
         container.registerSingleton<UsuarioController>();
+
+        const manager: EntityManager = await container.get<Connection>().manager;
+        container.registerSingleton<EntityManager>(() => manager);
+        container.registerSingleton<IUsuarioRepositorio>(() =>
+            new UsuarioRepositorio(manager));
     }
 }

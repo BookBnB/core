@@ -134,7 +134,7 @@ When('listo mis publicaciones', async function () {
 
 When('listo las publicaciones del anfitrion {string}', async function (email) {
     const usuario = this.gestorDeSesiones.obtenerUsuario(email)
-    
+
     const id = usuario ? usuario.id : uuidv4()
     
     await Usuarios.listarPublicaciones(this, id)

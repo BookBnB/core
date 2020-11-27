@@ -16,6 +16,7 @@ Característica:
       | direccion.coordenadas.latitud  | -34.6002                |
       | direccion.coordenadas.longitud | -58.3909                |
 
+  @only
   Escenario: Buscar en las mismas coordenadas
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a -34.6002, -58.3909

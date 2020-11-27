@@ -2,6 +2,8 @@ version: '3'
 services:
   app:
     image: node:12.19.0-alpine3.12
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
     ports:
       - "3000:${PORT}"
     working_dir: /app

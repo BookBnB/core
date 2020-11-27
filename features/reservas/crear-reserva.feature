@@ -65,3 +65,8 @@ Característica:
       | fechaFin       | fecha_invalida |
       | fechaFin       | 1605048477878  |
       | fechaFin       | 2020-01-32     |
+
+  Escenario: Un anfitrión no puede realizar reservas
+    Dado que soy "anfitrión"
+    Cuando intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Departamento en Palermo"
+    Entonces obtengo un error 403 con mensaje "Access is denied"

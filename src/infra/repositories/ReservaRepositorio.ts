@@ -12,16 +12,16 @@ export default class ReservaRepositorio implements IReservaRepositorio {
     static ALFABETO_IDS: string = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZ'
 
     async guardar(reserva: Reserva): Promise<Reserva> {
-        return this.repo.hasId(reserva) ? await this.repo.save(reserva) : this.insertar(reserva)
+        return this.repo.hasId(reserva) ? await this.repo.save(reserva) : this.guardarNuevo(reserva)
     }
 
-    private async insertar(reserva: Reserva): Promise<Reserva> {
+    private async guardarNuevo(reserva: Reserva): Promise<Reserva> {
         const nanoid = customAlphabet(ReservaRepositorio.ALFABETO_IDS, Reserva.LONGITUD_ID)
         let error;
         for (let i = 0; i < 3; i++) {
             reserva.id = nanoid()
             try {
-                await this.repo.insert(reserva)
+                await this.repo.save(reserva)
                 return reserva
             } catch (e) {
                 error = e

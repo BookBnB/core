@@ -1,4 +1,5 @@
 import {
+    Authorized,
     Body,
     CurrentUser,
     Get,
@@ -55,6 +56,7 @@ export class PublicacionController {
 
     @Post('/')
     @HttpCode(201)
+    @Authorized("host")
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Crea una publicación'})
     crear(@CurrentUser() usuario: Usuario, @Body() body: CrearPublicacionDTO): Promise<PublicacionDTO> {
@@ -62,6 +64,7 @@ export class PublicacionController {
     }
 
     @Put('/:id')
+    @Authorized("host")
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Editar una publicación'})
     editar(@Body() body: CrearPublicacionDTO) {
