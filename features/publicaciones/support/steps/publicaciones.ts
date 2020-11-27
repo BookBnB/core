@@ -114,6 +114,10 @@ When('busco las primeras {int} publicaciones de tipo {string}', async function (
     await Publicaciones.listar(this, {cantidad, tipoDeAlojamiento})
 });
 
+When('busco las primeras {int} publicaciones con capacidad para al menos {int} huésped\(es)', async function (cantidadPublicaciones, cantidadDeHuespedes) {
+    await Publicaciones.listar(this, {cantidad: cantidadPublicaciones, cantidadDeHuespedes})
+});
+
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     let publicaciones: any = dataTable.hashes()
     publicaciones = publicaciones.map((publicacion: any) => {

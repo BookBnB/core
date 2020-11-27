@@ -27,7 +27,8 @@ export default class Publicaciones extends Recurso {
             latitud = 0,
             longitud = 0,
             radio = 300000000,
-            tipoDeAlojamiento = undefined
+            tipoDeAlojamiento = undefined,
+            cantidadDeHuespedes = undefined
         } = {}) {
 
         await this.get(context, '/', {
@@ -38,7 +39,8 @@ export default class Publicaciones extends Recurso {
                 longitud
             },
             radio,
-            tipoDeAlojamiento
+            tipoDeAlojamiento,
+            cantidadDeHuespedes
         })
     }
 
