@@ -49,3 +49,8 @@ Característica:
     Entonces veo las publicaciones:
       | titulo                 |
       | Hotel en Mar del Plata |
+
+  Escenario: Buscar tipo de alojamiento no existente
+    Dado que soy "huesped"
+    Cuando busco las primeras 5 publicaciones de tipo "Cabaña"
+    Entonces veo un error indicado en el campo "tipoDeAlojamiento"
