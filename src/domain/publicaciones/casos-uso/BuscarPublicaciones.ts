@@ -16,6 +16,9 @@ export class ConsultaDePublicaciones extends ConsultaConPaginacion {
     @JSONSchema({description: 'El radio en metros para buscar alrededor de la latitud y longitud. Por defecto son 1000 metros.'})
     public radio: number = 1000
 
+    @IsInt() @IsPositive() @IsOptional()
+    public cantidadDeHuespedes?: number = undefined
+
     @IsEnum(TipoDeAlojamiento) @IsOptional()
     public tipoDeAlojamiento?: TipoDeAlojamiento = undefined
 }
