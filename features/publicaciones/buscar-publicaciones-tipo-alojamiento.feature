@@ -1,7 +1,7 @@
 # language: es
 Característica:
   Como huesped
-  Quiero poder realizar búsquedas de alojamientos por sus característica
+  Quiero poder realizar búsquedas de alojamientos por tipo de alojamiento
   Para visualizar las publicaciones y así concretar una reserva
 
   Antecedentes:

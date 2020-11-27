@@ -8,7 +8,6 @@ import { validarObjeto } from "../../../util/Validacion";
 import chaiSubset from "chai-subset";
 import Usuarios from "../../../usuarios/support/Usuarios";
 import { v4 as uuidv4 } from 'uuid';
-import Store from "../../../util/Store";
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
@@ -104,11 +103,15 @@ When('listo las publicaciones', async function () {
 });
 
 When('busco las primeras {int} publicaciones en un radio de {int} metros a {float}, {float}', async function (cantidad: number, radio: number, latitud: number, longitud: number) {
-    await Publicaciones.listar(this, cantidad, latitud, longitud, radio)
+    await Publicaciones.listar(this, {cantidad, latitud, longitud, radio})
 });
 
 When('busco las primeras {int} publicaciones', async function (cantidad: number) {
-    await Publicaciones.listar(this, cantidad, 0, 0, 3000000000)
+    await Publicaciones.listar(this, {cantidad})
+});
+
+When('busco las primeras {int} publicaciones de tipo {string}', async function (cantidad, tipoDeAlojamiento) {
+    await Publicaciones.listar(this, {cantidad, tipoDeAlojamiento})
 });
 
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {

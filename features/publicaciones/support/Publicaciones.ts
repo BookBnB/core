@@ -4,7 +4,7 @@ import Recurso from "../../util/Recurso";
 
 chai.use(chaiHttp);
 
-export default class Publicaciones  extends Recurso {
+export default class Publicaciones extends Recurso {
     static readonly BASE_URL: string = '/v1/publicaciones'
 
     protected static baseUlr(): string {
@@ -20,8 +20,26 @@ export default class Publicaciones  extends Recurso {
         await this.get(context, `/${idPublicacion}`)
     }
 
-    public static async listar(context: any, cantidad: number = 1, latitud: number = 0, longitud: number = 0, radio: number = 300000000) {
-        await this.get(context, '/', {offset: 0, limit: cantidad, coordenadas: {latitud, longitud}, radio})
+    public static async listar(
+        context: any,
+        {
+            cantidad = 100,
+            latitud = 0,
+            longitud = 0,
+            radio = 300000000,
+            tipoDeAlojamiento = undefined
+        } = {}) {
+
+        await this.get(context, '/', {
+            offset: 0,
+            limit: cantidad,
+            coordenadas: {
+                latitud,
+                longitud
+            },
+            radio,
+            tipoDeAlojamiento
+        })
     }
 
     public static ejemplo() {
