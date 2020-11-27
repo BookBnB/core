@@ -7,18 +7,20 @@ Característica:
   Antecedentes:
     Dado que existe un anfitrión "unanfitrion@test.test"
     Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
-      | titulo                         | Casa en Salta         |
+      | titulo | Casa en Salta |
     Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
-      | titulo                         | Departamento en Palermo |
+      | titulo | Departamento en Palermo |
 
+  @only
   Escenario: Listado de mis publicaciones
     Dado que soy "anfitrión"
     Cuando creo una publicación con:
-      | titulo | Cabaña Tres Lagos |
+      | titulo          | Cabaña Tres Lagos     |
+      | imagenes[0].url | google.com/una-imagen |
     Y listo mis publicaciones
     Entonces veo las publicaciones:
-      | titulo            |
-      | Cabaña Tres Lagos |
+      | titulo            | imagenes[0].url       |
+      | Cabaña Tres Lagos | google.com/una-imagen |
 
   Escenario: Listado sin publicaciones
     Dado que soy "anfitrión"
