@@ -2,7 +2,7 @@ import {Repository} from "typeorm";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
-import {ConsultaGeograficaDePublicaciones} from "../../domain/publicaciones/casos-uso/ListarPublicacionesGeograficamente";
+import {ConsultaDePublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
 
 export default class PublicacionRepositorio implements IPublicacionRepositorio {
     public constructor(private readonly repo: Repository<Publicacion>) {
@@ -19,17 +19,19 @@ export default class PublicacionRepositorio implements IPublicacionRepositorio {
         return publicacion;
     }
 
-    listar(consulta: ConsultaGeograficaDePublicaciones): Promise<Publicacion[]> {
+    listar({offset, limit, radio, coordenadas, tipoDeAlojamiento}: ConsultaDePublicaciones): Promise<Publicacion[]> {
         return this.repo.createQueryBuilder("publicacion")
             .orderBy("publicacion.titulo")
-            .skip(consulta.offset)
-            .take(consulta.limit)
+            .skip(offset)
+            .take(limit)
             .leftJoinAndSelect("publicacion.imagenes", "imagenes")
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
+            .andWhere(tipoDeAlojamiento ? "publicacion.tipoDeAlojamiento = :tipoDeAlojamiento" : "TRUE")
             .setParameters({
-                latitud: consulta.coordenadas.latitud,
-                longitud: consulta.coordenadas.longitud,
-                radio: consulta.radio
+                latitud: coordenadas.latitud,
+                longitud: coordenadas.longitud,
+                radio,
+                tipoDeAlojamiento
             })
             .getMany();
     }

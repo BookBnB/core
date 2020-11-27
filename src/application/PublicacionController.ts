@@ -14,7 +14,7 @@ import {
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import UUID from '../domain/common/UUID';
 import { CrearPublicacion, CrearPublicacionDTO } from "../domain/publicaciones/casos-uso/CrearPublicacion";
-import { ConsultaGeograficaDePublicaciones, ListarPublicacionesGeograficamente } from "../domain/publicaciones/casos-uso/ListarPublicacionesGeograficamente";
+import { ConsultaDePublicaciones, BuscarPublicaciones } from "../domain/publicaciones/casos-uso/BuscarPublicaciones";
 import { VerPublicacion } from "../domain/publicaciones/casos-uso/VerPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
@@ -28,7 +28,7 @@ export class PublicacionController {
     constructor(
         private readonly crearPublicacion: CrearPublicacion,
         private readonly verPublicacion: VerPublicacion,
-        private readonly listarPublicaciones: ListarPublicacionesGeograficamente
+        private readonly listarPublicaciones: BuscarPublicaciones
     ) {
     }
 
@@ -38,7 +38,7 @@ export class PublicacionController {
         parameters: [{in: "query", name: "coordenadas", style: "deepObject", explode: true}]
     })
     @ResponseSchema(PublicacionDTO)
-    async listar(@QueryParams() consulta: ConsultaGeograficaDePublicaciones): Promise<PublicacionDTO[]> {
+    async listar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
         return this.listarPublicaciones.execute(consulta)
     }
 

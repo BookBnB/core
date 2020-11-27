@@ -22,7 +22,6 @@ Característica:
       | cantidadDeHuespedes | 2                      |
       | tipoDeAlojamiento   | Habitación de hotel    |
 
-  @wip
   Escenario: Buscar alojamientos enteros
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones de tipo "Alojamiento entero"
@@ -30,7 +29,6 @@ Característica:
       | titulo        |
       | Casa en Salta |
 
-  @wip
   Escenario: Buscar habitaciones privadas
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones de tipo "Habitación privada"
@@ -38,7 +36,6 @@ Característica:
       | titulo                  |
       | Departamento en Palermo |
 
-  @wip
   Escenario: Buscar habitaciones compartidas
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones de tipo "Habitación compartida"
@@ -46,7 +43,6 @@ Característica:
       | titulo             |
       | Hostel en Congreso |
 
-  @wip
   Escenario: Buscar habitaciones de hotel
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones de tipo "Habitación de hotel"
