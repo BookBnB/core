@@ -32,7 +32,6 @@ Característica:
     Cuando busco las primeras 5 publicaciones con 30.1 como precio mínimo
     Entonces no obtengo publicaciones
 
-  @wip
   Escenario: Buscar alojamientos por precio máximo
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 25 como precio máximo
@@ -42,7 +41,6 @@ Característica:
       | Departamento en Palermo |
       | Hotel en Mar del Plata  |
 
-  @wip
   Escenario: Buscar alojamientos por precio máximo sin resultados
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 9 como precio máximo

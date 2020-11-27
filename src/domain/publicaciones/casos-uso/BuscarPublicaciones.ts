@@ -24,6 +24,9 @@ export class ConsultaDePublicaciones extends ConsultaConPaginacion {
 
     @IsNumber() @IsPositive() @IsOptional()
     public precioPorNocheMinimo?: number = undefined
+
+    @IsNumber() @IsPositive() @IsOptional()
+    public precioPorNocheMaximo?: number = undefined
 }
 
 export class BuscarPublicaciones implements UseCase {

@@ -122,6 +122,10 @@ When('busco las primeras {int} publicaciones con {float} como precio mínimo', a
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo})
 });
 
+When('busco las primeras {int} publicaciones con {int} como precio máximo', async function (cantidad, precioPorNocheMaximo) {
+    await Publicaciones.listar(this, {cantidad, precioPorNocheMaximo})
+});
+
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     let publicaciones: any = dataTable.hashes()
     publicaciones = publicaciones.map((publicacion: any) => {
