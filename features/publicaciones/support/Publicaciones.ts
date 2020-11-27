@@ -29,7 +29,7 @@ export default class Publicaciones extends Recurso {
             radio = 300000000,
             tipoDeAlojamiento = undefined,
             cantidadDeHuespedes = undefined,
-            precioMinimo = undefined
+            precioPorNocheMinimo = undefined
         } = {}) {
 
         await this.get(context, '/', {
@@ -42,7 +42,7 @@ export default class Publicaciones extends Recurso {
             radio,
             tipoDeAlojamiento,
             cantidadDeHuespedes,
-            precioMinimo
+            precioPorNocheMinimo
         })
     }
 

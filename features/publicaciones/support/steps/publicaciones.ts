@@ -118,8 +118,8 @@ When('busco las primeras {int} publicaciones con capacidad para al menos {int} h
     await Publicaciones.listar(this, {cantidad: cantidadPublicaciones, cantidadDeHuespedes})
 });
 
-When('busco las primeras {int} publicaciones con {int} como precio mínimo', async function (cantidad, precioMinimo) {
-    await Publicaciones.listar(this, {cantidad, precioMinimo})
+When('busco las primeras {int} publicaciones con {float} como precio mínimo', async function (cantidad, precioPorNocheMinimo) {
+    await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo})
 });
 
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {

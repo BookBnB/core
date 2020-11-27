@@ -6,19 +6,18 @@ Característica:
 
   Antecedentes:
     Dado que existe una publicacion con:
-      | titulo        | Casa en Salta |
-      | precioPoNoche | 10            |
+      | titulo         | Casa en Salta |
+      | precioPorNoche | 10            |
     Y que existe una publicacion con:
-      | titulo        | Departamento en Palermo |
-      | precioPoNoche | 20                      |
+      | titulo         | Departamento en Palermo |
+      | precioPorNoche | 20                      |
     Y que existe una publicacion con:
-      | titulo        | Hotel en Mar del Plata |
-      | precioPoNoche | 25                     |
+      | titulo         | Hotel en Mar del Plata |
+      | precioPorNoche | 25                     |
     Y que existe una publicacion con:
-      | titulo        | Hostel en Congreso |
-      | precioPoNoche | 30                 |
+      | titulo         | Hostel en Congreso |
+      | precioPorNoche | 30                 |
 
-  @wip
   Escenario: Buscar alojamientos por precio mínimo
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 20 como precio mínimo
@@ -28,10 +27,9 @@ Característica:
       | Hotel en Mar del Plata  |
       | Hostel en Congreso      |
 
-  @wip
   Escenario: Buscar alojamientos por precio mínimo sin resultados
     Dado que soy "huesped"
-    Cuando busco las primeras 5 publicaciones con 31 como precio mínimo
+    Cuando busco las primeras 5 publicaciones con 30.1 como precio mínimo
     Entonces no obtengo publicaciones
 
   @wip

@@ -19,7 +19,10 @@ export default class PublicacionRepositorio implements IPublicacionRepositorio {
         return publicacion;
     }
 
-    listar({offset, limit, radio, coordenadas, cantidadDeHuespedes, tipoDeAlojamiento}: ConsultaDePublicaciones): Promise<Publicacion[]> {
+    listar({
+               offset, limit, radio, coordenadas, cantidadDeHuespedes, tipoDeAlojamiento,
+               precioPorNocheMinimo
+           }: ConsultaDePublicaciones): Promise<Publicacion[]> {
         return this.repo.createQueryBuilder("publicacion")
             .orderBy("publicacion.titulo")
             .skip(offset)
@@ -28,12 +31,14 @@ export default class PublicacionRepositorio implements IPublicacionRepositorio {
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
             .andWhere(tipoDeAlojamiento ? "publicacion.tipoDeAlojamiento = :tipoDeAlojamiento" : "TRUE")
             .andWhere(cantidadDeHuespedes ? "publicacion.cantidadDeHuespedes >= :cantidadDeHuespedes" : "TRUE")
+            .andWhere(precioPorNocheMinimo ? "publicacion.precioPorNoche >= :precioPorNocheMinimo" : "TRUE")
             .setParameters({
                 latitud: coordenadas.latitud,
                 longitud: coordenadas.longitud,
                 radio,
                 tipoDeAlojamiento,
-                cantidadDeHuespedes
+                cantidadDeHuespedes,
+                precioPorNocheMinimo
             })
             .getMany();
     }
