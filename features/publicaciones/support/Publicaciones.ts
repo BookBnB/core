@@ -40,6 +40,7 @@ export default class Publicaciones  extends Recurso {
                 },
             },
             cantidadDeHuespedes: 2,
+            tipoDeAlojamiento: 'Alojamiento entero',
             imagenes: []
         }
     }

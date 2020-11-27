@@ -18,6 +18,7 @@ Característica:
       | direccion.coordenadas.latitud  | -38.0083                                               |
       | direccion.coordenadas.longitud | -57.5385                                               |
       | cantidadDeHuespedes            | 2                                                      |
+      | tipoDeAlojamiento              | Alojamiento entero                                      |
     Cuando ingreso a la publicación con título "Departamento con vista"
     Entonces veo una publicación con:
       | titulo                         | Departamento con vista                                 |
@@ -31,6 +32,7 @@ Característica:
       | direccion.coordenadas.latitud  | -38.0083                                               |
       | direccion.coordenadas.longitud | -57.5385                                               |
       | cantidadDeHuespedes            | 2                                                      |
+      | tipoDeAlojamiento              | Alojamiento entero                                      |
 
   Escenario: Ver una publicacion inexistente
     Dado que soy "huesped"

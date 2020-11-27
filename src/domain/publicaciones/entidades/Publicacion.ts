@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
@@ -12,6 +12,13 @@ export interface PublicacionConstructor {
     cantidadDeHuespedes: number
     anfitrion: Usuario,
     imagenes: Imagen[]
+}
+
+export enum TipoDeAlojamiento {
+    alojamientoEntero = 'Alojamiento entero',
+    habitacionPrivada = 'Habitación privada',
+    habitacionCompartida = 'Habitación compartida',
+    habitacionDeHotel = 'Habitación de hotel'
 }
 
 @Entity()
@@ -33,6 +40,9 @@ export default class Publicacion {
 
     @Column("int")
     public cantidadDeHuespedes!: number;
+
+    @Column({type: 'enum', enum: TipoDeAlojamiento})
+    public tipoDeAlojamiento!: TipoDeAlojamiento;
 
     @Column(type => Usuario)
     public anfitrion!: Usuario;
