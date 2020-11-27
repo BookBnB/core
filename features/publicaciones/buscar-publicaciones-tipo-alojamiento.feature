@@ -6,21 +6,17 @@ Característica:
 
   Antecedentes:
     Dado que existe una publicacion con:
-      | titulo              | Casa en Salta      |
-      | cantidadDeHuespedes | 4                  |
-      | tipoDeAlojamiento   | Alojamiento entero |
+      | titulo            | Casa en Salta      |
+      | tipoDeAlojamiento | Alojamiento entero |
     Y que existe una publicacion con:
-      | titulo              | Departamento en Palermo |
-      | cantidadDeHuespedes | 2                       |
-      | tipoDeAlojamiento   | Habitación privada      |
+      | titulo            | Departamento en Palermo |
+      | tipoDeAlojamiento | Habitación privada      |
     Y que existe una publicacion con:
-      | titulo              | Hostel en Congreso    |
-      | cantidadDeHuespedes | 1                     |
-      | tipoDeAlojamiento   | Habitación compartida |
+      | titulo            | Hostel en Congreso    |
+      | tipoDeAlojamiento | Habitación compartida |
     Y que existe una publicacion con:
-      | titulo              | Hotel en Mar del Plata |
-      | cantidadDeHuespedes | 2                      |
-      | tipoDeAlojamiento   | Habitación de hotel    |
+      | titulo            | Hotel en Mar del Plata |
+      | tipoDeAlojamiento | Habitación de hotel    |
 
   Escenario: Buscar alojamientos enteros
     Dado que soy "huesped"
