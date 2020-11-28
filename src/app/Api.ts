@@ -8,6 +8,8 @@ import swaggerUi from 'swagger-ui-express';
 import ContainerAdapter from "../infra/container/ContainerAdapter";
 import {IContainer} from "../infra/container/Container";
 import {OpenAPIObject} from "openapi3-ts";
+import {defaultMetadataStorage} from "class-transformer/storage";
+import {authorizationChecker, currentUserChecker} from "./checkers";
 
 export interface ApiConstructor {
     app: Application,
@@ -51,6 +53,7 @@ export default class Api {
     private serveApiDocs() {
         const schemas = validationMetadatasToSchemas({
             refPointerPrefix: '#/components/schemas/',
+            classTransformerMetadataStorage: defaultMetadataStorage
         })
 
         const spec = routingControllersToSpec(
@@ -58,7 +61,16 @@ export default class Api {
             this.options(),
             {
                 ...this.openApiInfo,
-                components: {schemas},
+                components: {
+                    schemas,
+                    securitySchemes: {
+                        token: {
+                            type: 'apiKey',
+                            in: 'header',
+                            name: 'Authorization'
+                        }
+                    }
+                },
             }
         )
 
@@ -74,7 +86,11 @@ export default class Api {
     private options(): RoutingControllersOptions {
         return {
             routePrefix: "/v1",
-            controllers: [__dirname + "/../application/**/*"],
+            controllers: [__dirname + "/../application/**/*Controller.?s"],
+            validation: true,
+            defaultErrorHandler: false,
+            currentUserChecker: currentUserChecker,
+            authorizationChecker: authorizationChecker
         }
     }
 }

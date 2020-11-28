@@ -9,7 +9,7 @@ export interface ILogger {
 }
 
 export default class Log4JSLogger implements ILogger {
-	private logger: Logger;
+	private readonly logger: Logger;
 
 	public constructor(name: string) {
 		this.logger = getLogger(name);
