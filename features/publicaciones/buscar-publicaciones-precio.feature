@@ -27,6 +27,16 @@ Característica:
       | Hotel en Mar del Plata  |
       | Hostel en Congreso      |
 
+  Escenario: Buscar alojamientos por precio mínimo cero
+    Dado que soy "huesped"
+    Cuando busco las primeras 5 publicaciones con 0 como precio mínimo
+    Entonces veo las publicaciones:
+      | titulo                  |
+      | Casa en Salta           |
+      | Departamento en Palermo |
+      | Hotel en Mar del Plata  |
+      | Hostel en Congreso      |
+
   Escenario: Buscar alojamientos por precio mínimo sin resultados
     Dado que soy "huesped"
     Cuando busco las primeras 5 publicaciones con 30.1 como precio mínimo

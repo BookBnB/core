@@ -3,7 +3,7 @@ import PublicacionDTO from "../dtos/PublicacionDTO";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import ConsultaConPaginacion from "../../common/ConsultaConPaginacion";
-import {IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, ValidateNested} from "class-validator";
+import {IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
 import {Coordenadas} from "../../lugares/entidades/Lugar";
 import {JSONSchema} from "class-validator-jsonschema";
@@ -23,7 +23,7 @@ export class ConsultaDePublicaciones extends ConsultaConPaginacion {
     @IsEnum(TipoDeAlojamiento) @IsOptional()
     public tipoDeAlojamiento?: TipoDeAlojamiento = undefined
 
-    @IsNumber() @IsPositive() @IsOptional()
+    @IsNumber() @Min(0) @IsOptional()
     public precioPorNocheMinimo?: number = undefined
 
     @IsNumber() @IsPositive() @IsOptional()
