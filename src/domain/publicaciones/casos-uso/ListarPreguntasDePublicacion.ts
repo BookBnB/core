@@ -10,6 +10,7 @@ export class ListarPreguntasDePublicacion implements UseCase {
 
     async execute(idPublicacion: string): Promise<PreguntaDTO[]> {
         const publicacion: Publicacion = await this.publicaciones.obtener(idPublicacion)
-        return (await publicacion.preguntas).map((pregunta: Pregunta) => new PreguntaDTO(pregunta))
+        return (await publicacion.getPreguntas())
+            .map((pregunta: Pregunta) => new PreguntaDTO(pregunta))
     }
 }

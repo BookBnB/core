@@ -11,7 +11,7 @@ export class PreguntarEnPublicacion implements UseCase {
 
     async execute(idPublicacion: string, usuario: Usuario, pregunta: string): Promise<PreguntaDTO> {
         const publicacion: Publicacion = await this.publicaciones.obtener(idPublicacion)
-        const entidadPregunta: Pregunta = publicacion.preguntar(usuario, pregunta)
+        const entidadPregunta: Pregunta = await publicacion.preguntar(usuario, pregunta)
         await this.publicaciones.guardar(publicacion)
         return new PreguntaDTO(entidadPregunta)
     }

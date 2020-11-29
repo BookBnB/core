@@ -4,7 +4,7 @@ import Publicacion from "./Publicacion";
 
 interface PreguntaConstructor {
     pregunta: string
-    usuario: Usuario
+    usuario: Usuario,
 }
 
 @Entity()
