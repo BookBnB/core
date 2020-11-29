@@ -19,6 +19,14 @@ import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import Usuario from '../domain/usuarios/entidades/Usuario';
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
+import {PreguntarEnPublicacion} from "../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
+import PreguntaDTO from "../domain/publicaciones/dtos/PreguntaDTO";
+import {IsNotEmpty, IsString} from "class-validator";
+
+class PreguntaBody {
+    @IsString() @IsNotEmpty()
+    public pregunta!: string
+}
 
 @OpenAPI({security: [{token: []}]})
 @UseBefore(AuthenticationMiddleware)
@@ -27,7 +35,8 @@ export class PublicacionController {
     constructor(
         private readonly crearPublicacion: CrearPublicacion,
         private readonly verPublicacion: VerPublicacion,
-        private readonly listarPublicaciones: BuscarPublicaciones
+        private readonly listarPublicaciones: BuscarPublicaciones,
+        private readonly preguntarEnPublicacion: PreguntarEnPublicacion
     ) {
     }
 
@@ -68,5 +77,13 @@ export class PublicacionController {
     @OpenAPI({summary: 'Editar una publicación'})
     editar(@Body() body: CrearPublicacionDTO) {
 
+    }
+
+    @Post('/:id/preguntas')
+    @HttpCode(201)
+    @ResponseSchema(PreguntaDTO)
+    @OpenAPI({summary: 'Crea una pregunta en una publicación'})
+    preguntar(@Params() {id: idPublicacion}: UUID, @CurrentUser() usuario: Usuario, @Body() {pregunta}: PreguntaBody): Promise<PreguntaDTO> {
+        return this.preguntarEnPublicacion.execute(idPublicacion, usuario, pregunta)
     }
 }

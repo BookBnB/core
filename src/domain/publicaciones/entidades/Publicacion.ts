@@ -3,6 +3,7 @@ import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
 import Reserva from "../../reservas/entidades/Reserva";
+import Pregunta from "./Pregunta";
 
 export interface PublicacionConstructor {
     titulo: string
@@ -47,13 +48,22 @@ export default class Publicacion {
     @Column(type => Usuario)
     public anfitrion!: Usuario;
 
-    @OneToMany(() => Imagen, imagen => imagen.publicacion, {cascade: true, eager: true})
+    @OneToMany(type => Imagen, imagen => imagen.publicacion, {cascade: true, eager: true})
     public imagenes!: Imagen[];
 
-    @OneToMany(() => Reserva, reserva => reserva.publicacion)
+    @OneToMany(type => Reserva, reserva => reserva.publicacion)
     public reservas!: Reserva[];
+
+    @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
+    public preguntas!: Pregunta[];
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
+    }
+
+    preguntar(usuario: Usuario, pregunta: string): Pregunta {
+        const entidadPregunta = new Pregunta({usuario, pregunta})
+        this.preguntas = [entidadPregunta]
+        return entidadPregunta
     }
 }

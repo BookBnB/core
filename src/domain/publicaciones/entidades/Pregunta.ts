@@ -1,0 +1,32 @@
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import Usuario from "../../usuarios/entidades/Usuario";
+import Publicacion from "./Publicacion";
+
+interface PreguntaConstructor {
+    pregunta: string
+    usuario: Usuario
+}
+
+@Entity()
+export default class Pregunta {
+
+    @PrimaryGeneratedColumn("uuid")
+    public id?: string;
+
+    @Column("timestamp")
+    public creada: Date
+
+    @Column("text")
+    public pregunta!: string;
+
+    @Column(type => Usuario)
+    public usuario!: Usuario;
+
+    @ManyToOne(type => Publicacion, publicacion => publicacion.preguntas)
+    public publicacion!: Publicacion;
+
+    constructor(args: PreguntaConstructor) {
+        this.creada = new Date();
+        Object.assign(this, args);
+    }
+}

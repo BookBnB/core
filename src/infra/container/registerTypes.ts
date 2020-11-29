@@ -35,6 +35,7 @@ import { UsuarioController } from "../../application/UsuariosController";
 import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
 import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
 import {ListarPublicacionesPorAnfitrion} from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
+import {PreguntarEnPublicacion} from "../../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -76,6 +77,7 @@ export default class Registry {
         container.registerTransient<CrearPublicacion>()
         container.registerTransient<VerPublicacion>()
         container.registerTransient<BuscarPublicaciones>()
+        container.registerTransient<PreguntarEnPublicacion>()
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
