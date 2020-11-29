@@ -11,6 +11,27 @@ export default class Publicaciones extends Recurso {
         return this.BASE_URL;
     }
 
+    public static ejemplo() {
+        return {
+            titulo: 'Departamento con vista',
+            descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
+            precioPorNoche: 0.05,
+            direccion: {
+                pais: 'Argentina',
+                provincia: 'Buenos Aires',
+                ciudad: 'Mar del Plata',
+                direccion: 'Av. Bv. Marítimo Patricio Peralta Ramos 4799',
+                coordenadas: {
+                    latitud: -38.0083,
+                    longitud: -57.5385
+                },
+            },
+            cantidadDeHuespedes: 2,
+            tipoDeAlojamiento: 'Alojamiento entero',
+            imagenes: []
+        }
+    }
+
     public static async crear(context: any, publicacion: any) {
         await this.post(context, '/', publicacion)
         context.last_publicacion = context.last_response
@@ -48,24 +69,11 @@ export default class Publicaciones extends Recurso {
         })
     }
 
-    public static ejemplo() {
-        return {
-            titulo: 'Departamento con vista',
-            descripcion: 'Hermoso departamento con vista al mar en Mar del Plata',
-            precioPorNoche: 0.05,
-            direccion: {
-                pais: 'Argentina',
-                provincia: 'Buenos Aires',
-                ciudad: 'Mar del Plata',
-                direccion: 'Av. Bv. Marítimo Patricio Peralta Ramos 4799',
-                coordenadas: {
-                    latitud: -38.0083,
-                    longitud: -57.5385
-                },
-            },
-            cantidadDeHuespedes: 2,
-            tipoDeAlojamiento: 'Alojamiento entero',
-            imagenes: []
-        }
+    public static async listarPreguntas(context: any, idPublicacion: string) {
+        await this.get(context, `/${idPublicacion}/preguntas`)
+    }
+
+    public static async preguntar(context: any, idPublicacion: string, pregunta: string) {
+        await this.post(context, `/${idPublicacion}/preguntas`, {pregunta})
     }
 }

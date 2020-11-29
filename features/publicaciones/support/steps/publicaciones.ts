@@ -4,7 +4,7 @@ import chaiHttp from "chai-http"
 import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
 import _ from "lodash"
 import Publicaciones from "../Publicaciones";
-import { validarObjeto } from "../../../util/Validacion";
+import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import chaiSubset from "chai-subset";
 import Usuarios from "../../../usuarios/support/Usuarios";
 import { v4 as uuidv4 } from 'uuid';
@@ -131,16 +131,7 @@ When('busco las primeras {int} publicaciones con precio entre {float} y {float}'
 });
 
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
-    let publicaciones: any = dataTable.hashes()
-    publicaciones = publicaciones.map((publicacion: any) => {
-        const publicacionParseada: any = {}
-        Object.entries(publicacion).forEach(([clave, valor]) => {
-            _.set(publicacionParseada, clave, valor)
-        })
-        return {...publicacionParseada}
-    })
-    expect(this.last_response.body).to.lengthOf(publicaciones.length)
-    expect(this.last_response.body).to.containSubset(publicaciones)
+    validarConjunto.bind(this)(dataTable)
 });
 
 When('ingreso a la publicación con id {string}', async function (id: string) {
