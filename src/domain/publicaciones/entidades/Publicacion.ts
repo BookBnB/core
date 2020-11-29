@@ -55,7 +55,7 @@ export default class Publicacion {
     public reservas!: Reserva[];
 
     @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
-    public preguntas!: Pregunta[];
+    public preguntas!: Promise<Pregunta[]>;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
@@ -63,7 +63,7 @@ export default class Publicacion {
 
     preguntar(usuario: Usuario, pregunta: string): Pregunta {
         const entidadPregunta = new Pregunta({usuario, pregunta})
-        this.preguntas = [entidadPregunta]
+        this.preguntas = Promise.resolve([entidadPregunta])
         return entidadPregunta
     }
 }

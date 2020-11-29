@@ -22,6 +22,7 @@ import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 import {PreguntarEnPublicacion} from "../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
 import PreguntaDTO from "../domain/publicaciones/dtos/PreguntaDTO";
 import {IsNotEmpty, IsString} from "class-validator";
+import {ListarPreguntasDePublicacion} from "../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
 
 class PreguntaBody {
     @IsString() @IsNotEmpty()
@@ -36,7 +37,8 @@ export class PublicacionController {
         private readonly crearPublicacion: CrearPublicacion,
         private readonly verPublicacion: VerPublicacion,
         private readonly listarPublicaciones: BuscarPublicaciones,
-        private readonly preguntarEnPublicacion: PreguntarEnPublicacion
+        private readonly preguntarEnPublicacion: PreguntarEnPublicacion,
+        private readonly listarPreguntasDePublicacion: ListarPreguntasDePublicacion
     ) {
     }
 
@@ -45,7 +47,7 @@ export class PublicacionController {
         summary: 'Muestra una lista de publicaciones',
         parameters: [{in: "query", name: "coordenadas", style: "deepObject", explode: true}]
     })
-    @ResponseSchema(PublicacionDTO)
+    @ResponseSchema(PublicacionDTO, {isArray: true})
     async listar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
         return this.listarPublicaciones.execute(consulta)
     }
@@ -85,5 +87,13 @@ export class PublicacionController {
     @OpenAPI({summary: 'Crea una pregunta en una publicación'})
     preguntar(@Params() {id: idPublicacion}: UUID, @CurrentUser() usuario: Usuario, @Body() {pregunta}: PreguntaBody): Promise<PreguntaDTO> {
         return this.preguntarEnPublicacion.execute(idPublicacion, usuario, pregunta)
+    }
+
+    @Get('/:id/preguntas')
+    @HttpCode(200)
+    @ResponseSchema(PreguntaDTO, {isArray: true})
+    @OpenAPI({summary: 'Lista las preguntas de una publicación'})
+    listarPreguntas(@Params() {id: idPublicacion}: UUID): Promise<PreguntaDTO[]> {
+        return this.listarPreguntasDePublicacion.execute(idPublicacion)
     }
 }

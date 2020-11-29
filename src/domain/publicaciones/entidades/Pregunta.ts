@@ -23,7 +23,7 @@ export default class Pregunta {
     public usuario!: Usuario;
 
     @ManyToOne(type => Publicacion, publicacion => publicacion.preguntas)
-    public publicacion!: Publicacion;
+    public publicacion!: Promise<Publicacion>;
 
     constructor(args: PreguntaConstructor) {
         this.creada = new Date();
