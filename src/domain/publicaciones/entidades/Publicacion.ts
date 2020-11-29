@@ -61,8 +61,8 @@ export default class Publicacion {
         Object.assign(this, args);
     }
 
-    async preguntar(usuario: Usuario, pregunta: string): Promise<Pregunta> {
-        const entidadPregunta = new Pregunta({usuario, pregunta})
+    async preguntar(usuario: Usuario, descripcion: string): Promise<Pregunta> {
+        const entidadPregunta = new Pregunta({usuario, descripcion})
         this.preguntas = Promise.resolve([...await this.preguntas, entidadPregunta])
         return entidadPregunta
     }

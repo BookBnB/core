@@ -3,7 +3,7 @@ import Usuario from "../../usuarios/entidades/Usuario";
 import Publicacion from "./Publicacion";
 
 interface PreguntaConstructor {
-    pregunta: string
+    descripcion: string
     usuario: Usuario,
 }
 
@@ -17,7 +17,7 @@ export default class Pregunta {
     public creada: Date
 
     @Column("text")
-    public pregunta!: string;
+    public descripcion!: string;
 
     @Column(type => Usuario)
     public usuario!: Usuario;

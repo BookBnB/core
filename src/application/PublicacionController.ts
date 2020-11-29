@@ -26,7 +26,7 @@ import {ListarPreguntasDePublicacion} from "../domain/publicaciones/casos-uso/Li
 
 class PreguntaBody {
     @IsString() @IsNotEmpty()
-    public pregunta!: string
+    public descripcion!: string
 }
 
 @OpenAPI({security: [{token: []}]})
@@ -85,8 +85,8 @@ export class PublicacionController {
     @HttpCode(201)
     @ResponseSchema(PreguntaDTO)
     @OpenAPI({summary: 'Crea una pregunta en una publicación'})
-    preguntar(@Params() {id: idPublicacion}: UUID, @CurrentUser() usuario: Usuario, @Body() {pregunta}: PreguntaBody): Promise<PreguntaDTO> {
-        return this.preguntarEnPublicacion.execute(idPublicacion, usuario, pregunta)
+    preguntar(@Params() {id: idPublicacion}: UUID, @CurrentUser() usuario: Usuario, @Body() {descripcion}: PreguntaBody): Promise<PreguntaDTO> {
+        return this.preguntarEnPublicacion.execute(idPublicacion, usuario, descripcion)
     }
 
     @Get('/:id/preguntas')

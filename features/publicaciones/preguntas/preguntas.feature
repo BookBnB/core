@@ -15,18 +15,18 @@ Característica:
 
   Escenario: La pregunta no puede estar vacía
     Cuando pregunto "" en la publicación con título "Casa en Salta"
-    Entonces veo un error indicado en el campo "pregunta"
+    Entonces veo un error indicado en el campo "descripcion"
 
   Escenario: Realizar una pregunta
     Cuando pregunto "Hay aire acondicionado?" en la publicación con título "Casa en Salta"
     Entonces veo una nueva pregunta con:
-      | pregunta | Hay aire acondicionado? |
+      | descripcion | Hay aire acondicionado? |
 
   Escenario: Ver pregunta realizada
     Cuando pregunto "Hay aire acondicionado?" en la publicación con título "Casa en Salta"
     Y listo las preguntas de la publicación con título "Casa en Salta"
     Entonces veo las preguntas:
-      | pregunta                |
+      | descripcion             |
       | Hay aire acondicionado? |
 
   Escenario: Ver varias preguntas realizas
@@ -35,7 +35,7 @@ Característica:
     Y pregunto "A cuántas cuadras del centro está?" en la publicación con título "Casa en Salta"
     Y listo las preguntas de la publicación con título "Casa en Salta"
     Entonces veo las preguntas:
-      | pregunta                           |
+      | descripcion                        |
       | Hay aire acondicionado?            |
       | Hay televisión satelital?          |
       | A cuántas cuadras del centro está? |

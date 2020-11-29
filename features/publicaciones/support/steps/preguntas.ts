@@ -10,9 +10,9 @@ When('listo las preguntas de la publicación con título {string}', async functi
     await Publicaciones.listarPreguntas(this, this.last_publicacion.body.id)
 });
 
-When('pregunto {string} en la publicación con título {string}', async function (pregunta, titulo) {
+When('pregunto {string} en la publicación con título {string}', async function (descripcion, titulo) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo)
-    await Publicaciones.preguntar(this, this.last_publicacion.body.id, pregunta)
+    await Publicaciones.preguntar(this, this.last_publicacion.body.id, descripcion)
 });
 
 Then('veo una nueva pregunta con:', function (dataTable) {
