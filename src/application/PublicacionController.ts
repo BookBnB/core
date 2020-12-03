@@ -21,8 +21,21 @@ import Usuario from '../domain/usuarios/entidades/Usuario';
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 import {PreguntarEnPublicacion} from "../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
 import PreguntaDTO from "../domain/publicaciones/dtos/PreguntaDTO";
-import {IsNotEmpty, IsString} from "class-validator";
+import {IsNotEmpty, IsString, IsUUID} from "class-validator";
 import {ListarPreguntasDePublicacion} from "../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
+import {ResponderEnPublicacion} from "../domain/publicaciones/casos-uso/ResponderEnPublicacion";
+import Respuesta from "../domain/publicaciones/entidades/Respuesta";
+import RespuestaDTO from "../domain/publicaciones/dtos/RespuestaDTO";
+import ConsultaConPaginacion from "../domain/common/ConsultaConPaginacion";
+
+
+class ResponderPreguntaParams {
+    @IsUUID(4)
+    public idPublicacion!: string
+
+    @IsUUID(4)
+    public idPregunta!: string
+}
 
 class PreguntaBody {
     @IsString() @IsNotEmpty()
@@ -38,7 +51,8 @@ export class PublicacionController {
         private readonly verPublicacion: VerPublicacion,
         private readonly listarPublicaciones: BuscarPublicaciones,
         private readonly preguntarEnPublicacion: PreguntarEnPublicacion,
-        private readonly listarPreguntasDePublicacion: ListarPreguntasDePublicacion
+        private readonly listarPreguntasDePublicacion: ListarPreguntasDePublicacion,
+        private readonly responderEnPublicacion: ResponderEnPublicacion
     ) {
     }
 
@@ -93,7 +107,15 @@ export class PublicacionController {
     @HttpCode(200)
     @ResponseSchema(PreguntaDTO, {isArray: true})
     @OpenAPI({summary: 'Lista las preguntas de una publicación'})
-    listarPreguntas(@Params() {id: idPublicacion}: UUID): Promise<PreguntaDTO[]> {
-        return this.listarPreguntasDePublicacion.execute(idPublicacion)
+    listarPreguntas(@Params() {id: idPublicacion}: UUID, @QueryParams() consulta: ConsultaConPaginacion): Promise<PreguntaDTO[]> {
+        return this.listarPreguntasDePublicacion.execute(idPublicacion, consulta)
+    }
+
+    @Post('/:idPublicacion/preguntas/:idPregunta/respuesta')
+    @HttpCode(201)
+    @ResponseSchema(PreguntaDTO)
+    @OpenAPI({summary: 'Responde una pregunta de una publicación'})
+    responderPregunta(@Params() {idPublicacion, idPregunta}: ResponderPreguntaParams, @CurrentUser() usuario: Usuario, @Body() {descripcion}: PreguntaBody): Promise<PreguntaDTO> {
+        return this.responderEnPublicacion.execute(idPublicacion, idPregunta, usuario, descripcion)
     }
 }

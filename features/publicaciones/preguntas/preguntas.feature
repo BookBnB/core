@@ -13,12 +13,6 @@ Característica:
     Cuando listo las preguntas de la publicación con título "Casa en Salta"
     Entonces no veo preguntas
 
-  Escenario: La pregunta no puede estar vacía
-    Cuando pregunto "" en la publicación con título "Casa en Salta"
-    Entonces veo un error indicado en el campo "descripcion"
-    Cuando listo las preguntas de la publicación con título "Casa en Salta"
-    Entonces no veo preguntas
-
   Escenario: Realizar una pregunta
     Cuando pregunto "Hay aire acondicionado?" en la publicación con título "Casa en Salta"
     Entonces veo una nueva pregunta con:
@@ -41,3 +35,9 @@ Característica:
       | Hay aire acondicionado?            |
       | Hay televisión satelital?          |
       | A cuántas cuadras del centro está? |
+
+  Escenario: La pregunta no puede estar vacía
+    Cuando pregunto "" en la publicación con título "Casa en Salta"
+    Entonces veo un error indicado en el campo "descripcion"
+    Cuando listo las preguntas de la publicación con título "Casa en Salta"
+    Entonces no veo preguntas

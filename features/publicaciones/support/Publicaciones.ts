@@ -76,4 +76,8 @@ export default class Publicaciones extends Recurso {
     public static async preguntar(context: any, idPublicacion: string, descripcion: string) {
         await this.post(context, `/${idPublicacion}/preguntas`, {descripcion})
     }
+
+    static async responder(context: any, publicacionId: string, preguntaId: string, respuesta: string) {
+        await this.post(context, `/${publicacionId}/preguntas/${preguntaId}/respuesta`, {descripcion: respuesta})
+    }
 }

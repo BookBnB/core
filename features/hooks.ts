@@ -11,6 +11,8 @@ import Store from "./util/Store";
 import RelojFake from "./doubles/RelojFake";
 import TestRegistry from "./doubles/TestRegistry";
 import GestorDeSesiones from "./util/GestorDeSesiones";
+import {configure} from "log4js";
+import logConfig from "../config/log-config.json";
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
@@ -33,12 +35,15 @@ AfterAll(() => {
 /**
  * Setup api
  */
+BeforeAll(() => {
+    if(process.env["LOGS"] === 'true') configure(logConfig);
+})
+
 Before(async function () {
     const app = express()
     this.app = app
-    this.reloj = new RelojFake();
+    this.reloj = new RelojFake()
     this.container = new DIContainer()
-    this.gestorDeSesiones = new GestorDeSesiones();
     return await new TestRegistry(this.reloj).registrar(this.container).then(container => {
         new Api({
             app,
@@ -52,3 +57,10 @@ After(async function () {
     const container: DIContainer = this.container;
     return await container.get<Connection>().close()
 });
+
+/**
+ * Setup sesiones
+ */
+Before(function () {
+    this.gestorDeSesiones = new GestorDeSesiones();
+})

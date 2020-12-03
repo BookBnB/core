@@ -1,22 +1,33 @@
-import {Repository} from "typeorm";
+import {Connection, Repository} from "typeorm";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import {ConsultaDePublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
+import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
+import Respuesta from "../../domain/publicaciones/entidades/Respuesta";
 
-export default class PublicacionRepositorio implements IPublicacionRepositorio {
-    public constructor(private readonly repo: Repository<Publicacion>) {
+export class PublicacionRepositorio implements IPublicacionRepositorio {
+    public constructor(private readonly repo: Repository<Publicacion>,
+                       private readonly connection: Connection) {
     }
 
     guardar(publicacion: Publicacion): Promise<Publicacion> {
         return this.repo.save(publicacion)
     }
 
+    guardarPregunta(pregunta: Pregunta): Promise<Pregunta> {
+        return this.connection.manager.save(pregunta)
+    }
+
+    guardarRespuesta(respuesta: Respuesta): Promise<Respuesta> {
+        return this.connection.manager.save(respuesta)
+    }
+
     async obtener(id: string): Promise<Publicacion> {
         const publicacion = await this.repo.findOne(id);
         if (!publicacion)
             throw new PublicacionInexistenteError(`La publicación con id ${id} no existe.`)
-        return publicacion;
+        return publicacion
     }
 
     listar({
