@@ -25,3 +25,9 @@ Característica:
     Y además
     Cuando listo las preguntas de la publicación con título "Casa en Salta"
     Entonces veo que la pregunta "Hay televisión satelital?" no tiene respuesta
+
+  Escenario: Puedo modificar una respuesta
+    Cuando respondo la pregunta "Hay aire acondicionado?" con "No, pero hay ventilador" en la publicación con título "Casa en Salta"
+    Y respondo la pregunta "Hay aire acondicionado?" con "En realidad sí hay, pero en el living" en la publicación con título "Casa en Salta"
+    Y listo las preguntas de la publicación con título "Casa en Salta"
+    Entonces veo que la pregunta "Hay aire acondicionado?" tiene respuesta "En realidad sí hay, pero en el living"

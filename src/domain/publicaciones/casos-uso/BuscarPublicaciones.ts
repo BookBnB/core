@@ -7,7 +7,7 @@ import {IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, Validat
 import {Type} from "class-transformer";
 import {Coordenadas} from "../../lugares/entidades/Lugar";
 import {JSONSchema} from "class-validator-jsonschema";
-import PrecioPorNocheInvertido from "../excepciones/PrecioPorNocheInvertido";
+import PrecioPorNocheInvertidoError from "../excepciones/PrecioPorNocheInvertidoError";
 
 export class ConsultaDePublicaciones extends ConsultaConPaginacion {
     @ValidateNested() @IsDefined() @Type(() => Coordenadas)
@@ -37,7 +37,7 @@ export class BuscarPublicaciones implements UseCase {
     async execute(consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
         const {precioPorNocheMinimo, precioPorNocheMaximo} = consulta
         if(precioPorNocheMinimo && precioPorNocheMaximo && (precioPorNocheMinimo > precioPorNocheMaximo))
-            throw new PrecioPorNocheInvertido('El precio por noche máximo debe ser mayor al precio por noche mínimo')
+            throw new PrecioPorNocheInvertidoError('El precio por noche máximo debe ser mayor al precio por noche mínimo')
 
         return (await this.publicaciones.listar(consulta))
             .map((publicacion: Publicacion): PublicacionDTO =>
