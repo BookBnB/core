@@ -31,3 +31,7 @@ Característica:
     Y respondo la pregunta "Hay aire acondicionado?" con "En realidad sí hay, pero en el living" en la publicación con título "Casa en Salta"
     Y listo las preguntas de la publicación con título "Casa en Salta"
     Entonces veo que la pregunta "Hay aire acondicionado?" tiene respuesta "En realidad sí hay, pero en el living"
+
+  Escenario: Responder una pregunta que no existe
+    Cuando respondo una pregunta una pregunta que no existe
+    Entonces obtengo un error 404 con mensaje "La pregunta con id .* no existe"
