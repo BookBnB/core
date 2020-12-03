@@ -53,7 +53,7 @@ Then('veo que la pregunta {string} tiene respuesta {string}', function (pregunta
     expect(preguntaEncontrada.respuesta.descripcion).to.eql(respuesta)
 });
 
-Then('que la pregunta {string} no tiene respuesta', function (pregunta) {
+Then('veo que la pregunta {string} no tiene respuesta', function (pregunta) {
     const preguntaEncontrada = _.find(this.last_response.body, {descripcion: pregunta})
     expect(preguntaEncontrada.respuesta).to.be.undefined
 });

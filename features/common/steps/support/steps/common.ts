@@ -22,3 +22,6 @@ Then('obtengo un error {int} con mensaje {string}', function (code, message) {
     expect(this.last_response).to.have.status(code)
     expect(this.last_response.body.message).to.include(message)
 });
+
+Then('además', function () {
+});

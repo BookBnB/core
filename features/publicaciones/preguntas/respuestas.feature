@@ -17,4 +17,11 @@ Característica:
     Cuando respondo la pregunta "Hay aire acondicionado?" con "No, pero hay ventilador" en la publicación con título "Casa en Salta"
     Y listo las preguntas de la publicación con título "Casa en Salta"
     Entonces veo que la pregunta "Hay aire acondicionado?" tiene respuesta "No, pero hay ventilador"
-    Y que la pregunta "Hay televisión satelital?" no tiene respuesta
+    Y veo que la pregunta "Hay televisión satelital?" no tiene respuesta
+
+  Escenario: Responder una pregunta
+    Cuando respondo la pregunta "Hay aire acondicionado?" con "" en la publicación con título "Casa en Salta"
+    Entonces veo un error indicado en el campo "descripcion"
+    Y además
+    Cuando listo las preguntas de la publicación con título "Casa en Salta"
+    Entonces veo que la pregunta "Hay televisión satelital?" no tiene respuesta
