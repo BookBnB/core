@@ -19,10 +19,6 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
         return this.connection.manager.save(pregunta)
     }
 
-    guardarRespuesta(respuesta: Respuesta): Promise<Respuesta> {
-        return this.connection.manager.save(respuesta)
-    }
-
     async obtener(id: string): Promise<Publicacion> {
         const publicacion = await this.repo.findOne(id);
         if (!publicacion)
