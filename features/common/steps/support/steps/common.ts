@@ -20,5 +20,8 @@ Then('veo un error indicado en el campo {string}', function (campoError: string)
 Then('obtengo un error {int} con mensaje {string}', function (code, message) {
     expect(this.last_response).to.be.json
     expect(this.last_response).to.have.status(code)
-    expect(this.last_response.body.message).to.include(message)
+    expect(this.last_response.body.message).to.match(new RegExp(message))
+});
+
+Then('además', function () {
 });

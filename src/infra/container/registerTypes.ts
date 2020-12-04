@@ -4,7 +4,7 @@ import {Connection, EntityManager, Repository} from "typeorm";
 import {IContainer} from "./Container";
 import {PublicacionController} from "../../application/PublicacionController";
 import {CrearPublicacion} from "../../domain/publicaciones/casos-uso/CrearPublicacion";
-import PublicacionRepositorio from "../repositories/PublicacionRepositorio";
+import {PublicacionRepositorio} from "../repositories/PublicacionRepositorio";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import {VerPublicacion} from "../../domain/publicaciones/casos-uso/VerPublicacion";
@@ -35,6 +35,12 @@ import { UsuarioController } from "../../application/UsuariosController";
 import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
 import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
 import {ListarPublicacionesPorAnfitrion} from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
+import {PreguntarEnPublicacion} from "../../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
+import {ListarPreguntasDePublicacion} from "../../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
+import {ResponderEnPublicacion} from "../../domain/publicaciones/casos-uso/ResponderEnPublicacion";
+import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
+import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/PreguntaRepositorio";
+import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -76,11 +82,18 @@ export default class Registry {
         container.registerTransient<CrearPublicacion>()
         container.registerTransient<VerPublicacion>()
         container.registerTransient<BuscarPublicaciones>()
+        container.registerTransient<PreguntarEnPublicacion>()
+        container.registerTransient<ListarPreguntasDePublicacion>()
+        container.registerTransient<ResponderEnPublicacion>()
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
-        container.registerSingleton<IPublicacionRepositorio>(() =>
-            new PublicacionRepositorio(container.get<Repository<Publicacion>>()))
+        container.registerSingleton<IPublicacionRepositorio, PublicacionRepositorio>()
+
+        const pregunta_repo = await container.get<Connection>().getRepository(Pregunta);
+        container.registerSingleton<Repository<Pregunta>>(() => pregunta_repo)
+        container.registerSingleton<IPreguntaRepositorio>(() =>
+            new PreguntaRepositorio(container.get<Repository<Pregunta>>()))
     }
 
     protected async registrarSesiones(container: DIContainer) {

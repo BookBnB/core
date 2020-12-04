@@ -1,8 +1,11 @@
-import {Entity, Column, PrimaryGeneratedColumn, OneToMany} from "typeorm";
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
 import Reserva from "../../reservas/entidades/Reserva";
+import Pregunta from "./Pregunta";
+import Respuesta from "./Respuesta";
+import PreguntaInexistenteError from "../excepciones/PreguntaInexistenteError";
 
 export interface PublicacionConstructor {
     titulo: string
@@ -47,13 +50,27 @@ export default class Publicacion {
     @Column(type => Usuario)
     public anfitrion!: Usuario;
 
-    @OneToMany(() => Imagen, imagen => imagen.publicacion, {cascade: true, eager: true})
+    @OneToMany(type => Imagen, imagen => imagen.publicacion, {cascade: true, eager: true})
     public imagenes!: Imagen[];
 
-    @OneToMany(() => Reserva, reserva => reserva.publicacion)
+    @OneToMany(type => Reserva, reserva => reserva.publicacion)
     public reservas!: Reserva[];
+
+    @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
+    public preguntas!: Promise<Pregunta[]>;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
+    }
+
+    async preguntar(usuario: Usuario, descripcion: string): Promise<Pregunta> {
+        return new Pregunta({usuario, descripcion, publicacion: this})
+    }
+
+    async responder(idPregunta: string, descripcion: string, usuario: Usuario): Promise<Pregunta> {
+        const pregunta = (await this.preguntas).find(pregunta => pregunta.id === idPregunta)
+        if (!pregunta) throw new PreguntaInexistenteError(`La pregunta con id ${idPregunta} no existe.`)
+        pregunta.responder(descripcion, usuario)
+        return pregunta
     }
 }

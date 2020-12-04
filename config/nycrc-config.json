@@ -10,6 +10,9 @@
     "src/**/*"
   ],
   "exclude": [
-    "src/infra/migration/**/*"
+    "src/infra/migration/**/*",
+    "src/infra/logging/**/*",
+    "src/App.ts",
+    "src/app/**/*"
   ]
 }
