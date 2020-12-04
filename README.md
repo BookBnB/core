@@ -19,10 +19,10 @@ npm run start
 ## Tests
 
 ```
-npm run test			# all tests, no coverage
-npm run test:unit		# unit tests only
+npm run test            # all tests, no coverage
+npm run test:unit       # unit tests only
 npm run test:acceptance # acceptance tests only
-npm run test:coverage	# all tests, with coverage
+npm run test:coverag    # all tests, with coverage
 ```
 
 ## Migrations

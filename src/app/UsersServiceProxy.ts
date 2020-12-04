@@ -10,9 +10,12 @@ export default class UsersServiceProxy {
     }
 
     private initilize() {
-        this.app.use('/v1/users', createProxyMiddleware({
+        this.app.use('/v1/usuarios', createProxyMiddleware({
             target: process.env.USERS_SERVICE_URL,
             changeOrigin: true,
+            pathRewrite: {
+                '^/v1/usuarios': '/v1/users'
+            }
         }))
     }
 }

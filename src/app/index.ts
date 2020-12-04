@@ -14,8 +14,7 @@ export default async (appLogger: ILogger): Promise<Application> => {
     new Cors({app, logger: appLogger})
     new HTTPLogger({app, logger: appLogger})
     new Welcome(app)
-    new UsersServiceProxy({app})
-    new Api({
+    await Api.crear({
         app,
         logger: new Log4JSLogger('Api'),
         container: await new Registry().registrar(new DIContainer()),
@@ -26,6 +25,7 @@ export default async (appLogger: ILogger): Promise<Application> => {
             }
         }
     });
+    new UsersServiceProxy({app})
     new HTTPErrorHandlerLogger({app, logger: appLogger})
 
     return app

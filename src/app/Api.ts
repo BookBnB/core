@@ -10,6 +10,8 @@ import {IContainer} from "../infra/container/Container";
 import {OpenAPIObject} from "openapi3-ts";
 import {defaultMetadataStorage} from "class-transformer/storage";
 import {authorizationChecker, currentUserChecker} from "./checkers";
+import axios from 'axios'
+import {isURL} from "class-validator";
 
 export interface ApiConstructor {
     app: Application,
@@ -24,18 +26,23 @@ export default class Api {
     private readonly container: IContainer;
     private readonly openApiInfo: Partial<OpenAPIObject>;
 
-    public constructor({app, logger, container, openApiInfo = {}}: ApiConstructor) {
+    private constructor({app, logger, container, openApiInfo = {}}: ApiConstructor) {
         this.app = app
         this.logger = logger
         this.container = container
         this.openApiInfo = openApiInfo
-        this.initialize()
     }
 
-    public initialize(): void {
+    public static async crear(args: ApiConstructor) {
+        const api = new Api(args)
+        await api.initialize()
+        return api
+    }
+
+    private async initialize(): Promise<void> {
         this.useContainer();
         useExpressServer(this.app, this.options());
-        this.serveApiDocs()
+        await this.serveApiDocs()
     }
 
     /**
@@ -50,7 +57,7 @@ export default class Api {
      * Muestra la documentación de la api.
      * @private
      */
-    private serveApiDocs() {
+    private async serveApiDocs() {
         const schemas = validationMetadatasToSchemas({
             refPointerPrefix: '#/components/schemas/',
             classTransformerMetadataStorage: defaultMetadataStorage
@@ -73,10 +80,22 @@ export default class Api {
                 },
             }
         )
+        const usersSpec = await this.usersServiceApiDocs()
 
         this.app.use(`${this.options().routePrefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(spec));
         this.app.get(`${this.options().routePrefix}/api.json`, (req, res) =>
             res.json(spec));
+    }
+
+    /**
+     * Devuelve el spec del servicio de usuarios.
+     * @private
+     */
+    private async usersServiceApiDocs() {
+        const specUrl = process.env['USERS_OPENAPI_SPEC_URL']
+        if(!isURL(specUrl as string))
+            return
+        return await axios.get(specUrl as string)
     }
 
     /**
