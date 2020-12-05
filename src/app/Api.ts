@@ -12,6 +12,9 @@ import {defaultMetadataStorage} from "class-transformer/storage";
 import {authorizationChecker, currentUserChecker} from "./checkers";
 import axios from 'axios'
 import {isURL} from "class-validator";
+import {merge} from 'openapi-merge';
+import UsersServiceProxy from "./UsersServiceProxy";
+
 
 export interface ApiConstructor {
     app: Application,
@@ -80,11 +83,35 @@ export default class Api {
                 },
             }
         )
-        const usersSpec = await this.usersServiceApiDocs()
 
-        this.app.use(`${this.options().routePrefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(spec));
+        const usersSpec = await this.usersServiceApiDocs()
+        // @ts-ignore
+        const result = usersSpec ? this.mergeApiDocs(spec, usersSpec).output : spec
+
+        this.app.use(`${this.options().routePrefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(result));
         this.app.get(`${this.options().routePrefix}/api.json`, (req, res) =>
             res.json(spec));
+    }
+
+    /**
+     * Junta las especificaciones OpenApi en una.
+     * @param spec
+     * @param userSpec
+     * @private
+     */
+    private mergeApiDocs(spec: object, userSpec: object) {
+        return merge([
+            {
+                // @ts-ignore
+                oas: spec
+            }, {
+                // @ts-ignore
+                oas: userSpec,
+                operationSelection: {
+                    includeTags: UsersServiceProxy.proxyTags()
+                }
+            }
+        ])
     }
 
     /**
@@ -93,9 +120,10 @@ export default class Api {
      */
     private async usersServiceApiDocs() {
         const specUrl = process.env['USERS_OPENAPI_SPEC_URL']
-        if(!isURL(specUrl as string))
+        if (!isURL(specUrl as string, {require_tld: false, allow_underscores: true}))
             return
-        return await axios.get(specUrl as string)
+
+        return (await axios.get(specUrl as string)).data
     }
 
     /**

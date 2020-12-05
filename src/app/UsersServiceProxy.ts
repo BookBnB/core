@@ -10,12 +10,23 @@ export default class UsersServiceProxy {
     }
 
     private initilize() {
-        this.app.use('/v1/usuarios', createProxyMiddleware({
+        this.app.use('/v1', createProxyMiddleware(UsersServiceProxy.proxyEndpoints(), {
             target: process.env.USERS_SERVICE_URL,
             changeOrigin: true,
-            pathRewrite: {
-                '^/v1/usuarios': '/v1/users'
-            }
         }))
+    }
+
+    /**
+     * Tags cuyos endpoints actuarán como proxies.
+     */
+    public static proxyTags(): string[] {
+        return ['Usuario']
+    }
+
+    /**
+     * Endpoints que actuarán como proxies.
+     */
+    public static proxyEndpoints(): string[] {
+        return ['/v1/roles', '/v1/usuarios']
     }
 }
