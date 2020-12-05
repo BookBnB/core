@@ -45,7 +45,7 @@ Before(async function () {
     this.reloj = new RelojFake()
     this.container = new DIContainer()
     await new TestRegistry(this.reloj).registrar(this.container).then(async container => {
-        await Api.crear({
+        new Api({
             app,
             logger: new Log4JSLogger('Api'),
             container: container,
