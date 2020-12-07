@@ -3,7 +3,6 @@ import chai from "chai"
 import chaiHttp from "chai-http"
 import {Sesion, SesionPayload} from "../../../../src/domain/sesiones/entidades/Sesion";
 import JWTTokenBuilder from "../../../../src/infra/servicios/JWTTokenBuilder";
-import { v4 as uuidv4 } from 'uuid';
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -22,7 +21,7 @@ export async function crearUsuario(this: any, data: { nombre: string, email: str
     }
 
     this.last_response = await chai.request(this.app)
-        .post('/v1/users')
+        .post('/v1/usuarios')
         .type('json')
         .send(usuario);
 

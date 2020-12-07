@@ -15,10 +15,10 @@ function toSeconds(millis: number) {
 }
 
 function userCreationHandler() {
-    // wildcard * necesario porque el endpoint /v1/users esta cubierto por un proxy
+    // wildcard * necesario porque el endpoint /v1/usuarios esta cubierto por un proxy
     // que msw por alguna razón no llega a capturar. Lo que hacemos es capturar
     // la llamada a la aplicación en lugar al destino del proxy
-    return rest.post(`*/v1/users`, (req, res, ctx) => {
+    return rest.post(`*/v1/usuarios`, (req, res, ctx) => {
         const usuario: Usuario = <Usuario>req.body;
 
         usuario.id = uuidv4()
@@ -33,14 +33,15 @@ function userCreationHandler() {
 }
 
 function sesionCreationHandler() {
-    return rest.post(`*/v1/sessions`, (req, res, ctx) => {
+    return rest.post(`*/v1/sesiones`, (req, res, ctx) => {
         const requestBody: CrearSesionDTO = <CrearSesionDTO>req.body;
 
         if (!Store.getInstance().has(requestBody.email)) {
             return res(
                 ctx.status(401),
                 ctx.json({
-                    error: 'User not recognized'
+                    name: 'UnauthorizedError',
+                    message: 'Usuario no reconocido'
                 })
             )
         }
@@ -51,7 +52,8 @@ function sesionCreationHandler() {
             return res(
                 ctx.status(401),
                 ctx.json({
-                    error: 'User not recognized'
+                    name: 'UnauthorizedError',
+                    message: 'Usuario no reconocido'
                 })
             )
         }
