@@ -7,6 +7,7 @@ import UsersServiceProxy from "./UsersServiceProxy";
 import Api from "./Api";
 import {DIContainer} from "@wessberg/di";
 import Registry from "../infra/container/registerTypes";
+import OpenApiSpec from "./OpenApiSpec";
 
 export default async (appLogger: ILogger): Promise<Application> => {
     const app = express();
@@ -14,18 +15,21 @@ export default async (appLogger: ILogger): Promise<Application> => {
     new Cors({app, logger: appLogger})
     new HTTPLogger({app, logger: appLogger})
     new Welcome(app)
-    new UsersServiceProxy({app})
     new Api({
         app,
         logger: new Log4JSLogger('Api'),
         container: await new Registry().registrar(new DIContainer()),
+    });
+    await OpenApiSpec.crear({
+        app,
         openApiInfo: {
             info: {
-                title: 'BookBnB',
+                title: 'BookBnB: Core',
                 version: '1.0.0'
             }
         }
-    });
+    })
+    new UsersServiceProxy({app})
     new HTTPErrorHandlerLogger({app, logger: appLogger})
 
     return app

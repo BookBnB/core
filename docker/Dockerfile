@@ -7,5 +7,6 @@ RUN mv /app/build/src/* /app/build && \
     echo "ROOT_DIR=./build" >> .env && \
     echo "TYPEORM_URL=\$DATABASE_URL" >> .env && \
     echo "TYPEORM_MIGRATIONS=\$ROOT_DIR/infra/migration/*.js" >> .env && \
-    echo "TYPEORM_MIGRATIONS_DIR=\$ROOT_DIR/infra/migration" >> .env
+    echo "TYPEORM_MIGRATIONS_DIR=\$ROOT_DIR/infra/migration" >> .env && \
+    echo "USERS_OPENAPI_SPEC_URL=\$USERS_SERVICE_URL/v1/api.json" >> .env
 CMD npm start
