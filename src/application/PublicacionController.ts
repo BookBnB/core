@@ -61,6 +61,7 @@ export class PublicacionController {
     })
     @ResponseSchema(PublicacionDTO, {isArray: true})
     async buscar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
+        throw new Error('lala')
         return this.buscarPublicaciones.execute(consulta)
     }
 

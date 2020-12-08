@@ -31,23 +31,23 @@ class UsersServiceProxyLoggerAdapter {
     constructor(private readonly logger: ILogger) {
     }
 
-    public log(...args: any[]) {
-        this.logger.debug(args)
+    public log(m: any, ...args: any[]) {
+        this.logger.debug(m, ...args)
     }
 
-    public debug(...args: any[]) {
-        this.logger.debug(args)
+    public debug(m: any, ...args: any[]) {
+        this.logger.debug(m, ...args)
     }
 
-    public info(...args: any[]) {
-        this.logger.info(args)
+    public info(m: any, ...args: any[]) {
+        this.logger.info(m, ...args)
     }
 
-    public warn(...args: any[]) {
-        this.logger.warn(args)
+    public warn(m: any, ...args: any[]) {
+        this.logger.warn(m, ...args)
     }
 
-    public error(...args: any[]) {
-        this.logger.error(args)
+    public error(m: any, ...args: any[]) {
+        this.logger.error(m, ...args)
     }
 }
