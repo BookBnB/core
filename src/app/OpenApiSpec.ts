@@ -133,6 +133,10 @@ export default class OpenApiSpec {
         if (!isURL(specUrl as string, {require_tld: false, allow_underscores: true}))
             return
 
-        return (await axios.get(specUrl as string)).data
+        try {
+            return (await axios.get(specUrl as string)).data
+        } catch (e) {
+            return
+        }
     }
 }
