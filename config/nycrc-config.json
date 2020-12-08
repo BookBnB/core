@@ -11,6 +11,8 @@
   ],
   "exclude": [
     "src/infra/migration/**/*",
-    "src/App.ts"
+    "src/infra/logging/**/*",
+    "src/App.ts",
+    "src/app/**/*"
   ]
 }
