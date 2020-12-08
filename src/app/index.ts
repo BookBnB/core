@@ -1,25 +1,21 @@
 import express, {Application} from "express";
-import Log4JSLogger, {ILogger} from "../infra/logging/Logger";
+import {ILogger} from "../infra/logging/Logger";
 import Cors from "./Cors";
 import {HTTPErrorHandlerLogger, HTTPLogger} from "../infra/logging/HTTPLogger";
 import Welcome from "./Welcome";
 import UsersServiceProxy from "./UsersServiceProxy";
 import Api from "./Api";
-import {DIContainer} from "@wessberg/di";
-import Registry from "../infra/container/registerTypes";
 import OpenApiSpec from "./OpenApiSpec";
+import {IContainer} from "../infra/container/Container";
 
-export default async (appLogger: ILogger): Promise<Application> => {
+export default async (container: IContainer): Promise<Application> => {
     const app = express();
+    const logger = container.get<ILogger>({identifier: "ILogger"})
 
-    new Cors({app, logger: appLogger})
-    new HTTPLogger({app, logger: appLogger})
+    new Cors({app, logger})
+    new HTTPLogger({app, logger})
     new Welcome(app)
-    new Api({
-        app,
-        logger: new Log4JSLogger('Api'),
-        container: await new Registry().registrar(new DIContainer()),
-    });
+    new Api({app, container, logger});
     await OpenApiSpec.crear({
         app,
         openApiInfo: {
@@ -29,8 +25,8 @@ export default async (appLogger: ILogger): Promise<Application> => {
             }
         }
     })
-    new UsersServiceProxy({app})
-    new HTTPErrorHandlerLogger({app, logger: appLogger})
+    new UsersServiceProxy({app, logger})
+    new HTTPErrorHandlerLogger({app, logger})
 
     return app
 }

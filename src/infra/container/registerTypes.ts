@@ -41,6 +41,7 @@ import {ResponderEnPublicacion} from "../../domain/publicaciones/casos-uso/Respo
 import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
 import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/PreguntaRepositorio";
 import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
+import Log4JSLogger, {ILogger} from "../logging/Logger";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -53,6 +54,7 @@ import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
  */
 export default class Registry {
     public async registrar(container: DIContainer): Promise<IContainer> {
+        await this.registrarLogger(container)
         await this.registrarTypeOrmConnection(container)
         await this.registrarReloj(container)
         await this.registrarErrorHandler(container)
@@ -62,6 +64,10 @@ export default class Registry {
         await this.registrarReservas(container)
         await this.registrarUsuarios(container)
         return container
+    }
+
+    protected async registrarLogger(container: DIContainer) {
+        container.registerSingleton<ILogger>(() => new Log4JSLogger('Api'));
     }
 
     protected async registrarTypeOrmConnection(container: DIContainer) {

@@ -24,8 +24,6 @@ import PreguntaDTO from "../domain/publicaciones/dtos/PreguntaDTO";
 import {IsNotEmpty, IsString, IsUUID} from "class-validator";
 import {ListarPreguntasDePublicacion} from "../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
 import {ResponderEnPublicacion} from "../domain/publicaciones/casos-uso/ResponderEnPublicacion";
-import Respuesta from "../domain/publicaciones/entidades/Respuesta";
-import RespuestaDTO from "../domain/publicaciones/dtos/RespuestaDTO";
 import ConsultaConPaginacion from "../domain/common/ConsultaConPaginacion";
 
 
@@ -49,7 +47,7 @@ export class PublicacionController {
     constructor(
         private readonly crearPublicacion: CrearPublicacion,
         private readonly verPublicacion: VerPublicacion,
-        private readonly listarPublicaciones: BuscarPublicaciones,
+        private readonly buscarPublicaciones: BuscarPublicaciones,
         private readonly preguntarEnPublicacion: PreguntarEnPublicacion,
         private readonly listarPreguntasDePublicacion: ListarPreguntasDePublicacion,
         private readonly responderEnPublicacion: ResponderEnPublicacion
@@ -62,8 +60,8 @@ export class PublicacionController {
         parameters: [{in: "query", name: "coordenadas", style: "deepObject", explode: true}]
     })
     @ResponseSchema(PublicacionDTO, {isArray: true})
-    async listar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
-        return this.listarPublicaciones.execute(consulta)
+    async buscar(@QueryParams() consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
+        return this.buscarPublicaciones.execute(consulta)
     }
 
     @Get('/:id')
