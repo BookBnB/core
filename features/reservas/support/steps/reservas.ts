@@ -4,7 +4,6 @@ import { When, Then, TableDefinition } from 'cucumber';
 import _ from "lodash";
 import { validarObjeto } from "../../../util/Validacion";
 import Reservas from "../Reservas";
-import Publicacion from "../../../../src/domain/publicaciones/entidades/Publicacion";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
 
 chai.use(chaiHttp);
