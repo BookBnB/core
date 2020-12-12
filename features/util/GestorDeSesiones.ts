@@ -20,7 +20,7 @@ export default class GestorDeSesiones {
         Store.getInstance().set(this.getClave(usuario.email), entrada)
     }
 
-    async registrarSesion(email: string, token: string) {
+    registrarSesion(email: string, token: string) {
         let entrada: Entrada = Store.getInstance().get(this.getClave(email));
 
         if (entrada) {

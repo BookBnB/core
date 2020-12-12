@@ -5,7 +5,7 @@ import _ from "lodash";
 import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
-import {crearUsuarioConRol} from "../../../publicaciones/support/steps/publicaciones";
+import {crearPublicacion, crearUsuarioConRol} from "../../../publicaciones/support/steps/publicaciones";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -61,13 +61,14 @@ Then('veo que está reservada a mí nombre', function () {
     expect(this.last_response.body).to.have.property('huespedId', this.usuarioActual.id)
 });
 
-Given('que un huesped tiene una reserva en la publicación con título {string} con:', async function (titulo, dataTable: TableDefinition) {
-    await crearUsuarioConRol.bind(this)("huesped");
-
+Given('que el huesped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email, titulo, dataTable) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
-    const reserva = dataTable.rowsHash()
-    reserva.publicacionId = this.last_publicacion.body.id
-    await Reservas.crear(this, reserva);
+
+    await this.gestorDeSesiones.ejecutarBajoSesion(this, async () => {
+        const reserva = dataTable.rowsHash()
+        reserva.publicacionId = this.last_publicacion.body.id
+        await Reservas.crear(this, reserva);
+    }, email)
 });
 
 When('listo las reservas de la publicación con título {string}', async function (titulo) {
@@ -98,4 +99,16 @@ Then('veo las reservas:', function (dataTable: TableDefinition) {
 
 When('listo las reservas de una publicación que no existe', async function () {
     await Reservas.listarPorPublicacion(this, '3ff413a1-addd-4e9c-97a1-ebd191216393');
+});
+
+When('listo las reservas de una publicación que no es mía', async function () {
+    await crearUsuarioConRol.bind(this)("anfitrión", "uno@bookbnb.com")
+    await Publicaciones.crear(this, Publicaciones.ejemplo())
+    const publicacionId = this.last_publicacion.body.id
+    await crearUsuarioConRol.bind(this)("anfitrión", "otro@bookbnb.com")
+    await Reservas.listarPorPublicacion(this, publicacionId)
+});
+
+Given('que realicé una publicación con:', async function (dataTable) {
+    await crearPublicacion.bind(this)(dataTable)
 });

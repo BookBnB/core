@@ -126,7 +126,7 @@ export class PublicacionController {
     @Get('/:publicacionId/reservas')
     @OpenAPI({summary: 'Muestra una lista de reservas asociadas a una publicación'})
     @ResponseSchema(ReservaDTO, {isArray: true})
-    async listarReservas(@Params() consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
-        return this.listarReservasDePublicacion.execute(consulta)
+    async listarReservas(@CurrentUser() usuario: Usuario, @Params() consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
+        return this.listarReservasDePublicacion.execute(usuario, consulta)
     }
 }

@@ -14,4 +14,8 @@ export default class Usuario {
     public tieneRol(rol: string): boolean {
         return this.rol === rol
     }
+
+    esIgualA(otro: Usuario): boolean {
+        return this.id === otro.id;
+    }
 }
