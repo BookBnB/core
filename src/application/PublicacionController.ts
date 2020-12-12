@@ -25,6 +25,11 @@ import {IsNotEmpty, IsString, IsUUID} from "class-validator";
 import {ListarPreguntasDePublicacion} from "../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
 import {ResponderEnPublicacion} from "../domain/publicaciones/casos-uso/ResponderEnPublicacion";
 import ConsultaConPaginacion from "../domain/common/ConsultaConPaginacion";
+import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
+import {
+    ConsultaDeReservasPorPublicacion,
+    ListarReservasDePublicacion
+} from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
 
 
 class ResponderPreguntaParams {
@@ -50,7 +55,8 @@ export class PublicacionController {
         private readonly buscarPublicaciones: BuscarPublicaciones,
         private readonly preguntarEnPublicacion: PreguntarEnPublicacion,
         private readonly listarPreguntasDePublicacion: ListarPreguntasDePublicacion,
-        private readonly responderEnPublicacion: ResponderEnPublicacion
+        private readonly responderEnPublicacion: ResponderEnPublicacion,
+        private readonly listarReservasDePublicacion: ListarReservasDePublicacion
     ) {
     }
 
@@ -115,5 +121,12 @@ export class PublicacionController {
     @OpenAPI({summary: 'Responde una pregunta de una publicación'})
     responderPregunta(@Params() {idPublicacion, idPregunta}: ResponderPreguntaParams, @CurrentUser() usuario: Usuario, @Body() {descripcion}: PreguntaBody): Promise<PreguntaDTO> {
         return this.responderEnPublicacion.execute(idPublicacion, idPregunta, usuario, descripcion)
+    }
+
+    @Get('/:publicacionId/reservas')
+    @OpenAPI({summary: 'Muestra una lista de reservas asociadas a una publicación'})
+    @ResponseSchema(ReservaDTO, {isArray: true})
+    async listarReservas(@Params() consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
+        return this.listarReservasDePublicacion.execute(consulta)
     }
 }

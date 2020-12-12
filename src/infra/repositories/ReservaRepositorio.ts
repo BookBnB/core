@@ -2,6 +2,7 @@ import {QueryFailedError, Repository} from "typeorm";
 import Reserva from "../../domain/reservas/entidades/Reserva";
 import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
 import {customAlphabet} from "nanoid";
+import {ConsultaDeReservasPorPublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
 
 export default class ReservaRepositorio implements IReservaRepositorio {
     public constructor(
@@ -32,5 +33,12 @@ export default class ReservaRepositorio implements IReservaRepositorio {
             }
         }
         throw error;
+    }
+
+    listar(consulta: ConsultaDeReservasPorPublicacion): Promise<Reserva[]> {
+        return this.repo.createQueryBuilder("reserva")
+            .innerJoinAndSelect("reserva.publicacion", "publicacion")
+            .where("publicacion.id = :publicacionId", {publicacionId: consulta.publicacionId})
+            .getMany()
     }
 }

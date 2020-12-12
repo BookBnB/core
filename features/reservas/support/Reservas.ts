@@ -1,9 +1,11 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
+import {World} from "cucumber";
+import Recurso from "../../util/Recurso";
 
 chai.use(chaiHttp);
 
-export default class Reservas {
+export default class Reservas extends Recurso {
     public static ejemplo(publicacionId: string) {
         return {
             publicacionId: publicacionId,
@@ -12,11 +14,18 @@ export default class Reservas {
         }
     }
 
-    public static async crear(context: any, reserva: any) {
+    public static async crear(context: World, reserva: any) {
         context.last_response = await chai.request(context.app)
             .post('/v1/reservas')
             .set('authorization', context.tokenSesion)
             .type('json')
             .send(reserva)
+    }
+
+    static async listarPorPublicacion(world: World, publicacionId: string, estado: string | null = null) {
+        world.last_response = await chai.request(world.app)
+            .get(`/v1/publicaciones/${publicacionId}/reservas`)
+            .query({estado: estado})
+            .set('authorization', world.tokenSesion)
     }
 }
