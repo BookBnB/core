@@ -51,6 +51,10 @@ Característica:
       | 2020-12-01  | 2020-12-07 | pendiente |
       | 2020-12-08  | 2020-12-10 | pendiente |
 
+  Escenario: Listado sin reservas aceptadas pero con pendientes
+    Cuando listo las reservas "aceptadas" de la publicación con título "Departamento en Palermo"
+    Entonces no obtengo reservas
+
   @wip
   Escenario: Listado de reservas aceptadas
     Dado que un huesped tiene una reserva en la publicación con título "Departamento en Palermo" con:
