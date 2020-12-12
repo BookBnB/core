@@ -4,5 +4,5 @@ import {ConsultaDeReservasPorPublicacion} from "../casos-uso/ListarReservasDePub
 export default interface IReservaRepositorio {
     guardar(reserva: Reserva): Promise<Reserva>;
 
-    listar(consulta: ConsultaDeReservasPorPublicacion): Promise<Reserva[]>;
+    listar(publicacionId:string, consulta: ConsultaDeReservasPorPublicacion): Promise<Reserva[]>;
 }

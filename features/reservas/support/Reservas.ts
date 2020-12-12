@@ -22,7 +22,7 @@ export default class Reservas extends Recurso {
             .send(reserva)
     }
 
-    static async listarPorPublicacion(world: World, publicacionId: string, estado: string | null = null) {
+    static async listarPorPublicacion(world: World, publicacionId: string, estado: string | undefined = undefined) {
         world.last_response = await chai.request(world.app)
             .get(`/v1/publicaciones/${publicacionId}/reservas`)
             .query({estado: estado})

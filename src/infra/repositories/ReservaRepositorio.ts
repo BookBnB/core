@@ -35,10 +35,10 @@ export default class ReservaRepositorio implements IReservaRepositorio {
         throw error;
     }
 
-    listar(consulta: ConsultaDeReservasPorPublicacion): Promise<Reserva[]> {
+    listar(publicacionId: string, consulta: ConsultaDeReservasPorPublicacion): Promise<Reserva[]> {
         return this.repo.createQueryBuilder("reserva")
             .innerJoinAndSelect("reserva.publicacion", "publicacion")
-            .where("publicacion.id = :publicacionId", {publicacionId: consulta.publicacionId})
+            .where("publicacion.id = :publicacionId", {publicacionId: publicacionId})
             .getMany()
     }
 }

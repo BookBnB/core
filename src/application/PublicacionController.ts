@@ -10,11 +10,11 @@ import {
     QueryParams,
     UseBefore
 } from 'routing-controllers';
-import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi';
 import UUID from '../domain/common/UUID';
-import { CrearPublicacion, CrearPublicacionDTO } from "../domain/publicaciones/casos-uso/CrearPublicacion";
-import { ConsultaDePublicaciones, BuscarPublicaciones } from "../domain/publicaciones/casos-uso/BuscarPublicaciones";
-import { VerPublicacion } from "../domain/publicaciones/casos-uso/VerPublicacion";
+import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
+import {ConsultaDePublicaciones, BuscarPublicaciones} from "../domain/publicaciones/casos-uso/BuscarPublicaciones";
+import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import Usuario from '../domain/usuarios/entidades/Usuario';
@@ -123,10 +123,14 @@ export class PublicacionController {
         return this.responderEnPublicacion.execute(idPublicacion, idPregunta, usuario, descripcion)
     }
 
-    @Get('/:publicacionId/reservas')
-    @OpenAPI({summary: 'Muestra una lista de reservas asociadas a una publicación'})
+    @Get('/:id/reservas')
+    @HttpCode(200)
     @ResponseSchema(ReservaDTO, {isArray: true})
-    async listarReservas(@CurrentUser() usuario: Usuario, @Params() consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
-        return this.listarReservasDePublicacion.execute(usuario, consulta)
+    @OpenAPI({summary: 'Muestra una lista de reservas asociadas a una publicación'})
+    async listarReservas(
+        @CurrentUser() usuario: Usuario,
+        @Params() {id: publicacionId}: UUID,
+        @QueryParams() consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
+        return this.listarReservasDePublicacion.execute(usuario, publicacionId, consulta)
     }
 }
