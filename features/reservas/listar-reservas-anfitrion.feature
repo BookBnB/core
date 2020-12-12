@@ -1,4 +1,4 @@
-# language: es
+  # language: es
 Característica:
   Como anfitrión
   Quiero poder listar las reservas de mis alojamientos
@@ -26,12 +26,12 @@ Característica:
 
   @wip
   Escenario: Listado sin reservas pendientes
-    Cuando listo las reservas "pendientes" de la publicación con título "Departamento en Palermo"
+    Cuando listo las reservas "pendientes" de la publicación con título "Casa en Salta"
     Entonces no obtengo reservas
 
   @wip
   Escenario: Listado sin reservas aceptadas
-    Cuando listo las reservas "aceptadas" de la publicación con título "Departamento en Palermo"
+    Cuando listo las reservas "aceptadas" de la publicación con título "Casa en Salta"
     Entonces no obtengo reservas
 
   @wip
@@ -44,14 +44,6 @@ Característica:
 
   @wip
   Escenario: Listado de reservas pendientes
-    Dado que un huesped tiene una reserva en la publicación con título "Departamento en Palermo" con:
-      | fechaInicio | 2020-12-01 |
-      | fechaFin    | 2020-12-07 |
-      | estado      | pendiente  |
-    Y que un huesped tiene una reserva en la publicación con título "Departamento en Palermo" con:
-      | fechaInicio | 2020-12-08 |
-      | fechaFin    | 2020-12-10 |
-      | estado      | aceptada   |
     Cuando listo las reservas "pendientes" de la publicación con título "Departamento en Palermo"
     Entonces veo las reservas:
       | fechaInicio | fechaFin   | estado    |
@@ -59,14 +51,6 @@ Característica:
 
   @wip
   Escenario: Listado de reservas aceptadas
-    Dado que un huesped tiene una reserva en la publicación con título "Departamento en Palermo" con:
-      | fechaInicio | 2020-12-01 |
-      | fechaFin    | 2020-12-07 |
-      | estado      | pendiente  |
-    Y que un huesped tiene una reserva en la publicación con título "Departamento en Palermo" con:
-      | fechaInicio | 2020-12-08 |
-      | fechaFin    | 2020-12-10 |
-      | estado      | aceptada   |
     Cuando listo las reservas "aceptadas" de la publicación con título "Departamento en Palermo"
     Entonces veo las reservas:
       | fechaInicio | fechaFin   | estado    |
