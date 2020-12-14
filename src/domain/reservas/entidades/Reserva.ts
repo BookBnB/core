@@ -13,7 +13,9 @@ export interface ReservaConstructor {
 }
 
 export enum EstadoReserva {
-    PENDIENTE = 'pendiente'
+    PENDIENTE = 'pendiente',
+    ACEPTADA = 'aceptada',
+    REACHAZADA = 'rechazada'
 }
 
 @Entity()

@@ -1,11 +1,11 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
-import { When, Then, TableDefinition } from 'cucumber';
+import {When, Then, Given, TableDefinition} from 'cucumber';
 import _ from "lodash";
-import { validarObjeto } from "../../../util/Validacion";
+import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
-import Publicacion from "../../../../src/domain/publicaciones/entidades/Publicacion";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
+import {crearPublicacion, crearUsuarioConRol} from "../../../publicaciones/support/steps/publicaciones";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -59,4 +59,56 @@ Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
 
 Then('veo que está reservada a mí nombre', function () {
     expect(this.last_response.body).to.have.property('huespedId', this.usuarioActual.id)
+});
+
+Given('que el huesped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email, titulo, dataTable) {
+    expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
+
+    await this.gestorDeSesiones.ejecutarBajoSesion(this, async () => {
+        const reserva = dataTable.rowsHash()
+        reserva.publicacionId = this.last_publicacion.body.id
+        await Reservas.crear(this, reserva);
+    }, email)
+});
+
+When('listo las reservas de la publicación con título {string}', async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
+
+    await Reservas.listarPorPublicacion(this, this.last_publicacion.body.id);
+});
+
+Then('no obtengo reservas', function () {
+    expect(this.last_response.body).to.eql([])
+});
+
+When('listo las reservas {string} de la publicación con título {string}', async function (estado, titulo) {
+    expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
+
+    const estados = new Map([
+        ["pendientes", "pendiente"],
+        ["aceptadas", "aceptada"],
+        ["rechazadas", "rechazada"],
+        ["canceladas", "cancelada"]
+    ])
+    await Reservas.listarPorPublicacion(this, this.last_publicacion.body.id, estados.get(estado));
+});
+
+Then('veo las reservas:', function (dataTable: TableDefinition) {
+    validarConjunto.bind(this)(dataTable)
+});
+
+When('listo las reservas de una publicación que no existe', async function () {
+    await Reservas.listarPorPublicacion(this, '3ff413a1-addd-4e9c-97a1-ebd191216393');
+});
+
+When('listo las reservas de una publicación que no es mía', async function () {
+    await crearUsuarioConRol.bind(this)("anfitrión", "uno@bookbnb.com")
+    await Publicaciones.crear(this, Publicaciones.ejemplo())
+    const publicacionId = this.last_publicacion.body.id
+    await crearUsuarioConRol.bind(this)("anfitrión", "otro@bookbnb.com")
+    await Reservas.listarPorPublicacion(this, publicacionId)
+});
+
+Given('que realicé una publicación con:', async function (dataTable) {
+    await crearPublicacion.bind(this)(dataTable)
 });

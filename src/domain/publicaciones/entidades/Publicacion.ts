@@ -4,7 +4,6 @@ import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion
 import Imagen from "./Imagen";
 import Reserva from "../../reservas/entidades/Reserva";
 import Pregunta from "./Pregunta";
-import Respuesta from "./Respuesta";
 import PreguntaInexistenteError from "../excepciones/PreguntaInexistenteError";
 
 export interface PublicacionConstructor {

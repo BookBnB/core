@@ -10,11 +10,11 @@ import {
     QueryParams,
     UseBefore
 } from 'routing-controllers';
-import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi';
 import UUID from '../domain/common/UUID';
-import { CrearPublicacion, CrearPublicacionDTO } from "../domain/publicaciones/casos-uso/CrearPublicacion";
-import { ConsultaDePublicaciones, BuscarPublicaciones } from "../domain/publicaciones/casos-uso/BuscarPublicaciones";
-import { VerPublicacion } from "../domain/publicaciones/casos-uso/VerPublicacion";
+import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
+import {ConsultaDePublicaciones, BuscarPublicaciones} from "../domain/publicaciones/casos-uso/BuscarPublicaciones";
+import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import Usuario from '../domain/usuarios/entidades/Usuario';
@@ -25,6 +25,11 @@ import {IsNotEmpty, IsString, IsUUID} from "class-validator";
 import {ListarPreguntasDePublicacion} from "../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
 import {ResponderEnPublicacion} from "../domain/publicaciones/casos-uso/ResponderEnPublicacion";
 import ConsultaConPaginacion from "../domain/common/ConsultaConPaginacion";
+import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
+import {
+    ConsultaDeReservasPorPublicacion,
+    ListarReservasDePublicacion
+} from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
 
 
 class ResponderPreguntaParams {
@@ -50,7 +55,8 @@ export class PublicacionController {
         private readonly buscarPublicaciones: BuscarPublicaciones,
         private readonly preguntarEnPublicacion: PreguntarEnPublicacion,
         private readonly listarPreguntasDePublicacion: ListarPreguntasDePublicacion,
-        private readonly responderEnPublicacion: ResponderEnPublicacion
+        private readonly responderEnPublicacion: ResponderEnPublicacion,
+        private readonly listarReservasDePublicacion: ListarReservasDePublicacion
     ) {
     }
 
@@ -115,5 +121,16 @@ export class PublicacionController {
     @OpenAPI({summary: 'Responde una pregunta de una publicación'})
     responderPregunta(@Params() {idPublicacion, idPregunta}: ResponderPreguntaParams, @CurrentUser() usuario: Usuario, @Body() {descripcion}: PreguntaBody): Promise<PreguntaDTO> {
         return this.responderEnPublicacion.execute(idPublicacion, idPregunta, usuario, descripcion)
+    }
+
+    @Get('/:id/reservas')
+    @HttpCode(200)
+    @ResponseSchema(ReservaDTO, {isArray: true})
+    @OpenAPI({summary: 'Muestra una lista de reservas asociadas a una publicación'})
+    async listarReservas(
+        @CurrentUser() usuario: Usuario,
+        @Params() {id: publicacionId}: UUID,
+        @QueryParams() consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
+        return this.listarReservasDePublicacion.execute(usuario, publicacionId, consulta)
     }
 }

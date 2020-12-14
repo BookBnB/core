@@ -42,6 +42,7 @@ import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
 import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/PreguntaRepositorio";
 import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
 import Log4JSLogger, {ILogger} from "../logging/Logger";
+import {ListarReservasDePublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -91,6 +92,7 @@ export default class Registry {
         container.registerTransient<PreguntarEnPublicacion>()
         container.registerTransient<ListarPreguntasDePublicacion>()
         container.registerTransient<ResponderEnPublicacion>()
+        container.registerSingleton<ListarReservasDePublicacion>()
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)

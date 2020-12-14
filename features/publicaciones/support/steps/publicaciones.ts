@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 chai.use(chaiSubset);
 const expect = chai.expect;
 
-async function crearUsuarioConRol(this: any, rol: string, email: string = 'john@doe.com') {
+export async function crearUsuarioConRol(this: any, rol: string, email: string = 'john@doe.com') {
     await crearUsuario.bind(this)({
         nombre: 'John Doe',
         email: email,
@@ -23,11 +23,7 @@ async function crearUsuarioConRol(this: any, rol: string, email: string = 'john@
     await iniciarSesion.bind(this)(email, 'password')
 }
 
-Given('que soy {string}', async function (rol: string) { 
-    await crearUsuarioConRol.bind(this)(rol);
-});
-
-const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
+export async function crearPublicacion(this: any, dataTable: TableDefinition) {
     const publicacion: any = Publicaciones.ejemplo()
     dataTable.raw().forEach(([clave, valor]) => {
         _.set(publicacion, clave, valor)
@@ -39,6 +35,10 @@ const crearPublicacion = async function (this: any, dataTable: TableDefinition) 
 
     await Publicaciones.crear(this, publicacion)
 }
+
+Given('que soy {string}', async function (rol: string) { 
+    await crearUsuarioConRol.bind(this)(rol);
+});
 
 Then('veo que está publicada a mí nombre', function () {
     expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.usuarioActual.id)
@@ -154,8 +154,10 @@ When('listo las publicaciones del anfitrion de id {string}', async function (id)
     await Usuarios.listarPublicaciones(this, id);
 });
 
-Given('que existe un anfitrión {string}', async function (email) {
-    await crearUsuarioConRol.bind(this)('anfitrión', email)
+Given('que existe el {string} con email {string}', async function (rol, email) {
+    const token = this.tokenSesion
+    await crearUsuarioConRol.bind(this)(rol, email)
+    this.tokenSesion = token
 });
 
 Given('que el anfitrión {string} tiene una publicación con:', async function (email, dataTable) {
