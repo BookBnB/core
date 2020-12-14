@@ -1,8 +1,13 @@
 import { UseCase } from "../../UseCase";
-import CrearSesionDTO from "../dtos/CrearSesionDTO";
 import { Sesion} from "../entidades/Sesion";
 import IJWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import IServicioUsuarios from "../servicios/ServicioUsuarios";
+import { IsString } from "class-validator";
+
+export default class CrearSesionDTO {
+    @IsString() public email!: string;
+    @IsString() public password!: string;
+}
 
 export class CrearSesion implements UseCase {
     constructor(

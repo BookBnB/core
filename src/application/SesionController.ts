@@ -5,8 +5,7 @@ import {
     UnauthorizedError
 } from 'routing-controllers'
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi'
-import { CrearSesion } from '../domain/sesiones/casos-uso/CrearSesion';
-import CrearSesionDTO from '../domain/sesiones/dtos/CrearSesionDTO';
+import CrearSesionDTO, { CrearSesion } from '../domain/sesiones/casos-uso/CrearSesion';
 import { Sesion } from '../domain/sesiones/entidades/Sesion';
 import UsuarioNoReconocidoError from '../domain/sesiones/excepciones/UsuarioNoReconocidoError';
 
@@ -20,7 +19,7 @@ export class SesionController {
     @Post('/')
     @OpenAPI({summary: 'Crear una Sesión'})
     @ResponseSchema(Sesion)
-    async getAll(@Body() body: CrearSesionDTO) {
+    async login(@Body() body: CrearSesionDTO) {
         try {
             return await this.crearSesion.execute(body);
         } catch (e) {

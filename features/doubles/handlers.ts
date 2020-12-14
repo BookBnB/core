@@ -1,10 +1,10 @@
 import {rest} from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
-import CrearSesionDTO from "../../src/domain/sesiones/dtos/CrearSesionDTO";
 import Store from '../util/Store';
 import { SesionPayload } from '../../src/domain/sesiones/entidades/Sesion';
 import { v4 as uuidv4 } from 'uuid';
 import { Usuario } from '../usuarios/support/Usuarios';
+import CrearSesionDTO from "../../src/domain/sesiones/casos-uso/CrearSesion";
 
 function hours(n: number) {
     return n * 60 * 60 * 1000;
