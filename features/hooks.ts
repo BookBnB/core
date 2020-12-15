@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 
+// Needs to load before mockServer
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
 import {After, AfterAll, Before, BeforeAll} from "cucumber";
