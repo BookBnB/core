@@ -12,6 +12,10 @@ Given('que existe el {string} con email {string}', async function (rol, email) {
     await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
 });
 
+Given('que soy {string}', async function (rol: string) {
+    await Usuarios.crearActual(this, rol)
+});
+
 Then('obtengo un mensaje de error {string}', function (error: string) {
     expect(this.last_response).to.be.json
     expect(this.last_response).to.have.status(400)

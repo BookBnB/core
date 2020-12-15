@@ -26,10 +26,6 @@ export async function crearPublicacion(this: any, dataTable: TableDefinition) {
     await Publicaciones.crear(this, publicacion)
 }
 
-Given('que soy {string}', async function (rol: string) {
-    await Usuarios.crearActual(this, rol)
-});
-
 Then('veo que está publicada a mí nombre', function () {
     expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)
 });
