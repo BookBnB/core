@@ -27,7 +27,8 @@ export default class ServicioUsuarios implements IServicioUsuarios {
 
             return new Sesion(res.data.token);
         } catch (e) {
-            throw new UsuarioNoReconocidoError('Usuario no reconocido');
+            if (e.response.status === 401) throw new UsuarioNoReconocidoError('Usuario no reconocido');
+            throw e
         }
     }
 }

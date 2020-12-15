@@ -12,7 +12,6 @@ Característica:
       | email    | john@doe.com |
       | role     | host         |
 
-  @only
   Escenario: Sesión inválida
     Dado que inicié mi sesión correctamente
     Y que mi cambio mi token por uno inválido

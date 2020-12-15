@@ -12,7 +12,6 @@ Característica:
       | password | password     |
       | role     | host         |
 
-  @only
   Escenario: Expiración de sesión
     Dado que inicié mi sesión correctamente
     Y que mi sesión expiró

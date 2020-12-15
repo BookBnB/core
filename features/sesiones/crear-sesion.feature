@@ -16,6 +16,7 @@ Característica:
       | email | john@doe.com |
       | role  | host         |
 
+  @only
   Escenario: Creación fallida - Contraseña incorrecta
     Dado que estoy registrado con:
       | name     | John         |

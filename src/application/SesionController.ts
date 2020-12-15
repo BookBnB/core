@@ -33,7 +33,7 @@ export class SesionController {
         }
     }
 
-    @Post('/')
+    @Post('/google')
     @OpenAPI({summary: 'Crear una Sesión autenticándose con Google'})
     @ResponseSchema(Sesion)
     async loginGoogle(@Body() body: CrearSesionConGoogleDTO) {
