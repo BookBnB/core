@@ -1,9 +1,12 @@
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
+
+dotenvExpand(dotenv.config({path: 'features/.env'}))
+
 import {After, AfterAll, Before, BeforeAll} from "cucumber";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
 import {mockServer} from './doubles/server';
-import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
 import Store from "./util/Store";
 import RelojFake from "./doubles/RelojFake";
 import TestRegistry from "./doubles/TestRegistry";
@@ -12,7 +15,6 @@ import {configure} from "log4js";
 import logConfig from "../config/log-config.json";
 import app from "../src/app"
 
-dotenvExpand(dotenv.config({path: 'features/.env'}))
 
 /**
  * Setup mock server

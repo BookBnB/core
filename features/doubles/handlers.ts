@@ -1,9 +1,9 @@
 import {rest} from 'msw';
 import JWTTokenBuilder from '../../src/infra/servicios/JWTTokenBuilder';
 import Store from '../util/Store';
-import { SesionPayload } from '../../src/domain/sesiones/entidades/Sesion';
-import { v4 as uuidv4 } from 'uuid';
-import { Usuario } from '../usuarios/support/Usuarios';
+import {SesionPayload} from '../../src/domain/sesiones/entidades/Sesion';
+import {v4 as uuidv4} from 'uuid';
+import {Usuario} from '../usuarios/support/Usuarios';
 import CrearSesionDTO from "../../src/domain/sesiones/casos-uso/CrearSesion";
 
 function hours(n: number) {
@@ -12,6 +12,19 @@ function hours(n: number) {
 
 function toSeconds(millis: number) {
     return millis / 1000;
+}
+
+export function generateToken(email: string): string {
+    const usuario: Usuario = Store.getInstance().get(email);
+
+    const payload = new SesionPayload(
+        usuario.id,
+        usuario.email,
+        usuario.role,
+        Math.trunc(toSeconds(Date.now() + hours(24)))
+    );
+
+    return new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken(payload);
 }
 
 function userCreationHandler() {
@@ -33,10 +46,10 @@ function userCreationHandler() {
 }
 
 function sesionCreationHandler() {
-    return rest.post(`*/v1/sesiones`, (req, res, ctx) => {
+    return rest.post(`${process.env['USERS_SERVICE_URL']}/v1/sesiones`, (req, res, ctx) => {
         const requestBody: CrearSesionDTO = <CrearSesionDTO>req.body;
 
-        if(!requestBody.email || !requestBody.password) {
+        if (!requestBody.email || !requestBody.password) {
             return res(
                 ctx.status(400),
                 ctx.json({

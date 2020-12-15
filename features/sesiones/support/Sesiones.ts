@@ -1,17 +1,14 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import {World} from "cucumber";
+import {mockServer} from "../../doubles/server";
+import {rest} from "msw";
+import {generateToken} from "../../doubles/handlers";
 
 chai.use(chaiHttp);
 
 export default class Sesiones {
-    public static ejemplo(publicacionId: string) {
-        return {
-            publicacionId: publicacionId,
-            fechaInicio: new Date('2020-12-01').toISOString(),
-            fechaFin: new Date('2020-12-07').toISOString()
-        }
-    }
+    static SESION_GOOGLE_URL = `${process.env['USERS_SERVICE_URL']}/v1/sesiones/google`
 
     public static async crear(context: World, email: string | null, password: string | null) {
         context.last_response = await chai.request(context.app)
@@ -26,5 +23,43 @@ export default class Sesiones {
             const token: string = context.last_response.body.token;
             context.sesiones.registrarSesion(email, token)
         }
+    }
+
+    public static async crearConGoogle(context: World) {
+        context.last_response = await chai.request(context.app)
+            .post('/v1/sesiones/google')
+            .type('json')
+            .send({token: 'some token'});
+    }
+
+    public static mockTokenValido(email: string) {
+        const mockedToken: string = generateToken(email)
+
+        mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
+            return res(context.json({
+                token: mockedToken
+            }))
+        }))
+    }
+
+    static mockTokenInvalido() {
+        mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
+            return res(
+                context.status(400),
+                context.json({
+                    error: 'TokenError',
+                    message: "Wrong number of segments in token: b'string'"
+                }))
+        }))
+    }
+
+    static mockTokenDeUsuarioNoRegistrado() {
+        mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
+            return res(
+                context.status(401),
+                context.json({
+                    message: "User not recognized"
+                }))
+        }))
     }
 }

@@ -16,7 +16,6 @@ Característica:
       | email | john@doe.com |
       | role  | host         |
 
-  @only
   Escenario: Creación fallida - Contraseña incorrecta
     Dado que estoy registrado con:
       | name     | John         |
@@ -25,7 +24,7 @@ Característica:
       | password | password     |
       | role     | host         |
     Cuando inicio sesión con email 'john@doe.com' y contraseña 'incorrecta'
-    Entonces obtengo un error 401 con mensaje 'User not recognized'
+    Entonces obtengo un error 401 con mensaje 'Usuario no reconocido'
 
   Escenario: Creación fallida - Usuario inexistente
     Dado que estoy registrado con:
@@ -35,12 +34,12 @@ Característica:
       | password | password     |
       | role     | host         |
     Cuando inicio sesión con email 'noexisto@doe.com' y contraseña 'password'
-    Entonces obtengo un error 401 con mensaje 'User not recognized'
+    Entonces obtengo un error 401 con mensaje 'Usuario no reconocido'
 
   Escenario: Creación fallida - Email faltante
     Cuando inicio sesión sin email
-    Entonces obtengo un error 400 con mensaje 'User or password missing'
+    Entonces veo un error indicado en el campo "email"
 
   Escenario: Creación fallida - Contraseña faltante
     Cuando inicio sesión sin contraseña
-    Entonces obtengo un error 400 con mensaje 'User or password missing'
+    Entonces veo un error indicado en el campo "password"

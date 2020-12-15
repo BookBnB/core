@@ -59,3 +59,17 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
     expect(payload).to.have.property('exp')
 });
 
+When('inicio sesión correctamente con un proovedor de identidad federada', async function () {
+    Sesiones.mockTokenValido('john@doe.com')
+    await Sesiones.crearConGoogle(this)
+});
+
+When('inicio sesión con un token inválido de proovedor de identidad federada', async function () {
+    Sesiones.mockTokenInvalido()
+    await Sesiones.crearConGoogle(this)
+});
+
+When('inicio sesión con un token de proovedor de identidad federada cuyo usuario no está registrado', async function () {
+    Sesiones.mockTokenDeUsuarioNoRegistrado()
+    await Sesiones.crearConGoogle(this)
+});

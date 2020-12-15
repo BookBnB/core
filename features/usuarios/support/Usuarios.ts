@@ -46,7 +46,7 @@ export default class Usuarios extends Recurso {
     }
 
     public static async crearActual(context: World, rol: string, email: string = 'john@doe.com') {
-        await this.crear(context, {...this.ejemplo(), role: rol})
+        await this.crear(context, {...this.ejemplo(), role: rol, email})
         await Sesiones.crear(context, context.last_response.body.email, context.last_response.body.password)
         context.sesiones.setTokenActual(context.last_response.body.token)
     }
