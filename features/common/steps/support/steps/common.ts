@@ -1,9 +1,16 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
-import { Then } from 'cucumber';
+import {Given, Then} from 'cucumber';
+import Usuarios from "../../../../usuarios/support/Usuarios";
+import Sesiones from "../../../../sesiones/support/Sesiones";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
+
+Given('que existe el {string} con email {string}', async function (rol, email) {
+    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: rol})
+    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
+});
 
 Then('obtengo un mensaje de error {string}', function (error: string) {
     expect(this.last_response).to.be.json

@@ -26,6 +26,7 @@ Característica:
     Cuando listo mis publicaciones
     Entonces no obtengo publicaciones
 
+  @only
   Escenario: No puedo ver las publicaciones de otro anfitrión
     Dado que soy "anfitrión"
     Cuando listo las publicaciones del anfitrion "unanfitrion@test.test"

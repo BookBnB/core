@@ -6,6 +6,10 @@ import Recurso from "../../util/Recurso";
 chai.use(chaiHttp);
 
 export default class Reservas extends Recurso {
+    protected static baseUlr(): string {
+        return '/v1/reservas';
+    }
+
     public static ejemplo(publicacionId: string) {
         return {
             publicacionId: publicacionId,
@@ -15,17 +19,13 @@ export default class Reservas extends Recurso {
     }
 
     public static async crear(context: World, reserva: any) {
-        context.last_response = await chai.request(context.app)
-            .post('/v1/reservas')
-            .set('authorization', context.tokenSesion)
-            .type('json')
-            .send(reserva)
+        await this.post(context, '', reserva)
     }
 
-    static async listarPorPublicacion(world: World, publicacionId: string, estado: string | undefined = undefined) {
-        world.last_response = await chai.request(world.app)
+    static async listarPorPublicacion(context: World, publicacionId: string, estado: string | undefined = undefined) {
+        context.last_response = await chai.request(context.app)
             .get(`/v1/publicaciones/${publicacionId}/reservas`)
             .query({estado: estado})
-            .set('authorization', world.tokenSesion)
+            .set('authorization', Reservas.tokenActual(context))
     }
 }

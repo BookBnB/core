@@ -5,7 +5,7 @@ Característica:
   Para poder hacer uso de las funcionalidades de la plataforma
 
   Escenario: Usuario intenta listar publicaciones sin haber creado una sesion
-    Dado que soy un usuario con datos:
+    Dado que estoy registrado con:
       | name     | John         |
       | surname  | Doe          |
       | email    | john@doe.com |

@@ -5,13 +5,14 @@ Característica:
   Para poder hacer uso de las funcionalidades de la plataforma
 
   Antecedentes:
-    Dado que soy un usuario con datos:
+    Dado que estoy registrado con:
       | name     | John         |
       | surname  | Doe          |
       | email    | john@doe.com |
       | password | password     |
       | role     | host         |
 
+  @only
   Escenario: Expiración de sesión
     Dado que inicié mi sesión correctamente
     Y que mi sesión expiró

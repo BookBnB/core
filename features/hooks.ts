@@ -53,5 +53,5 @@ After(async function () {
  * Setup sesiones
  */
 Before(function () {
-    this.gestorDeSesiones = new GestorDeSesiones();
+    this.sesiones = new GestorDeSesiones();
 })

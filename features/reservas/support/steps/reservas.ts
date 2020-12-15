@@ -5,7 +5,8 @@ import _ from "lodash";
 import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
-import {crearPublicacion, crearUsuarioConRol} from "../../../publicaciones/support/steps/publicaciones";
+import {crearPublicacion} from "../../../publicaciones/support/steps/publicaciones";
+import Usuarios from "../../../usuarios/support/Usuarios";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -58,13 +59,13 @@ Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
 });
 
 Then('veo que está reservada a mí nombre', function () {
-    expect(this.last_response.body).to.have.property('huespedId', this.usuarioActual.id)
+    expect(this.last_response.body).to.have.property('huespedId', this.sesiones.usuarioActual().id)
 });
 
 Given('que el huesped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email, titulo, dataTable) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
 
-    await this.gestorDeSesiones.ejecutarBajoSesion(this, async () => {
+    await this.sesiones.ejecutarBajoSesion(async () => {
         const reserva = dataTable.rowsHash()
         reserva.publicacionId = this.last_publicacion.body.id
         await Reservas.crear(this, reserva);
@@ -102,10 +103,10 @@ When('listo las reservas de una publicación que no existe', async function () {
 });
 
 When('listo las reservas de una publicación que no es mía', async function () {
-    await crearUsuarioConRol.bind(this)("anfitrión", "uno@bookbnb.com")
+    await Usuarios.crearActual(this, 'anfitrión', 'uno@bookbnb.com')
     await Publicaciones.crear(this, Publicaciones.ejemplo())
     const publicacionId = this.last_publicacion.body.id
-    await crearUsuarioConRol.bind(this)("anfitrión", "otro@bookbnb.com")
+    await Usuarios.crearActual(this, 'anfitrión', 'otro@bookbnb.com')
     await Reservas.listarPorPublicacion(this, publicacionId)
 });
 

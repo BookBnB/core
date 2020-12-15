@@ -36,12 +36,20 @@ function sesionCreationHandler() {
     return rest.post(`*/v1/sesiones`, (req, res, ctx) => {
         const requestBody: CrearSesionDTO = <CrearSesionDTO>req.body;
 
+        if(!requestBody.email || !requestBody.password) {
+            return res(
+                ctx.status(400),
+                ctx.json({
+                    message: 'User or password missing'
+                })
+            )
+        }
+
         if (!Store.getInstance().has(requestBody.email)) {
             return res(
                 ctx.status(401),
                 ctx.json({
-                    name: 'UnauthorizedError',
-                    message: 'Usuario no reconocido'
+                    message: 'User not recognized'
                 })
             )
         }
@@ -52,8 +60,7 @@ function sesionCreationHandler() {
             return res(
                 ctx.status(401),
                 ctx.json({
-                    name: 'UnauthorizedError',
-                    message: 'Usuario no reconocido'
+                    message: 'User not recognized'
                 })
             )
         }

@@ -1,7 +1,6 @@
 import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
-import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
 import _ from "lodash"
 import Publicaciones from "../Publicaciones";
 import {validarConjunto, validarObjeto} from "../../../util/Validacion";
@@ -13,15 +12,6 @@ chai.use(chaiHttp);
 chai.use(chaiSubset);
 const expect = chai.expect;
 
-export async function crearUsuarioConRol(this: any, role: string, email: string = 'john@doe.com') {
-    await crearUsuario.bind(this)({
-        nombre: 'John Doe',
-        email: email,
-        password: 'password',
-        role: role
-    })
-    await iniciarSesion.bind(this)(email, 'password')
-}
 
 export async function crearPublicacion(this: any, dataTable: TableDefinition) {
     const publicacion: any = Publicaciones.ejemplo()
@@ -36,12 +26,12 @@ export async function crearPublicacion(this: any, dataTable: TableDefinition) {
     await Publicaciones.crear(this, publicacion)
 }
 
-Given('que soy {string}', async function (rol: string) { 
-    await crearUsuarioConRol.bind(this)(rol);
+Given('que soy {string}', async function (rol: string) {
+    await Usuarios.crearActual(this, rol)
 });
 
 Then('veo que está publicada a mí nombre', function () {
-    expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.usuarioActual.id)
+    expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)
 });
 
 When('creo una publicación con:', crearPublicacion)
@@ -58,7 +48,7 @@ Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
 })
 
 Given('que existe una publicacion con:', async function (publicacion: TableDefinition) {
-    await crearUsuarioConRol.bind(this)("anfitrión")
+    await Usuarios.crearActual(this, 'anfitrión')
     await crearPublicacion.bind(this)(publicacion)
 });
 
@@ -139,11 +129,11 @@ When('ingreso a la publicación con id {string}', async function (id: string) {
 });
 
 When('listo mis publicaciones', async function () {
-    await Usuarios.listarPublicaciones(this, this.usuarioActual.id);
+    await Usuarios.listarPublicaciones(this, this.sesiones.usuarioActual().id);
 });
 
 When('listo las publicaciones del anfitrion {string}', async function (email) {
-    const usuario = this.gestorDeSesiones.obtenerUsuario(email)
+    const usuario = this.sesiones.obtenerUsuario(email)
 
     const id = usuario ? usuario.id : uuidv4()
     
@@ -154,14 +144,8 @@ When('listo las publicaciones del anfitrion de id {string}', async function (id)
     await Usuarios.listarPublicaciones(this, id);
 });
 
-Given('que existe el {string} con email {string}', async function (rol, email) {
-    const token = this.tokenSesion
-    await crearUsuarioConRol.bind(this)(rol, email)
-    this.tokenSesion = token
-});
-
 Given('que el anfitrión {string} tiene una publicación con:', async function (email, dataTable) {
-    await this.gestorDeSesiones.ejecutarBajoSesion(this, async () => {
+    await this.sesiones.ejecutarBajoSesion(async () => {
         await crearPublicacion.bind(this)(dataTable)
     }, email);
 });
