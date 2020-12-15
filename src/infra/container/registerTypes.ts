@@ -43,6 +43,7 @@ import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/Pregun
 import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
 import Log4JSLogger, {ILogger} from "../logging/Logger";
 import {ListarReservasDePublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
+import {CrearSesionConGoogle} from "../../domain/sesiones/casos-uso/CrearSesionConGoogle";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -116,6 +117,7 @@ export default class Registry {
 
         container.registerSingleton<SesionController>();
         container.registerTransient<CrearSesion>();
+        container.registerTransient<CrearSesionConGoogle>();
 
         container.registerSingleton<AuthenticationMiddleware>(() =>
             new AuthenticationMiddleware(

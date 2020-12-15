@@ -13,12 +13,12 @@ chai.use(chaiHttp);
 chai.use(chaiSubset);
 const expect = chai.expect;
 
-export async function crearUsuarioConRol(this: any, rol: string, email: string = 'john@doe.com') {
+export async function crearUsuarioConRol(this: any, role: string, email: string = 'john@doe.com') {
     await crearUsuario.bind(this)({
         nombre: 'John Doe',
         email: email,
         password: 'password',
-        role: rol
+        role: role
     })
     await iniciarSesion.bind(this)(email, 'password')
 }

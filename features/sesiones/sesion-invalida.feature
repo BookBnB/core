@@ -6,10 +6,10 @@ Característica:
 
   Antecedentes:
     Dado que soy un usuario con datos:
-      | nombre              | John Doe                                               |
-      | email               | john@doe.com                                           |
-      | password            | password                                               |
-      | role                | host                                                   |
+      | name     | John     |
+      | surname  | Doe      |
+      | password | password |
+      | role     | host     |
 
   Escenario: Sesión inválida
     Dado que inicié mi sesión correctamente

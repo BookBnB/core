@@ -6,10 +6,11 @@ Característica:
 
   Antecedentes:
     Dado que soy un usuario con datos:
-      | nombre              | John Doe                                               |
-      | email               | john@doe.com                                           |
-      | password            | password                                               |
-      | role                | host                                                   |
+      | name     | John         |
+      | surname  | Doe          |
+      | email    | john@doe.com |
+      | password | password     |
+      | role     | host         |
 
   Escenario: Expiración de sesión
     Dado que inicié mi sesión correctamente

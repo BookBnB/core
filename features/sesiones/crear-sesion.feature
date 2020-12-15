@@ -6,29 +6,32 @@ Característica:
 
   Escenario: Creación exitosa
     Dado que soy un usuario con datos:
-      | nombre   | John Doe     |
+      | name     | John         |
+      | surname  | Doe          |
       | email    | john@doe.com |
       | password | password     |
-      | role     | anfitrión    |
+      | role     | host         |
     Cuando inicio sesión con email 'john@doe.com' y contraseña 'password'
     Entonces obtengo un token con:
       | email | john@doe.com |
-      | rol   | anfitrión    |
+      | role  | host         |
 
   Escenario: Creación fallida - Contraseña incorrecta
     Dado que soy un usuario con datos:
-      | nombre   | John Doe     |
+      | name     | John         |
+      | surname  | Doe          |
       | email    | john@doe.com |
       | password | password     |
-      | role     | anfitrión    |
+      | role     | host         |
     Cuando inicio sesión con email 'john@doe.com' y contraseña 'incorrecta'
     Entonces obtengo un error 401 con mensaje 'Usuario no reconocido'
 
   Escenario: Creación fallida - Usuario inexistente
     Dado que soy un usuario con datos:
-      | nombre   | John Doe     |
+      | name     | John         |
+      | surname  | Doe          |
       | email    | john@doe.com |
       | password | password     |
-      | role     | anfitrión    |
+      | role     | host         |
     Cuando inicio sesión con email 'noexisto@doe.com' y contraseña 'password'
     Entonces obtengo un error 401 con mensaje 'Usuario no reconocido'
