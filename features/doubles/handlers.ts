@@ -78,14 +78,7 @@ function sesionCreationHandler() {
             )
         }
 
-        const payload = new SesionPayload(
-            usuario.id,
-            usuario.email,
-            usuario.role,
-            Math.trunc(toSeconds(Date.now() + hours(24)))
-        );
-
-        const mockedToken: string = new JWTTokenBuilder(<string>process.env.SECRET_KEY).buildToken(payload);
+        const mockedToken: string = generateToken(usuario.email)
 
         return res(
             ctx.status(200),
