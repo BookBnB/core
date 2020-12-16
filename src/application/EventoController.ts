@@ -4,7 +4,7 @@ import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 import { EventoNuevaPublicacion } from "../domain/eventos/casos-uso/EventoNuevaPublicacion";
 import { TipoEvento } from "../domain/eventos/entidades/TipoEvento";
 import { UseCase } from "../domain/UseCase";
-import Resultado from "./common/Resultado";
+import ResultadoEvento from "./common/ResultadoEvento";
 
 class CrearEventoDTO {
     @IsEnum(TipoEvento)
@@ -29,7 +29,7 @@ export class EventoController {
 
     @Post('/')
     @HttpCode(201)
-    @ResponseSchema(Resultado)
+    @ResponseSchema(ResultadoEvento)
     @OpenAPI({summary: 'Crea un evento'})
     async crear(@Body() body: CrearEventoDTO) {
         const evento: UseCase = this.eventos[body.tipo]
@@ -40,6 +40,6 @@ export class EventoController {
 
         await evento.execute(body.payload);
 
-        return Resultado.success()
+        return ResultadoEvento.success()
     }
 }

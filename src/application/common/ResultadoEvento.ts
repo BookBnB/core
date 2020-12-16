@@ -1,4 +1,4 @@
-export default class Resultado {
+export default class ResultadoEvento {
     public success!: boolean
     public message!: string
 
@@ -7,7 +7,7 @@ export default class Resultado {
         this.message = message
     }
 
-    public static success(): Resultado {
-        return new Resultado(true, 'ok')
+    public static success(): ResultadoEvento {
+        return new ResultadoEvento(true, 'ok')
     }
 }
