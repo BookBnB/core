@@ -12,6 +12,7 @@ export class EventoNuevaPublicacion implements UseCase {
         const publicacion = await this.publicaciones.obtener(params.idPublicacion)
 
         publicacion.estado = EstadoPublicacion.creada
+        publicacion.idEnContrato = params.idEnContrato
 
         await this.publicaciones.guardar(publicacion)
     }

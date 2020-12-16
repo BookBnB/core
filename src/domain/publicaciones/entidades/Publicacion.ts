@@ -67,6 +67,9 @@ export default class Publicacion {
     @Column({ type: 'enum', enum: EstadoPublicacion })
     public estado!: EstadoPublicacion;
 
+    @Column('int', { nullable: true })
+    public idEnContrato?: number;
+
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
     }
