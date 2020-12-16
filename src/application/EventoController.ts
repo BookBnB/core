@@ -2,6 +2,7 @@ import { IsEnum, IsObject } from "class-validator";
 import { Body, HttpCode, JsonController, Post } from "routing-controllers";
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 import { ConfirmarNuevaPublicacion } from "../domain/publicaciones/casos-uso/ConfirmarNuevaPublicacion";
+import { ConfirmarAceptacionReserva } from "../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
 import { ConfirmarNuevaReserva } from "../domain/reservas/casos-uso/ConfirmarNuevaReserva";
 import { UseCase } from "../domain/UseCase";
 import ResultadoEvento from "./common/ResultadoEvento";
@@ -27,12 +28,14 @@ export class EventoController {
     private eventos: any
 
     constructor(
-        eventoNuevaPublicacion: ConfirmarNuevaPublicacion,
-        eventoNuevaReserva: ConfirmarNuevaReserva
+        nuevaPublicacion: ConfirmarNuevaPublicacion,
+        nuevaReserva: ConfirmarNuevaReserva,
+        aceptarReserva: ConfirmarAceptacionReserva
     ) {
         this.eventos = {
-            [TipoEvento.NUEVA_PUBLICACION]: eventoNuevaPublicacion,
-            [TipoEvento.NUEVA_RESERVA]: eventoNuevaReserva
+            [TipoEvento.NUEVA_PUBLICACION]: nuevaPublicacion,
+            [TipoEvento.NUEVA_RESERVA]: nuevaReserva,
+            [TipoEvento.RESERVA_ACEPTADA]: aceptarReserva
         }
     }
 

@@ -50,6 +50,7 @@ import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import { IContainer } from "./Container";
 import { ConfirmarNuevaReserva } from "../../domain/reservas/casos-uso/ConfirmarNuevaReserva";
+import { ConfirmarAceptacionReserva } from "../../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -168,6 +169,7 @@ export default class Registry {
     protected async registrarEventos(container: DIContainer) {
         container.registerTransient<ConfirmarNuevaPublicacion>()
         container.registerTransient<ConfirmarNuevaReserva>()
+        container.registerTransient<ConfirmarAceptacionReserva>()
         container.registerSingleton<EventoController>()
     }
 

@@ -51,4 +51,8 @@ export default class Reserva {
             throw new FechasInvertidasError('Fechas de reserva invertidas');
         }
     }
+
+    aceptar() {
+        this.estado = EstadoReserva.ACEPTADA
+    }
 }
