@@ -122,7 +122,7 @@ When('se notifica un evento para la publicacion creada', async function () {
     const evento = {
         tipo: TipoEvento.NUEVA_PUBLICACION,
         payload: {
-            idPublicacion: this.last_publicacion.body.id,
+            publicacionId: this.last_publicacion.body.id,
             contratoId: 1
         }
     }

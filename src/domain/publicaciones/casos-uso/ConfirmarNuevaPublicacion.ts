@@ -3,7 +3,7 @@ import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import { UseCase } from "../../UseCase";
 
 interface ParametrosConfirmarNuevaPublicacion {
-    idPublicacion: string
+    publicacionId: string
     contratoId: number
 }
 
@@ -14,7 +14,7 @@ export class ConfirmarNuevaPublicacion implements UseCase {
     }
 
     async execute(params: ParametrosConfirmarNuevaPublicacion) {
-        const publicacion = await this.publicaciones.obtener(params.idPublicacion)
+        const publicacion = await this.publicaciones.obtener(params.publicacionId)
 
         publicacion.estado = EstadoPublicacion.creada
         publicacion.contratoId = params.contratoId

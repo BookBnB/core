@@ -131,7 +131,7 @@ When('se notifica un evento para la reserva creada', async function () {
     const evento = {
         tipo: TipoEvento.NUEVA_RESERVA,
         payload: {
-            idReserva: this.last_reserva.body.id
+            reservaId: this.last_reserva.body.id
         }
     }
 
@@ -145,7 +145,7 @@ When('se notifica un evento de aprobacion para la reserva', async function () {
     const evento = {
         tipo: TipoEvento.RESERVA_ACEPTADA,
         payload: {
-            idReserva: this.last_reserva.body.id
+            reservaId: this.last_reserva.body.id
         }
     }
 

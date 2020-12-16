@@ -3,7 +3,7 @@ import { UseCase } from "../../UseCase";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
 
 interface ParametrosAceptarReserva {
-    idReserva: string
+    reservaId: string
 }
 
 export class ConfirmarAceptacionReserva implements UseCase {
@@ -13,7 +13,7 @@ export class ConfirmarAceptacionReserva implements UseCase {
     }
 
     async execute(params: ParametrosAceptarReserva) {
-        const reserva = await this.reservas.obtener(params.idReserva)
+        const reserva = await this.reservas.obtener(params.reservaId)
 
         reserva.aceptar()
 
