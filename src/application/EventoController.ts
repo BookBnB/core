@@ -34,11 +34,9 @@ export class EventoController {
     async crear(@Body() body: CrearEventoDTO) {
         const evento: UseCase = this.eventos[body.tipo]
 
-        if (!evento) {
-            throw new BadRequestError('Evento no reconocido')
+        if (evento) {
+            await evento.execute(body.payload);
         }
-
-        await evento.execute(body.payload);
 
         return ResultadoEvento.success()
     }
