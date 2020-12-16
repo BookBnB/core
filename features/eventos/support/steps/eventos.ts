@@ -21,3 +21,16 @@ When('se notifica un evento para la publicacion creada', async function () {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
 });
+
+When('se notifica un evento para la reserva creada', async function () {
+    const evento = {
+        tipo: TipoEvento.NUEVA_RESERVA,
+        payload: {
+            idReserva: this.last_reserva.body.id,
+            fechaInicio: this.last_reserva.body.fechaInicio,
+            fechaFin: this.last_reserva.body.fechaFin
+        }
+    }
+
+    await Eventos.crear(this, evento)
+});

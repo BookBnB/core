@@ -25,6 +25,7 @@ import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/Pregun
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
 import { ListarReservasDePublicacion } from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
+import { VerReserva } from "../../domain/reservas/casos-uso/VerReserva";
 import Reserva from "../../domain/reservas/entidades/Reserva";
 import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
 import { CrearSesion } from "../../domain/sesiones/casos-uso/CrearSesion";
@@ -48,6 +49,7 @@ import ServicioPagos from "../servicios/ServicioPagos";
 import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import { IContainer } from "./Container";
+import { ConfirmarNuevaReserva } from "../../domain/reservas/casos-uso/ConfirmarNuevaReserva";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -145,6 +147,7 @@ export default class Registry {
     protected async registrarReservas(container: DIContainer) {
         container.registerSingleton<ReservaController>();
         container.registerTransient<CrearReserva>();
+        container.registerTransient<VerReserva>();
 
         const reservasRepo: Repository<Reserva> = await container.get<Connection>().getRepository(Reserva);
         container.registerSingleton<Repository<Reserva>>(() => reservasRepo);
@@ -164,6 +167,7 @@ export default class Registry {
 
     protected async registrarEventos(container: DIContainer) {
         container.registerTransient<ConfirmarNuevaPublicacion>()
+        container.registerTransient<ConfirmarNuevaReserva>()
         container.registerSingleton<EventoController>()
     }
 

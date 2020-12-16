@@ -35,7 +35,7 @@ export class CrearReserva {
             precioPorNoche: publicacion.precioPorNoche,
             publicacion: publicacion,
             huesped: usuario,
-            estado: EstadoReserva.PENDIENTE
+            estado: EstadoReserva.PENDIENTE_CREACION
         });
 
         await this.reservas.guardar(reserva);

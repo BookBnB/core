@@ -20,8 +20,13 @@ export default class Reservas extends Recurso {
 
     public static async crear(context: World, reserva: any) {
         await this.post(context, '', reserva)
+        context.last_reserva = context.last_response
     }
 
+    public static async obtener(context: World, idReserva: any) {
+        await this.get(context, `/${idReserva}`)
+    }
+    
     static async listarPorPublicacion(context: World, publicacionId: string, estado: string | undefined = undefined) {
         context.last_response = await chai.request(context.app)
             .get(`/v1/publicaciones/${publicacionId}/reservas`)

@@ -55,7 +55,7 @@ Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
     const reserva = this.last_response.body
     await Publicaciones.obtener(this, this.last_response.body.publicacionId)
     this.last_response.body = {...reserva, publicacion: this.last_response.body}
-    validarObjeto.bind(this)(dataTable)
+    validarObjeto(this.last_response.body, dataTable)
 });
 
 Then('veo que está reservada a mí nombre', function () {
@@ -86,6 +86,7 @@ When('listo las reservas {string} de la publicación con título {string}', asyn
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
 
     const estados = new Map([
+        ["pendientes de creacion", "pendiente de creacion"],
         ["pendientes", "pendiente"],
         ["aceptadas", "aceptada"],
         ["rechazadas", "rechazada"],
@@ -112,4 +113,14 @@ When('listo las reservas de una publicación que no es mía', async function () 
 
 Given('que realicé una publicación con:', async function (dataTable) {
     await crearPublicacion.bind(this)(dataTable)
+});
+
+Then('ingreso a la reserva', async function () {
+    await Reservas.obtener(this, this.last_reserva.body.id)
+});
+
+Then('veo una reserva con:', function (dataTable: TableDefinition) {
+    expect(this.last_response).to.have.status(200)
+    expect(this.last_response).to.be.json
+    validarObjeto(this.last_response.body, dataTable)
 });

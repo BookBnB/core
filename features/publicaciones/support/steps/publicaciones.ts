@@ -40,7 +40,7 @@ Given('que existe una publicacion', async function() {
 Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
-    validarObjeto.bind(this)(dataTable)
+    validarObjeto(this.last_response.body, dataTable)
 })
 
 Given('que existe una publicacion con:', async function (publicacion: TableDefinition) {
@@ -56,7 +56,7 @@ When('ingreso a la publicación con título {string}', async function (titulo: s
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json
-    validarObjeto.bind(this)(dataTable)
+    validarObjeto(this.last_response.body, dataTable)
 })
 
 Then('veo una nueva publicación con {string} nulo', function (campo: string) {
