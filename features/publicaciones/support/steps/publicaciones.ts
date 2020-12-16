@@ -7,6 +7,8 @@ import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import chaiSubset from "chai-subset";
 import Usuarios from "../../../usuarios/support/Usuarios";
 import { v4 as uuidv4 } from 'uuid';
+import Eventos from "../../../common/Eventos";
+import { TipoEvento } from "../../../../src/application/EventoController";
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
@@ -114,6 +116,21 @@ When('busco las primeras {int} publicaciones con {float} como precio máximo', a
 
 When('busco las primeras {int} publicaciones con precio entre {float} y {float}', async function (cantidad, precioPorNocheMinimo, precioPorNocheMaximo) {
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
+});
+
+When('se notifica un evento para la publicacion creada', async function () {
+    const evento = {
+        tipo: TipoEvento.NUEVA_PUBLICACION,
+        payload: {
+            idPublicacion: this.last_publicacion.body.id,
+            contratoId: 1
+        }
+    }
+
+    await Eventos.crear(this, evento)
+
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
 });
 
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {

@@ -4,8 +4,7 @@ Característica:
     Quiero poder notificar la aprobación de una nueva reserva
     Para que el notificado pueda actualizar su estado acorde al evento
 
-    @only
-    Escenario: Aprobación de reserva
+    Escenario: Confirmacion de aceptacion de reserva
         Dado que existe una publicacion con:
         | titulo | Departamento en Palermo |
         Y que soy "huesped"

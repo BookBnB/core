@@ -7,6 +7,8 @@ import Reservas from "../Reservas";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
 import {crearPublicacion} from "../../../publicaciones/support/steps/publicaciones";
 import Usuarios from "../../../usuarios/support/Usuarios";
+import Eventos from "../../../common/Eventos";
+import { TipoEvento } from "../../../../src/application/EventoController";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -123,4 +125,32 @@ Then('veo una reserva con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json
     validarObjeto(this.last_response.body, dataTable)
+});
+
+When('se notifica un evento para la reserva creada', async function () {
+    const evento = {
+        tipo: TipoEvento.NUEVA_RESERVA,
+        payload: {
+            idReserva: this.last_reserva.body.id
+        }
+    }
+
+    await Eventos.crear(this, evento)
+
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
+});
+
+When('se notifica un evento de aprobacion para la reserva', async function () {
+    const evento = {
+        tipo: TipoEvento.RESERVA_ACEPTADA,
+        payload: {
+            idReserva: this.last_reserva.body.id
+        }
+    }
+
+    await Eventos.crear(this, evento)
+
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
 });

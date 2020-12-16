@@ -1,6 +1,6 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import Recurso from "../../util/Recurso";
+import Recurso from "../util/Recurso";
 
 chai.use(chaiHttp);
 
