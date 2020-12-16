@@ -3,7 +3,7 @@ import PublicacionDTO from "../dtos/PublicacionDTO";
 import {IsEnum, IsOptional, IsPositive, IsString, MinLength, ValidateNested} from "class-validator";
 import {JSONSchema} from "class-validator-jsonschema";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
-import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
+import Publicacion, {EstadoPublicacion, TipoDeAlojamiento} from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
@@ -52,7 +52,8 @@ export class CrearPublicacion implements UseCase {
     async execute(usuario: Usuario, pedido: CrearPublicacionDTO): Promise<PublicacionDTO> {
         const publicacion = new Publicacion({
             ...pedido,
-            anfitrion: usuario
+            anfitrion: usuario,
+            estado: EstadoPublicacion.pendienteCreacion
         })
         await this.publicaciones.guardar(publicacion)
         return new PublicacionDTO(publicacion)

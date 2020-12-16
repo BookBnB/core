@@ -36,6 +36,7 @@ Característica:
       | cantidadDeHuespedes            | 2                                                      |
       | tipoDeAlojamiento              | Alojamiento entero                                     |
       | imagenes[0].url                | google.com                                             |
+      | estado                         | Pendiente de creación                                  |
     Y veo que está publicada a mí nombre
 
   Escenario: Municipio opcional

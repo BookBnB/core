@@ -49,8 +49,8 @@ Given('que existe una publicacion con:', async function (publicacion: TableDefin
 });
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
-    if (this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
-    await Publicaciones.obtener(this, this.last_response.body.id)
+    if (this.last_publicacion.body.titulo != titulo) throw new Error('No existe la publicación')
+    await Publicaciones.obtener(this, this.last_publicacion.body.id)
 });
 
 Then('veo una publicación con:', function (dataTable: TableDefinition) {

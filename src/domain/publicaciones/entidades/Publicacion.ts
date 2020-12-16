@@ -13,7 +13,8 @@ export interface PublicacionConstructor {
     direccion: DireccionConstructor
     cantidadDeHuespedes: number
     anfitrion: Usuario,
-    imagenes: Imagen[]
+    imagenes: Imagen[],
+    estado: EstadoPublicacion
 }
 
 export enum TipoDeAlojamiento {
@@ -21,6 +22,11 @@ export enum TipoDeAlojamiento {
     habitacionPrivada = 'Habitación privada',
     habitacionCompartida = 'Habitación compartida',
     habitacionDeHotel = 'Habitación de hotel'
+}
+
+export enum EstadoPublicacion {
+    pendienteCreacion = 'Pendiente de creación',
+    creada = 'Creada'
 }
 
 @Entity()
@@ -57,6 +63,9 @@ export default class Publicacion {
 
     @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
     public preguntas!: Promise<Pregunta[]>;
+
+    @Column({ type: 'enum', enum: EstadoPublicacion })
+    public estado!: EstadoPublicacion;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);

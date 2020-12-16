@@ -1,49 +1,51 @@
-import {DIContainer} from "@wessberg/di";
-import typeOrmConnection from "../typeOrmConnection";
-import {Connection, EntityManager, Repository} from "typeorm";
-import {IContainer} from "./Container";
-import {PublicacionController} from "../../application/PublicacionController";
-import {CrearPublicacion} from "../../domain/publicaciones/casos-uso/CrearPublicacion";
-import {PublicacionRepositorio} from "../repositories/PublicacionRepositorio";
-import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
-import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
-import {VerPublicacion} from "../../domain/publicaciones/casos-uso/VerPublicacion";
-import {SesionController} from "../../application/SesionController";
-import {CrearSesion} from "../../domain/sesiones/casos-uso/CrearSesion";
-import ServicioUsuarios from "../servicios/ServicioUsuarios";
-import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios";
-import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
-import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
+import { DIContainer } from "@wessberg/di";
+import { Connection, EntityManager, Repository } from "typeorm";
+import { EventoController } from "../../application/EventoController";
+import { LugarController } from "../../application/LugarController";
 import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
-import {BuscarPublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
-import IReloj from "../../domain/common/servicios/Reloj";
-import Reloj from "../servicios/Reloj";
-import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
-import ServicioLugares from "../servicios/ServicioLugares";
-import {LugarController} from "../../application/LugarController";
-import {BuscarDirecciones} from "../../domain/lugares/casos-uso/BuscarDirecciones";
-import {ErrorHandler} from "../ErrorHandler";
-import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
-import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
-import {BuscarCiudades} from "../../domain/lugares/casos-uso/BuscarCiudades";
+import { PublicacionController } from "../../application/PublicacionController";
 import { ReservaController } from "../../application/ReservaController";
-import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
-import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
-import ReservaRepositorio from "../repositories/ReservaRepositorio";
-import Reserva from "../../domain/reservas/entidades/Reserva";
+import { SesionController } from "../../application/SesionController";
 import { UsuarioController } from "../../application/UsuariosController";
-import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
-import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
-import {ListarPublicacionesPorAnfitrion} from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
-import {PreguntarEnPublicacion} from "../../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
-import {ListarPreguntasDePublicacion} from "../../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
-import {ResponderEnPublicacion} from "../../domain/publicaciones/casos-uso/ResponderEnPublicacion";
+import IReloj from "../../domain/common/servicios/Reloj";
+import { EventoNuevaPublicacion } from "../../domain/eventos/casos-uso/EventoNuevaPublicacion";
+import { BuscarCiudades } from "../../domain/lugares/casos-uso/BuscarCiudades";
+import { BuscarDirecciones } from "../../domain/lugares/casos-uso/BuscarDirecciones";
+import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
+import { BuscarPublicaciones } from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
+import { CrearPublicacion } from "../../domain/publicaciones/casos-uso/CrearPublicacion";
+import { ListarPreguntasDePublicacion } from "../../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
+import { PreguntarEnPublicacion } from "../../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
+import { ResponderEnPublicacion } from "../../domain/publicaciones/casos-uso/ResponderEnPublicacion";
+import { VerPublicacion } from "../../domain/publicaciones/casos-uso/VerPublicacion";
 import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
+import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/PreguntaRepositorio";
+import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
+import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
+import { ListarReservasDePublicacion } from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
+import Reserva from "../../domain/reservas/entidades/Reserva";
+import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
+import { CrearSesion } from "../../domain/sesiones/casos-uso/CrearSesion";
+import { CrearSesionConGoogle } from "../../domain/sesiones/casos-uso/CrearSesionConGoogle";
+import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
+import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
+import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios";
+import { ListarPublicacionesPorAnfitrion } from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
+import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
+import { ErrorHandler } from "../ErrorHandler";
+import Log4JSLogger, { ILogger } from "../logging/Logger";
 import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
-import Log4JSLogger, {ILogger} from "../logging/Logger";
-import {ListarReservasDePublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
-import {CrearSesionConGoogle} from "../../domain/sesiones/casos-uso/CrearSesionConGoogle";
+import { PublicacionRepositorio } from "../repositories/PublicacionRepositorio";
+import ReservaRepositorio from "../repositories/ReservaRepositorio";
+import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
+import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
+import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
+import Reloj from "../servicios/Reloj";
+import ServicioLugares from "../servicios/ServicioLugares";
+import ServicioUsuarios from "../servicios/ServicioUsuarios";
+import typeOrmConnection from "../typeOrmConnection";
+import { IContainer } from "./Container";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -65,6 +67,7 @@ export default class Registry {
         await this.registrarLugares(container)
         await this.registrarReservas(container)
         await this.registrarUsuarios(container)
+        await this.registrarEventos(container)
         return container
     }
 
@@ -154,5 +157,10 @@ export default class Registry {
         container.registerSingleton<EntityManager>(() => manager);
         container.registerSingleton<IUsuarioRepositorio>(() =>
             new UsuarioRepositorio(manager));
+    }
+
+    protected async registrarEventos(container: DIContainer) {
+        container.registerTransient<EventoNuevaPublicacion>()
+        container.registerSingleton<EventoController>()
     }
 }
