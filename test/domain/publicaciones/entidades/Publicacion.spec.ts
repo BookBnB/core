@@ -10,8 +10,7 @@ describe("Publicacion", () => {
 		const publicacionEjemplo = Publicaciones.ejemplo()
 		const publicacion: Publicacion = new Publicacion({
 			...publicacionEjemplo,
-			anfitrion: new Usuario(uuidv4(), "anfitrion"),
-			estado: EstadoPublicacion.pendienteCreacion
+			anfitrion: new Usuario(uuidv4(), "anfitrion")
 		});
 
 		expect(publicacion.titulo).to.equal(publicacionEjemplo.titulo);

@@ -56,8 +56,7 @@ export class CrearPublicacion implements UseCase {
     async execute(usuario: Usuario, pedido: CrearPublicacionDTO): Promise<PublicacionDTO> {
         const publicacion = new Publicacion({
             ...pedido,
-            anfitrion: usuario,
-            estado: EstadoPublicacion.pendienteCreacion
+            anfitrion: usuario
         })
 
         await this.publicaciones.guardar(publicacion)

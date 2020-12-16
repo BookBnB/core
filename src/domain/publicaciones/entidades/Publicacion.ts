@@ -13,8 +13,7 @@ export interface PublicacionConstructor {
     direccion: DireccionConstructor
     cantidadDeHuespedes: number
     anfitrion: Usuario,
-    imagenes: Imagen[],
-    estado: EstadoPublicacion
+    imagenes: Imagen[]
 }
 
 export enum TipoDeAlojamiento {
@@ -72,6 +71,7 @@ export default class Publicacion {
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
+        this.estado = EstadoPublicacion.pendienteCreacion
     }
 
     async preguntar(usuario: Usuario, descripcion: string): Promise<Pregunta> {
