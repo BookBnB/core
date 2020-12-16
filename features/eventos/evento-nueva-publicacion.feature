@@ -7,8 +7,7 @@ Característica:
     Escenario: Creación de publicacion
         Dado que existe una publicacion con:
         | titulo | Departamento en Palermo |
-        Cuando se notifica un evento para la publicacion creada con id en contrato 3
+        Cuando se notifica un evento para la publicacion creada
         Entonces ingreso a la publicación con título "Departamento en Palermo"
         Y veo una publicación con:
         | estado       | Creada |
-        | contratoId   | 3 |
