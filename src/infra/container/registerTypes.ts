@@ -8,6 +8,7 @@ import { ReservaController } from "../../application/ReservaController";
 import { SesionController } from "../../application/SesionController";
 import { UsuarioController } from "../../application/UsuariosController";
 import IReloj from "../../domain/common/servicios/Reloj";
+import IServicioPagos from "../../domain/common/servicios/ServicioPagos";
 import { EventoNuevaPublicacion } from "../../domain/eventos/casos-uso/EventoNuevaPublicacion";
 import { BuscarCiudades } from "../../domain/lugares/casos-uso/BuscarCiudades";
 import { BuscarDirecciones } from "../../domain/lugares/casos-uso/BuscarDirecciones";
@@ -43,6 +44,7 @@ import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
 import Reloj from "../servicios/Reloj";
 import ServicioLugares from "../servicios/ServicioLugares";
+import ServicioPagos from "../servicios/ServicioPagos";
 import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import { IContainer } from "./Container";
@@ -68,6 +70,7 @@ export default class Registry {
         await this.registrarReservas(container)
         await this.registrarUsuarios(container)
         await this.registrarEventos(container)
+        await this.registrarServicioPagos(container)
         return container
     }
 
@@ -162,5 +165,10 @@ export default class Registry {
     protected async registrarEventos(container: DIContainer) {
         container.registerTransient<EventoNuevaPublicacion>()
         container.registerSingleton<EventoController>()
+    }
+
+    protected async registrarServicioPagos(container: DIContainer) {
+        const servicioPagos = new ServicioPagos(<string>process.env.PAYMENTS_SERVICE_URL);
+        container.registerSingleton<IServicioPagos>(() => servicioPagos);
     }
 }

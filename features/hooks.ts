@@ -15,7 +15,8 @@ import GestorDeSesiones from "./util/GestorDeSesiones";
 import {configure} from "log4js";
 import logConfig from "../config/log-config.json";
 import app from "../src/app"
-
+import ServicioPagos from '../src/infra/servicios/ServicioPagos';
+import sinon from 'sinon'
 
 /**
  * Setup mock server
@@ -42,8 +43,12 @@ BeforeAll(() => {
 
 Before(async function () {
     this.reloj = new RelojFake()
+    this.mockServicioPagos = sinon.createStubInstance(ServicioPagos)
     this.container = new DIContainer()
-    await new TestRegistry(this.reloj).registrar(this.container)
+    await new TestRegistry(
+        this.reloj,
+        this.mockServicioPagos
+    ).registrar(this.container)
     this.app = await app(this.container)
 });
 

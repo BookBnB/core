@@ -8,6 +8,7 @@ import {Type} from "class-transformer";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "../entidades/Imagen";
+import IServicioPagos from "../../common/servicios/ServicioPagos";
 
 export interface CrearPublicacionDTOConstructor {
     titulo: string
@@ -46,7 +47,10 @@ export class CrearPublicacionDTO {
 }
 
 export class CrearPublicacion implements UseCase {
-    constructor(private readonly publicaciones: IPublicacionRepositorio) {
+    constructor(
+        private readonly publicaciones: IPublicacionRepositorio,
+        private readonly servicioPagos: IServicioPagos
+    ) {
     }
 
     async execute(usuario: Usuario, pedido: CrearPublicacionDTO): Promise<PublicacionDTO> {
@@ -55,7 +59,11 @@ export class CrearPublicacion implements UseCase {
             anfitrion: usuario,
             estado: EstadoPublicacion.pendienteCreacion
         })
+
         await this.publicaciones.guardar(publicacion)
+
+        await this.servicioPagos.crearPublicacion(publicacion)
+
         return new PublicacionDTO(publicacion)
     }
 }
