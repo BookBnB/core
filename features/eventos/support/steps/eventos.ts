@@ -1,6 +1,6 @@
 import chai from "chai";
 import { When } from "cucumber";
-import { TipoEvento } from "../../../../src/domain/eventos/entidades/TipoEvento";
+import { TipoEvento } from "../../../../src/application/EventoController";
 import Eventos from "../Eventos";
 
 const expect = chai.expect;

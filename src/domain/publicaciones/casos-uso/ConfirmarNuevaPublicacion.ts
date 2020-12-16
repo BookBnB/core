@@ -1,8 +1,8 @@
-import { EstadoPublicacion } from "../../publicaciones/entidades/Publicacion";
-import IPublicacionRepositorio from "../../publicaciones/repositorios/PublicacionRepositorio";
+import { EstadoPublicacion } from "../entidades/Publicacion";
+import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import { UseCase } from "../../UseCase";
 
-export class EventoNuevaPublicacion implements UseCase {
+export class ConfirmarNuevaPublicacion implements UseCase {
     constructor(
         private readonly publicaciones: IPublicacionRepositorio
     ) { 

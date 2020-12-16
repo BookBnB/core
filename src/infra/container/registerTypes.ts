@@ -9,7 +9,7 @@ import { SesionController } from "../../application/SesionController";
 import { UsuarioController } from "../../application/UsuariosController";
 import IReloj from "../../domain/common/servicios/Reloj";
 import IServicioPagos from "../../domain/common/servicios/ServicioPagos";
-import { EventoNuevaPublicacion } from "../../domain/eventos/casos-uso/EventoNuevaPublicacion";
+import { ConfirmarNuevaPublicacion } from "../../domain/publicaciones/casos-uso/ConfirmarNuevaPublicacion";
 import { BuscarCiudades } from "../../domain/lugares/casos-uso/BuscarCiudades";
 import { BuscarDirecciones } from "../../domain/lugares/casos-uso/BuscarDirecciones";
 import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
@@ -163,7 +163,7 @@ export default class Registry {
     }
 
     protected async registrarEventos(container: DIContainer) {
-        container.registerTransient<EventoNuevaPublicacion>()
+        container.registerTransient<ConfirmarNuevaPublicacion>()
         container.registerSingleton<EventoController>()
     }
 

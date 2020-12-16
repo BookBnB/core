@@ -1,10 +1,16 @@
 import { IsEnum, IsObject } from "class-validator";
-import { BadRequestError, Body, HttpCode, JsonController, Post } from "routing-controllers";
+import { Body, HttpCode, JsonController, Post } from "routing-controllers";
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
-import { EventoNuevaPublicacion } from "../domain/eventos/casos-uso/EventoNuevaPublicacion";
-import { TipoEvento } from "../domain/eventos/entidades/TipoEvento";
+import { ConfirmarNuevaPublicacion } from "../domain/publicaciones/casos-uso/ConfirmarNuevaPublicacion";
 import { UseCase } from "../domain/UseCase";
 import ResultadoEvento from "./common/ResultadoEvento";
+
+export enum TipoEvento {
+    NUEVA_PUBLICACION = 'NUEVA_PUBLICACION',
+    NUEVA_RESERVA = "NUEVA_RESERVA",
+    RESERVA_ACEPTADA = "RESERVA_ACEPTADA",
+    RESERVA_RECHAZADA = "RESERVA_RECHAZADA"
+}
 
 class CrearEventoDTO {
     @IsEnum(TipoEvento)
@@ -20,7 +26,7 @@ export class EventoController {
     private eventos: any
 
     constructor(
-        eventoNuevaPublicacion: EventoNuevaPublicacion
+        eventoNuevaPublicacion: ConfirmarNuevaPublicacion
     ) {
         this.eventos = {
             [TipoEvento.NUEVA_PUBLICACION]: eventoNuevaPublicacion
