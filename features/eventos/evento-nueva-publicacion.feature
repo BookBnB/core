@@ -11,4 +11,4 @@ Característica:
         Entonces ingreso a la publicación con título "Departamento en Palermo"
         Y veo una publicación con:
         | estado       | Creada |
-        | idEnContrato | 3 |
+        | contratoId   | 3 |

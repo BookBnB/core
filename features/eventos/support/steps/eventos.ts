@@ -5,13 +5,13 @@ import Eventos from "../Eventos";
 
 const expect = chai.expect;
 
-When('se notifica un evento para la publicacion creada con id en contrato {int}', async function (idEnContrato) {
+When('se notifica un evento para la publicacion creada con id en contrato {int}', async function (contratoId) {
     const evento = {
         tipo: TipoEvento.NUEVA_PUBLICACION,
         payload: {
             direccionAnfitrion: '0x0123456789012345678901234567890123456789',
             idPublicacion: this.last_publicacion.body.id,
-            idEnContrato,
+            contratoId,
             precioPorNoche: 1
         }
     }

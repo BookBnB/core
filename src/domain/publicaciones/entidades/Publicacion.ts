@@ -67,7 +67,7 @@ export default class Publicacion {
     public estado!: EstadoPublicacion;
 
     @Column('int', { nullable: true })
-    public idEnContrato?: number;
+    public contratoId?: number;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
