@@ -7,6 +7,8 @@ import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import chaiSubset from "chai-subset";
 import Usuarios from "../../../usuarios/support/Usuarios";
 import { v4 as uuidv4 } from 'uuid';
+import Eventos from "../../../common/Eventos";
+import { TipoEvento } from "../../../../src/application/EventoController";
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
@@ -40,7 +42,7 @@ Given('que existe una publicacion', async function() {
 Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
-    validarObjeto.bind(this)(dataTable)
+    validarObjeto(this.last_response.body, dataTable)
 })
 
 Given('que existe una publicacion con:', async function (publicacion: TableDefinition) {
@@ -49,14 +51,14 @@ Given('que existe una publicacion con:', async function (publicacion: TableDefin
 });
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
-    if (this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
-    await Publicaciones.obtener(this, this.last_response.body.id)
+    if (this.last_publicacion.body.titulo != titulo) throw new Error('No existe la publicación')
+    await Publicaciones.obtener(this, this.last_publicacion.body.id)
 });
 
 Then('veo una publicación con:', function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json
-    validarObjeto.bind(this)(dataTable)
+    validarObjeto(this.last_response.body, dataTable)
 })
 
 Then('veo una nueva publicación con {string} nulo', function (campo: string) {
@@ -114,6 +116,21 @@ When('busco las primeras {int} publicaciones con {float} como precio máximo', a
 
 When('busco las primeras {int} publicaciones con precio entre {float} y {float}', async function (cantidad, precioPorNocheMinimo, precioPorNocheMaximo) {
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
+});
+
+When('se notifica un evento para la publicacion creada', async function () {
+    const evento = {
+        tipo: TipoEvento.NUEVA_PUBLICACION,
+        payload: {
+            publicacionId: this.last_publicacion.body.id,
+            contratoId: 1
+        }
+    }
+
+    await Eventos.crear(this, evento)
+
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
 });
 
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {

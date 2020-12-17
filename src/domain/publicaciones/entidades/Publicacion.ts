@@ -23,6 +23,11 @@ export enum TipoDeAlojamiento {
     habitacionDeHotel = 'Habitación de hotel'
 }
 
+export enum EstadoPublicacion {
+    pendienteCreacion = 'Pendiente de creación',
+    creada = 'Creada'
+}
+
 @Entity()
 export default class Publicacion {
     @PrimaryGeneratedColumn("uuid")
@@ -58,8 +63,15 @@ export default class Publicacion {
     @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
     public preguntas!: Promise<Pregunta[]>;
 
+    @Column({ type: 'enum', enum: EstadoPublicacion })
+    public estado!: EstadoPublicacion;
+
+    @Column('int', { nullable: true })
+    public contratoId?: number;
+
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
+        this.estado = EstadoPublicacion.pendienteCreacion
     }
 
     async preguntar(usuario: Usuario, descripcion: string): Promise<Pregunta> {

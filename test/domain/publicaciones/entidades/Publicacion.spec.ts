@@ -1,6 +1,6 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import Publicacion from "../../../../src/domain/publicaciones/entidades/Publicacion";
+import Publicacion, { EstadoPublicacion } from "../../../../src/domain/publicaciones/entidades/Publicacion";
 import Publicaciones from "../../../../features/publicaciones/support/Publicaciones";
 import { v4 as uuidv4 } from 'uuid';
 import Usuario from "../../../../src/domain/usuarios/entidades/Usuario";

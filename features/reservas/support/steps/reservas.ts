@@ -1,14 +1,18 @@
-import chai from "chai"
-import chaiHttp from "chai-http"
-import {When, Then, Given, TableDefinition} from 'cucumber';
+import chai from "chai";
+import chaiHttp from "chai-http";
+import { Given, TableDefinition, Then, When } from 'cucumber';
 import _ from "lodash";
-import {validarConjunto, validarObjeto} from "../../../util/Validacion";
-import Reservas from "../Reservas";
+import sinonChai from "sinon-chai"
+import { TipoEvento } from "../../../../src/application/EventoController";
+import Eventos from "../../../common/Eventos";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
-import {crearPublicacion} from "../../../publicaciones/support/steps/publicaciones";
+import { crearPublicacion } from "../../../publicaciones/support/steps/publicaciones";
 import Usuarios from "../../../usuarios/support/Usuarios";
+import { validarConjunto, validarObjeto } from "../../../util/Validacion";
+import Reservas from "../Reservas";
 
 chai.use(chaiHttp);
+chai.use(sinonChai)
 const expect = chai.expect;
 
 When('intento hacer una reserva del {string} al {string} en la publicación con título {string}', async function (fechaInicio, fechaFin, titulo) {
@@ -55,7 +59,7 @@ Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
     const reserva = this.last_response.body
     await Publicaciones.obtener(this, this.last_response.body.publicacionId)
     this.last_response.body = {...reserva, publicacion: this.last_response.body}
-    validarObjeto.bind(this)(dataTable)
+    validarObjeto(this.last_response.body, dataTable)
 });
 
 Then('veo que está reservada a mí nombre', function () {
@@ -69,6 +73,7 @@ Given('que el huesped con email {string} tiene una reserva en la publicación co
         const reserva = dataTable.rowsHash()
         reserva.publicacionId = this.last_publicacion.body.id
         await Reservas.crear(this, reserva);
+        this.reservas[email] = this.last_reserva.body
     }, email)
 });
 
@@ -86,6 +91,7 @@ When('listo las reservas {string} de la publicación con título {string}', asyn
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
 
     const estados = new Map([
+        ["pendientes de creacion", "pendiente de creacion"],
         ["pendientes", "pendiente"],
         ["aceptadas", "aceptada"],
         ["rechazadas", "rechazada"],
@@ -112,4 +118,57 @@ When('listo las reservas de una publicación que no es mía', async function () 
 
 Given('que realicé una publicación con:', async function (dataTable) {
     await crearPublicacion.bind(this)(dataTable)
+});
+
+Then('ingreso a la reserva', async function () {
+    await Reservas.obtener(this, this.last_reserva.body.id)
+});
+
+Then('veo una reserva con:', function (dataTable: TableDefinition) {
+    expect(this.last_response).to.have.status(200)
+    expect(this.last_response).to.be.json
+    validarObjeto(this.last_response.body, dataTable)
+});
+
+When('se notifica un evento para la reserva creada', async function () {
+    const evento = {
+        tipo: TipoEvento.NUEVA_RESERVA,
+        payload: {
+            reservaId: this.last_reserva.body.id
+        }
+    }
+
+    await Eventos.crear(this, evento)
+
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
+});
+
+When('se notifica un evento de aprobacion para la reserva', async function () {
+    const evento = {
+        tipo: TipoEvento.RESERVA_ACEPTADA,
+        payload: {
+            reservaId: this.last_reserva.body.id
+        }
+    }
+
+    await Eventos.crear(this, evento)
+
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
+});
+
+When('apruebo la reserva del usuario {string}', async function (email) {
+    const reserva = this.reservas[email]
+    await Reservas.aprobar(this, reserva.id)
+});
+
+Then('se desencadena el proceso de aceptación del usuario {string}', async function (email) {
+    expect(this.last_response).to.have.status(200)
+    expect(this.last_response).to.be.json
+
+    const reserva = this.reservas[email]
+    expect(this.mockServicioPagos.aceptarReserva).to.have.been.calledWithMatch({
+        id: reserva.id
+    })
 });

@@ -19,7 +19,7 @@ When('pregunto {string} en la publicación con título {string}', async function
 Then('veo una nueva pregunta con:', function (dataTable) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
-    validarObjeto.bind(this)(dataTable)
+    validarObjeto(this.last_response.body, dataTable)
 });
 
 Then('veo las preguntas:', function (dataTable) {

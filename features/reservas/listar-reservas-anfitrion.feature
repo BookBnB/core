@@ -10,14 +10,14 @@ Característica:
       | titulo | Departamento en Palermo |
     Y que existe el "huesped" con email "unHuesped@book.bnb"
     Y que el huesped con email "unHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
-      | fechaInicio | 2020-12-01 |
-      | fechaFin    | 2020-12-07 |
-      | estado      | pendiente  |
+      | fechaInicio | 2020-12-01             |
+      | fechaFin    | 2020-12-07             |
+      | estado      | pendiente de creacion  |
     Y que existe el "huesped" con email "otroHuesped@book.bnb"
     Y que el huesped con email "otroHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
-      | fechaInicio | 2020-12-08 |
-      | fechaFin    | 2020-12-10 |
-      | estado      | pendiente  |
+      | fechaInicio | 2020-12-08             |
+      | fechaFin    | 2020-12-10             |
+      | estado      | pendiente de creacion  |
 
   Escenario: Listado sin reservas
     Dado que realicé una publicación con:
@@ -28,7 +28,7 @@ Característica:
   Escenario: Listado sin reservas pendientes
     Dado que realicé una publicación con:
       | titulo | Casa en Salta |
-    Cuando listo las reservas "pendientes" de la publicación con título "Casa en Salta"
+    Cuando listo las reservas "pendientes de creacion" de la publicación con título "Casa en Salta"
     Entonces no obtengo reservas
 
   Escenario: Listado sin reservas aceptadas
@@ -41,15 +41,15 @@ Característica:
     Cuando listo las reservas de la publicación con título "Departamento en Palermo"
     Entonces veo las reservas:
       | fechaInicio | fechaFin   | estado    |
-      | 2020-12-01  | 2020-12-07 | pendiente |
-      | 2020-12-08  | 2020-12-10 | pendiente |
+      | 2020-12-01  | 2020-12-07 | pendiente de creacion |
+      | 2020-12-08  | 2020-12-10 | pendiente de creacion |
 
   Escenario: Listado de reservas pendientes
-    Cuando listo las reservas "pendientes" de la publicación con título "Departamento en Palermo"
+    Cuando listo las reservas "pendientes de creacion" de la publicación con título "Departamento en Palermo"
     Entonces veo las reservas:
       | fechaInicio | fechaFin   | estado    |
-      | 2020-12-01  | 2020-12-07 | pendiente |
-      | 2020-12-08  | 2020-12-10 | pendiente |
+      | 2020-12-01  | 2020-12-07 | pendiente de creacion |
+      | 2020-12-08  | 2020-12-10 | pendiente de creacion |
 
   Escenario: Listado sin reservas aceptadas pero con pendientes
     Cuando listo las reservas "aceptadas" de la publicación con título "Departamento en Palermo"
