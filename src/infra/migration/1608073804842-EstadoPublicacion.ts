@@ -5,7 +5,7 @@ export class EstadoPublicacion1608073804842 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "publicacion_estado_enum" AS ENUM('Pendiente de creación', 'Creada')`);
-        await queryRunner.query(`ALTER TABLE "publicacion" ADD "estado" "publicacion_estado_enum" NOT NULL`);
+        await queryRunner.query(`ALTER TABLE "publicacion" ADD "estado" "publicacion_estado_enum" NOT NULL DEFAULT 'Pendiente de creación'`);
         await queryRunner.query(`ALTER TABLE "respuesta" DROP CONSTRAINT "FK_92e47895593ddd4418957fd3f14"`);
         await queryRunner.query(`COMMENT ON COLUMN "respuesta"."preguntaId" IS NULL`);
         await queryRunner.query(`ALTER TABLE "respuesta" ADD CONSTRAINT "UQ_92e47895593ddd4418957fd3f14" UNIQUE ("preguntaId")`);

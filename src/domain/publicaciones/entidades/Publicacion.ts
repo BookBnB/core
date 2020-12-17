@@ -63,7 +63,7 @@ export default class Publicacion {
     @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
     public preguntas!: Promise<Pregunta[]>;
 
-    @Column({ type: 'enum', enum: EstadoPublicacion })
+    @Column({ type: 'enum', enum: EstadoPublicacion, default: EstadoPublicacion.pendienteCreacion })
     public estado!: EstadoPublicacion;
 
     @Column('int', { nullable: true })
