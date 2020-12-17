@@ -1,16 +1,18 @@
-import chai from "chai"
-import chaiHttp from "chai-http"
-import {When, Then, Given, TableDefinition} from 'cucumber';
+import chai from "chai";
+import chaiHttp from "chai-http";
+import { Given, TableDefinition, Then, When } from 'cucumber';
 import _ from "lodash";
-import {validarConjunto, validarObjeto} from "../../../util/Validacion";
-import Reservas from "../Reservas";
-import Publicaciones from "../../../publicaciones/support/Publicaciones";
-import {crearPublicacion} from "../../../publicaciones/support/steps/publicaciones";
-import Usuarios from "../../../usuarios/support/Usuarios";
-import Eventos from "../../../common/Eventos";
+import sinonChai from "sinon-chai"
 import { TipoEvento } from "../../../../src/application/EventoController";
+import Eventos from "../../../common/Eventos";
+import Publicaciones from "../../../publicaciones/support/Publicaciones";
+import { crearPublicacion } from "../../../publicaciones/support/steps/publicaciones";
+import Usuarios from "../../../usuarios/support/Usuarios";
+import { validarConjunto, validarObjeto } from "../../../util/Validacion";
+import Reservas from "../Reservas";
 
 chai.use(chaiHttp);
+chai.use(sinonChai)
 const expect = chai.expect;
 
 When('intento hacer una reserva del {string} al {string} en la publicación con título {string}', async function (fechaInicio, fechaFin, titulo) {
@@ -71,6 +73,7 @@ Given('que el huesped con email {string} tiene una reserva en la publicación co
         const reserva = dataTable.rowsHash()
         reserva.publicacionId = this.last_publicacion.body.id
         await Reservas.crear(this, reserva);
+        this.reservas[email] = this.last_reserva.body
     }, email)
 });
 
@@ -153,4 +156,19 @@ When('se notifica un evento de aprobacion para la reserva', async function () {
 
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
+});
+
+When('apruebo la reserva del usuario {string}', async function (email) {
+    const reserva = this.reservas[email]
+    await Reservas.aprobar(this, reserva.id)
+});
+
+Then('se desencadena el proceso de aceptación del usuario {string}', async function (email) {
+    expect(this.last_response).to.have.status(200)
+    expect(this.last_response).to.be.json
+
+    const reserva = this.reservas[email]
+    expect(this.mockServicioPagos.aceptarReserva).to.have.been.calledWithMatch({
+        id: reserva.id
+    })
 });

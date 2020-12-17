@@ -7,6 +7,7 @@ import ReservaDTO from "../dtos/ReservaDTO";
 import Reserva, { EstadoReserva } from "../entidades/Reserva";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
 import {JSONSchema} from "class-validator-jsonschema";
+import IServicioPagos from "../../common/servicios/ServicioPagos";
 
 export class CrearReservaDTO {
     @IsUUID()
@@ -22,7 +23,8 @@ export class CrearReservaDTO {
 export class CrearReserva {
     constructor(
         private readonly publicaciones: IPublicacionRepositorio,
-        private readonly reservas: IReservaRepositorio
+        private readonly reservas: IReservaRepositorio,
+        private readonly servicioPagos: IServicioPagos
     ) {
     }
 
@@ -38,7 +40,9 @@ export class CrearReserva {
             estado: EstadoReserva.PENDIENTE_CREACION
         });
 
-        await this.reservas.guardar(reserva);
+        await this.reservas.guardar(reserva)
+
+        await this.servicioPagos.crearReserva(reserva)
 
         return new ReservaDTO(reserva);
     }

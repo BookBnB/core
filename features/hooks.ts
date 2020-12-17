@@ -42,6 +42,8 @@ BeforeAll(() => {
 })
 
 Before(async function () {
+    this.reservas = {}
+
     this.reloj = new RelojFake()
     this.mockServicioPagos = sinon.createStubInstance(ServicioPagos)
     this.container = new DIContainer()

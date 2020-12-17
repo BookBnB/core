@@ -51,6 +51,7 @@ import typeOrmConnection from "../typeOrmConnection";
 import { IContainer } from "./Container";
 import { ConfirmarNuevaReserva } from "../../domain/reservas/casos-uso/ConfirmarNuevaReserva";
 import { ConfirmarAceptacionReserva } from "../../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
+import { AprobarReserva } from "../../domain/reservas/casos-uso/AprobarReserva";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -148,6 +149,7 @@ export default class Registry {
     protected async registrarReservas(container: DIContainer) {
         container.registerSingleton<ReservaController>();
         container.registerTransient<CrearReserva>();
+        container.registerTransient<AprobarReserva>();
         container.registerTransient<VerReserva>();
 
         const reservasRepo: Repository<Reserva> = await container.get<Connection>().getRepository(Reserva);

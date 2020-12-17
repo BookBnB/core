@@ -7,14 +7,17 @@ import {
     JsonController,
     Params,
     Post,
+    Put,
     UseBefore
 } from "routing-controllers";
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 import UUID from "../domain/common/UUID";
+import { AprobarReserva } from "../domain/reservas/casos-uso/AprobarReserva";
 import { CrearReserva, CrearReservaDTO } from "../domain/reservas/casos-uso/CrearReserva";
 import { VerReserva } from "../domain/reservas/casos-uso/VerReserva";
 import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
 import Usuario from "../domain/usuarios/entidades/Usuario";
+import ResultadoEvento from "./common/ResultadoEvento";
 import AuthenticationMiddleware from "./middlewares/AuthenticationMiddleware";
 
 @OpenAPI({security: [{token: []}]})
@@ -23,7 +26,8 @@ import AuthenticationMiddleware from "./middlewares/AuthenticationMiddleware";
 export class ReservaController {
     constructor(
         private readonly crearReserva: CrearReserva,
-        private readonly verReserva: VerReserva
+        private readonly verReserva: VerReserva,
+        private readonly aprobarReserva: AprobarReserva
     ) {
     }
 
@@ -41,5 +45,13 @@ export class ReservaController {
     @OpenAPI({ summary: 'Muestra una reserva' })
     async obtener(@Params() { id }: any): Promise<ReservaDTO> {
         return await this.verReserva.execute(id)
+    }
+
+    @Put('/:id/aprobacion')
+    @ResponseSchema(ReservaDTO)
+    @OpenAPI({ summary: 'Muestra una reserva' })
+    async aprobar(@Params() { id }: any): Promise<any> {
+        await this.aprobarReserva.execute(id)
+        return ResultadoEvento.success()
     }
 }
