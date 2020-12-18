@@ -1,6 +1,7 @@
 import {Application} from "express";
 import {createProxyMiddleware} from "http-proxy-middleware";
 import {ILogger} from "../infra/logging/Logger";
+import http from "http";
 
 export default class UsersServiceProxy {
 
@@ -8,7 +9,12 @@ export default class UsersServiceProxy {
         app.use('/v1', createProxyMiddleware(UsersServiceProxy.proxyEndpoints(), {
             target: process.env.USERS_SERVICE_URL,
             changeOrigin: true,
-            logProvider: () => new UsersServiceProxyLoggerAdapter(logger)
+            logProvider: () => new UsersServiceProxyLoggerAdapter(logger),
+            onProxyRes: (proxyRes: http.IncomingMessage, req: any, res: any) => {
+                if(req.url === '/v1/usuarios' && req.method === 'POST' && proxyRes.statusCode === 201) {
+                    console.log('creo un usuario')
+                }
+            }
         }))
     }
 
