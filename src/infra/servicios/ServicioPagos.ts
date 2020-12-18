@@ -1,14 +1,16 @@
-import axios from 'axios';
 import IServicioPagos from "../../domain/common/servicios/ServicioPagos";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import Reserva from '../../domain/reservas/entidades/Reserva';
+import Usuario from '../../domain/usuarios/entidades/Usuario';
+import ServicioExterno from './ServicioExterno';
 
-export default class ServicioPagos implements IServicioPagos {
+export default class ServicioPagos extends ServicioExterno implements IServicioPagos {
     constructor(private readonly url: string) {
+        super()
     }
 
     async crearPublicacion(publicacion: Publicacion): Promise<void> {
-        return axios.post(`${this.url}/v1/publicaciones`, {
+        await this.post(`${this.url}/v1/publicaciones`, {
             publicacionId: publicacion.id,
             usuarioId: publicacion.anfitrion.id,
             precioPorNoche: publicacion.precioPorNoche
@@ -16,7 +18,7 @@ export default class ServicioPagos implements IServicioPagos {
     }
 
     async aceptarReserva(reserva: Reserva): Promise<void> {
-        return axios.put(`${this.url}/v1/reservas/${reserva.id}/aprobacion`, {
+        await this.put(`${this.url}/v1/reservas/${reserva.id}/aprobacion`, {
             reservaId: reserva.id,
             huespedId: reserva.huesped.id,
             fechaInicio: reserva.fechaInicio,
@@ -27,12 +29,16 @@ export default class ServicioPagos implements IServicioPagos {
     }
 
     async crearReserva(reserva: Reserva): Promise<void> {
-        return axios.post(`${this.url}/v1/reservas`, {
+        await this.post(`${this.url}/v1/reservas`, {
             reservaId: reserva.id,
             publicacionContratoId: reserva.publicacion.contratoId,
             huespedId: reserva.huesped.id,
             fechaInicio: reserva.fechaInicio,
             fechaFin: reserva.fechaFin
         })
+    }
+
+    async crearBilletera(usuario: Usuario): Promise<void> {
+        await this.post(`${this.url}/v1/billeteras/${usuario.id}`)
     }
 }

@@ -31,7 +31,7 @@ function userCreationHandler() {
     // wildcard * necesario porque el endpoint /v1/usuarios esta cubierto por un proxy
     // que msw por alguna razón no llega a capturar. Lo que hacemos es capturar
     // la llamada a la aplicación en lugar al destino del proxy
-    return rest.post(`*/v1/usuarios`, (req, res, ctx) => {
+    return rest.post(`${process.env['USERS_SERVICE_URL']}/v1/usuarios`, (req, res, ctx) => {
         const usuario: Usuario = <Usuario>req.body;
 
         usuario.id = uuidv4()

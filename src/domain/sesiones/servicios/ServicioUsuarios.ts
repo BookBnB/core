@@ -6,4 +6,6 @@ export default interface IServicioUsuarios {
     crearSesion(body: CrearSesionDTO): Promise<Sesion>;
 
     crearSesionConGoogle(body: CrearSesionConGoogleDTO): Promise<Sesion>;
+
+    crearUsuario(body: CrearUsuarioDTO): Promise<UsuarioDTO>
 }
