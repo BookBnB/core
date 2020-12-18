@@ -5,8 +5,11 @@ import UsuarioNoReconocidoError from "../../domain/sesiones/excepciones/UsuarioN
 import CrearSesionDTO from "../../domain/sesiones/casos-uso/CrearSesion";
 import CrearSesionConGoogleDTO from "../../domain/sesiones/casos-uso/CrearSesionConGoogle";
 import RequestError from "../../domain/common/excepciones/RequestError";
+import UsuarioDTO from "../../domain/usuarios/dtos/UsuarioDTO";
+import { CrearUsuarioDTO } from "../../domain/usuarios/casos-uso/CrearUsuario";
 
 export default class ServicioUsuarios implements IServicioUsuarios {
+    private readonly RUTA_CREAR = '/v1/usuarios'
     private readonly RUTA_SESION = '/v1/sesiones';
     private readonly RUTA_SESION_GOOGLE = '/v1/sesiones/google';
 
@@ -31,5 +34,11 @@ export default class ServicioUsuarios implements IServicioUsuarios {
             if (e.response.status === 401) throw new UsuarioNoReconocidoError('Usuario no reconocido');
             throw new RequestError(e.response.status, e.response.data.message)
         }
+    }
+
+    async crearUsuario(body: CrearUsuarioDTO): Promise<UsuarioDTO> {
+        const res = await axios.post(`${this.serviceUrl}${this.RUTA_CREAR}`, body)
+
+        return new UsuarioDTO(res.data)
     }
 }

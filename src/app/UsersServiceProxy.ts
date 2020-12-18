@@ -1,12 +1,11 @@
-import {Application} from "express";
+import {Application, Request} from "express";
 import {createProxyMiddleware} from "http-proxy-middleware";
 import {ILogger} from "../infra/logging/Logger";
 import http from "http";
 
 export default class UsersServiceProxy {
-
     public constructor({app, logger}: { app: Application, logger: ILogger}) {
-        app.use('/v1', createProxyMiddleware(UsersServiceProxy.proxyEndpoints(), {
+        app.use('/v1', createProxyMiddleware(UsersServiceProxy.filter, {
             target: process.env.USERS_SERVICE_URL,
             changeOrigin: true,
             logProvider: () => new UsersServiceProxyLoggerAdapter(logger),
@@ -23,6 +22,15 @@ export default class UsersServiceProxy {
      */
     public static proxyTags(): string[] {
         return ['Usuario']
+    }
+
+    public static filter(pathname: string, req: Request) {
+        if (pathname === '/v1/usuarios' && req.method === 'POST') {
+            return false;
+        }
+
+        const endpoints = UsersServiceProxy.proxyEndpoints()
+        return endpoints.find(e => pathname.match(`^${e}`)) != undefined
     }
 
     /**

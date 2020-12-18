@@ -2,6 +2,7 @@ import axios from 'axios';
 import IServicioPagos from "../../domain/common/servicios/ServicioPagos";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import Reserva from '../../domain/reservas/entidades/Reserva';
+import Usuario from '../../domain/usuarios/entidades/Usuario';
 
 export default class ServicioPagos implements IServicioPagos {
     constructor(private readonly url: string) {
@@ -34,5 +35,9 @@ export default class ServicioPagos implements IServicioPagos {
             fechaInicio: reserva.fechaInicio,
             fechaFin: reserva.fechaFin
         })
+    }
+
+    async crearBilletera(usuario: Usuario): Promise<void> {
+        return axios.post(`${this.url}/v1/billeteras/${usuario.id}`)
     }
 }

@@ -52,6 +52,7 @@ import { IContainer } from "./Container";
 import { ConfirmarNuevaReserva } from "../../domain/reservas/casos-uso/ConfirmarNuevaReserva";
 import { ConfirmarAceptacionReserva } from "../../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
 import { AprobarReserva } from "../../domain/reservas/casos-uso/AprobarReserva";
+import { CrearUsuario } from "../../domain/usuarios/casos-uso/CrearUsuario";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -128,6 +129,7 @@ export default class Registry {
         container.registerSingleton<SesionController>();
         container.registerTransient<CrearSesion>();
         container.registerTransient<CrearSesionConGoogle>();
+        container.registerTransient<CrearUsuario>();
 
         container.registerSingleton<AuthenticationMiddleware>(() =>
             new AuthenticationMiddleware(
