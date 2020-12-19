@@ -11,9 +11,9 @@ jobs:
       - name: Check running containers
         run: docker-compose ps -a
       - name: Check logs
-        run: sleep 1; docker-compose logs
+        run: sleep 5; docker-compose logs
       - name: Run test suite
         run: |
-          docker-compose exec app npm install
-          docker-compose exec app npm run test:coverage
+          docker-compose exec -T app npm install
+          docker-compose exec -T app npm run test:coverage
 
