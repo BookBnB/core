@@ -25,7 +25,8 @@ export enum TipoDeAlojamiento {
 
 export enum EstadoPublicacion {
     pendienteCreacion = 'Pendiente de creación',
-    creada = 'Creada'
+    creada = 'Creada',
+    rechazada = 'Rechazada',
 }
 
 @Entity()
@@ -91,5 +92,9 @@ export default class Publicacion {
 
     setContratoId(contratoId: number) {
         this.contratoId = contratoId
+    }
+
+    rechazar() {
+        this.estado = EstadoPublicacion.rechazada
     }
 }

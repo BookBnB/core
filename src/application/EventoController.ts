@@ -7,6 +7,7 @@ import { ConfirmarNuevaReserva } from "../domain/reservas/casos-uso/ConfirmarNue
 import { UseCase } from "../domain/UseCase";
 import ResultadoEvento from "./common/ResultadoEvento";
 import {JSONSchema} from "class-validator-jsonschema";
+import {RechazarNuevaPublicacion} from "../domain/publicaciones/casos-uso/RechazarNuevaPublicacion";
 
 export enum TipoEvento {
     NUEVA_PUBLICACION = 'NUEVA_PUBLICACION',
@@ -35,13 +36,15 @@ export class EventoController {
     private readonly eventos: any
 
     constructor(
-        nuevaPublicacion: ConfirmarNuevaPublicacion,
-        nuevaReserva: ConfirmarNuevaReserva,
+        confirmarNuevaPublicacion: ConfirmarNuevaPublicacion,
+        rechazarNuevaPublicacion: RechazarNuevaPublicacion,
+        confirmarNuevaReserva: ConfirmarNuevaReserva,
         aceptarReserva: ConfirmarAceptacionReserva
     ) {
         this.eventos = {
-            [TipoEvento.NUEVA_PUBLICACION]: nuevaPublicacion,
-            [TipoEvento.NUEVA_RESERVA]: nuevaReserva,
+            [TipoEvento.NUEVA_PUBLICACION]: confirmarNuevaPublicacion,
+            [TipoEvento.PUBLICACION_RECHAZADA]: rechazarNuevaPublicacion,
+            [TipoEvento.NUEVA_RESERVA]: confirmarNuevaReserva,
             [TipoEvento.RESERVA_ACEPTADA]: aceptarReserva
         }
     }

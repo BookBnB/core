@@ -27,7 +27,6 @@ Característica:
     Cuando notifico que la publicación con título "Departamento en Palermo" no pudo registrarse
     Entonces veo un mensaje de confirmación
 
-  @wip
   Escenario: Rechazo de publicación creada
     Dado que soy "anfitrión"
     Cuando creo una publicación con:
@@ -35,7 +34,7 @@ Característica:
     Y se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
     E ingreso a la publicación con título "Departamento en Palermo"
     Entonces veo una publicación con:
-      | estado | rechazada |
+      | estado | Rechazada |
 
   @wip
   Escenario: Los huéspedes no ven las publicaciones rechazadas

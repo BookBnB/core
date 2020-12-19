@@ -53,6 +53,7 @@ import { ConfirmarNuevaReserva } from "../../domain/reservas/casos-uso/Confirmar
 import { ConfirmarAceptacionReserva } from "../../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
 import { AprobarReserva } from "../../domain/reservas/casos-uso/AprobarReserva";
 import { CrearUsuario } from "../../domain/usuarios/casos-uso/CrearUsuario";
+import {RechazarNuevaPublicacion} from "../../domain/publicaciones/casos-uso/RechazarNuevaPublicacion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -172,6 +173,7 @@ export default class Registry {
 
     protected async registrarEventos(container: DIContainer) {
         container.registerTransient<ConfirmarNuevaPublicacion>()
+        container.registerTransient<RechazarNuevaPublicacion>()
         container.registerTransient<ConfirmarNuevaReserva>()
         container.registerTransient<ConfirmarAceptacionReserva>()
         container.registerSingleton<EventoController>()
