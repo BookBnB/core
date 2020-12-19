@@ -19,3 +19,10 @@ Característica:
     E ingreso a la publicación con título "Departamento en Palermo"
     Entonces veo una publicación con:
       | estado | Creada |
+
+  Escenario: Creación rechazada
+    Dado que soy "el servicio de pagos"
+    Y que existe una publicacion con:
+      | titulo | Departamento en Palermo |
+    Cuando notifico que la publicación con título "Departamento en Palermo" no pudo registrarse
+    Entonces veo un mensaje de confirmación

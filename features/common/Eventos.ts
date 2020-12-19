@@ -11,11 +11,10 @@ export default class Eventos {
         return this.BASE_URL;
     }
 
-    public static async crear(context: World, evento: any) {
-        context.last_response = await chai.request(context.app)
+    public static async notificar(context: World, evento: any) {
+        context.last_evento = context.last_response = await chai.request(context.app)
             .post(`${this.baseUlr()}`)
             .type("json")
             .send(evento)
-        context.last_evento = context.last_response
     }
 }

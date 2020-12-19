@@ -138,7 +138,7 @@ When('se notifica un evento para la reserva creada', async function () {
         }
     }
 
-    await Eventos.crear(this, evento)
+    await Eventos.notificar(this, evento)
 
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json
@@ -152,7 +152,7 @@ When('se notifica un evento de aprobacion para la reserva', async function () {
         }
     }
 
-    await Eventos.crear(this, evento)
+    await Eventos.notificar(this, evento)
 
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json

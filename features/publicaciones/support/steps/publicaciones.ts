@@ -127,19 +127,6 @@ When('busco las primeras {int} publicaciones con precio entre {float} y {float}'
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
 });
 
-When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
-    expect(this.last_publicacion.body.titulo).to.eql(titulo)
-    const evento = {
-        tipo: TipoEvento.NUEVA_PUBLICACION,
-        payload: {
-            publicacionId: this.last_publicacion.body.id,
-            contratoId: 1
-        }
-    }
-
-    await Eventos.crear(this, evento)
-});
-
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     validarConjunto.bind(this)(dataTable)
 });
@@ -168,4 +155,27 @@ Given('que el anfitrión {string} tiene una publicación con:', async function (
     await this.sesiones.ejecutarBajoSesion(async () => {
         await crearPublicacion.bind(this)(dataTable)
     }, email);
+});
+
+When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Eventos.notificar(this, {
+        tipo: TipoEvento.NUEVA_PUBLICACION,
+        payload: {
+            publicacionId: this.last_publicacion.body.id,
+            contratoId: 1
+        }
+    })
+});
+
+When(/^notifico que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Eventos.notificar(this, {
+        tipo: TipoEvento.PUBLICACION_RECHAZADA,
+        payload: {
+            publicacionId: this.last_publicacion.body.id
+        }
+    })
 });

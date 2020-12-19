@@ -12,6 +12,7 @@ import Direccion from "../domain/lugares/entidades/Direccion";
 
 export enum TipoEvento {
     NUEVA_PUBLICACION = 'NUEVA_PUBLICACION',
+    PUBLICACION_RECHAZADA = 'PUBLICACION_RECHAZADA',
     NUEVA_RESERVA = "NUEVA_RESERVA",
     RESERVA_ACEPTADA = "RESERVA_ACEPTADA",
     RESERVA_RECHAZADA = "RESERVA_RECHAZADA"
