@@ -41,4 +41,5 @@ Then('veo un mensaje de confirmación', function () {
     expect(this.last_response).to.be.json
     expect(this.last_response).to.have.status(200)
     expect(this.last_response.body.message).to.eql('ok')
+    expect(this.last_response.body.success).to.eql(true)
 });
