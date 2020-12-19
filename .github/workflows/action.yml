@@ -35,6 +35,8 @@ jobs:
       refs/heads/develop
       ', github.ref)
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
       - name: Deploy app
         run: |
           export BRANCH=${GITHUB_REF##*/}
