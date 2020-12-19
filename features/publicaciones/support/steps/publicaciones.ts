@@ -170,7 +170,7 @@ When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue re
     })
 });
 
-When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
+When(/^(?:notifico|se notifica|que se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
     expect(this.last_publicacion.body.titulo).to.eql(titulo)
 
     await Eventos.notificar(this, {

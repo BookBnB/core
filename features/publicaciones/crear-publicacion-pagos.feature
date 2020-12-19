@@ -45,12 +45,3 @@ Característica:
     Cuando se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
     E ingreso a la publicación con título "Departamento en Palermo"
     Entonces obtengo un error 404 con mensaje "Publicación inexistente"
-
-  @wip
-  Escenario: No se listan las publicaciones rechazadas
-    Dado que soy "anfitrión"
-    Cuando creo una publicación con:
-      | titulo | Departamento en Palermo |
-    Y se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
-    Y busco las primeras 5 publicaciones
-    Entonces veo que no hay publicaciones
