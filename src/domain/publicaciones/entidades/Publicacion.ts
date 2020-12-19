@@ -33,6 +33,9 @@ export default class Publicacion {
     @PrimaryGeneratedColumn("uuid")
     public id?: string;
 
+    @Column('int', { nullable: true })
+    public contratoId?: number;
+
     @Column()
     public titulo!: string;
 
@@ -66,9 +69,6 @@ export default class Publicacion {
     @Column({ type: 'enum', enum: EstadoPublicacion, default: EstadoPublicacion.pendienteCreacion })
     public estado!: EstadoPublicacion;
 
-    @Column('int', { nullable: true })
-    public contratoId?: number;
-
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
         this.estado = EstadoPublicacion.pendienteCreacion
@@ -83,5 +83,13 @@ export default class Publicacion {
         if (!pregunta) throw new PreguntaInexistenteError(`La pregunta con id ${idPregunta} no existe.`)
         pregunta.responder(descripcion, usuario)
         return pregunta
+    }
+
+    confirmar() {
+        this.estado = EstadoPublicacion.creada
+    }
+
+    setContratoId(contratoId: number) {
+        this.contratoId = contratoId
     }
 }
