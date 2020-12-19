@@ -25,7 +25,7 @@ jobs:
           docker-compose exec -T app npm install
           docker-compose exec -T app npm run test:coverage
       - name: Send coverage report
-        run: codecov -f coverage/*.json
+        run: node_modules/.bin/codecov -f coverage/*.json
 
   deploy:
     runs-on: ubuntu-latest
