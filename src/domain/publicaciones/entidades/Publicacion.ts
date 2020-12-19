@@ -97,4 +97,12 @@ export default class Publicacion {
     rechazar() {
         this.estado = EstadoPublicacion.rechazada
     }
+
+    esValida() : boolean{
+        return this.estado === EstadoPublicacion.creada;
+    }
+
+    perteneceA(usuario: Usuario) {
+        return this.anfitrion.esIgualA(usuario);
+    }
 }

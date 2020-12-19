@@ -35,13 +35,3 @@ Característica:
     E ingreso a la publicación con título "Departamento en Palermo"
     Entonces veo una publicación con:
       | estado | Rechazada |
-
-  @wip
-  Escenario: Los huéspedes no ven las publicaciones rechazadas
-    Dado que soy "huesped"
-    Y que existe el "anfitrión" con email "anfitrion@bookbnb.com"
-    Y que el anfitrión "anfitrion@bookbnb.com" tiene una publicación con:
-      | titulo | Departamento en Palermo |
-    Cuando se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
-    E ingreso a la publicación con título "Departamento en Palermo"
-    Entonces obtengo un error 404 con mensaje "Publicación inexistente"

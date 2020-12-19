@@ -43,3 +43,21 @@ Característica:
     Dado que soy "huesped"
     Cuando ingreso a la publicación con id "algo que no es un uuid"
     Entonces veo un error indicado en el campo "id"
+
+  Escenario: Los huéspedes no ven las publicaciones rechazadas
+    Dado que soy "huesped"
+    Y que existe el "anfitrión" con email "anfitrion@bookbnb.com"
+    Y que el anfitrión "anfitrion@bookbnb.com" tiene una publicación con:
+      | titulo | Departamento en Palermo |
+    Cuando se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
+    E ingreso a la publicación con título "Departamento en Palermo"
+    Entonces obtengo un error 404 con mensaje "La publicación con id .* no existe."
+
+  Escenario: Los no dueños de una publicación no la pueden ver si está rechazada
+    Dado que soy "anfitrión"
+    Y que existe el "anfitrión" con email "anfitrion@bookbnb.com"
+    Y que el anfitrión "anfitrion@bookbnb.com" tiene una publicación con:
+      | titulo | Departamento en Palermo |
+    Cuando se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
+    E ingreso a la publicación con título "Departamento en Palermo"
+    Entonces obtengo un error 404 con mensaje "La publicación con id .* no existe."

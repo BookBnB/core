@@ -15,7 +15,7 @@ class PublicacionDTO {
     @IsString()
     public descripcion!: string
 
-    @JSONSchema({example: 2})  @IsInt()
+    @JSONSchema({example: 2}) @IsInt()
     public precioPorNoche!: number
 
     @ValidateNested() @Type(() => Direccion)

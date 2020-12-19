@@ -73,13 +73,16 @@ export class PublicacionController {
     @Get('/:id')
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Muestra una publicación'})
-    async mostrarUno(@Params() {id}: UUID): Promise<PublicacionDTO> {
+    async mostrarUno(@CurrentUser() usuario: Usuario, @Params() {id}: UUID): Promise<PublicacionDTO> {
         try {
-            return await this.verPublicacion.execute(id)
+            const publicacion = await this.verPublicacion.execute(id)
+            if(publicacion.esValida() || publicacion.perteneceA(usuario))
+                return new PublicacionDTO(publicacion)
         } catch (e) {
             if (e instanceof PublicacionInexistenteError) throw new NotFoundError(e.message)
             throw e
         }
+        throw new NotFoundError(`La publicación con id ${id} no existe.`)
     }
 
     @Post('/')
