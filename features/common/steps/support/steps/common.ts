@@ -13,7 +13,7 @@ Given('que existe el {string} con email {string}', async function (rol, email) {
 });
 
 Given('que soy {string}', async function (rol: string) {
-    await Usuarios.crearActual(this, rol)
+    if(Usuarios.roles().get(rol)) await Usuarios.crearActual(this, rol)
 });
 
 Then('obtengo un mensaje de error {string}', function (error: string) {
@@ -35,4 +35,10 @@ Then('obtengo un error {int} con mensaje {string}', function (code, message) {
 });
 
 Then('además', function () {
+});
+
+Then('veo un mensaje de confirmación', function () {
+    expect(this.last_response).to.be.json
+    expect(this.last_response).to.have.status(200)
+    expect(this.last_response.body.message).to.eql('ok')
 });

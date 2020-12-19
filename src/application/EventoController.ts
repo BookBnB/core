@@ -48,10 +48,10 @@ export class EventoController {
     }
 
     @Post('/')
-    @HttpCode(201)
+    @HttpCode(200)
     @ResponseSchema(ResultadoEvento)
-    @OpenAPI({summary: 'Crea un evento'})
-    async crear(@Body() body: CrearEventoDTO) {
+    @OpenAPI({summary: 'Notifica un evento'})
+    async notificar(@Body() body: CrearEventoDTO) {
         const evento: UseCase = this.eventos[body.tipo]
 
         if (evento) {

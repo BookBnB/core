@@ -28,13 +28,15 @@ export default class Usuarios extends Recurso {
         }
     }
 
-    public static async crear(context: World, usuario: any) {
-        const roles = new Map([
+    public static roles(): Map<string, string> {
+        return new Map([
             ["anfitrión", "host"],
             ["huesped", "guest"]
         ])
+    }
 
-        usuario.role = roles.get(usuario.role) || usuario.role
+    public static async crear(context: World, usuario: any) {
+        usuario.role = this.roles().get(usuario.role) || usuario.role
         context.last_response = await chai.request(context.app)
             .post('/v1/usuarios')
             .type('json')

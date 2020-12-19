@@ -60,7 +60,7 @@ Given('que existe una publicacion con:', async function (publicacion: TableDefin
 });
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
-    if (this.last_publicacion.body.titulo != titulo) throw new Error('No existe la publicación')
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
     await Publicaciones.obtener(this, this.last_publicacion.body.id)
 });
 
@@ -127,7 +127,8 @@ When('busco las primeras {int} publicaciones con precio entre {float} y {float}'
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
 });
 
-When('se notifica un evento para la publicacion creada', async function () {
+When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
     const evento = {
         tipo: TipoEvento.NUEVA_PUBLICACION,
         payload: {
@@ -137,9 +138,6 @@ When('se notifica un evento para la publicacion creada', async function () {
     }
 
     await Eventos.crear(this, evento)
-
-    expect(this.last_response).to.have.status(201)
-    expect(this.last_response).to.be.json
 });
 
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
