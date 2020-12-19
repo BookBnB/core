@@ -1,10 +1,13 @@
-import { expect } from "chai"
-import { TableDefinition } from "cucumber"
+import {expect} from "chai"
+import {TableDefinition} from "cucumber"
 import _ from "lodash";
 
 export function validarObjeto(objeto: any, dataTable: TableDefinition) {
     Object.entries(dataTable.rowsHash()).forEach(([propiedad, valor]) => {
-        expect(objeto, `Falla validación de propiedad '${propiedad}'`).to.have.nested.property(propiedad).satisfy((prop: any) => prop == valor)
+        expect(objeto,
+            `Falla validación de propiedad '${propiedad}. ` +
+            `Se esperaba que el valor '${_.get(objeto, propiedad)}' sea igual a '${valor}'.`
+        ).to.have.nested.property(propiedad).satisfy((prop: any) => prop == valor)
     })
 }
 

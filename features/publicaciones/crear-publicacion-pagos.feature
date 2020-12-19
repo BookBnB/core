@@ -4,7 +4,7 @@ Característica:
   Quiero notificar la registración exitosa de una nueva publicación
   Para luego aceptar reservas de la publicación
 
-  Escenario: Confirmación de recepción de notificación
+  Escenario: Recepción de notificación de confirmación
     Dado que soy "el servicio de pagos"
     Y que existe una publicacion con:
       | titulo | Departamento en Palermo |
@@ -20,9 +20,46 @@ Característica:
     Entonces veo una publicación con:
       | estado | Creada |
 
-  Escenario: Creación rechazada
+  Escenario: Recepción de notificación de rechazo
     Dado que soy "el servicio de pagos"
     Y que existe una publicacion con:
       | titulo | Departamento en Palermo |
     Cuando notifico que la publicación con título "Departamento en Palermo" no pudo registrarse
     Entonces veo un mensaje de confirmación
+
+  @wip
+  Escenario: No se listan las publicaciones pendientes
+    Dado que soy "anfitrión"
+    Cuando creo una publicación con:
+      | titulo | Departamento en Palermo |
+    Y busco las primeras 5 publicaciones
+    Entonces veo que no hay publicaciones
+
+  @wip
+  Escenario: Rechazo de publicación creada
+    Dado que soy "anfitrión"
+    Cuando creo una publicación con:
+      | titulo | Departamento en Palermo |
+    Y se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
+    E ingreso a la publicación con título "Departamento en Palermo"
+    Entonces veo una publicación con:
+      | estado | rechazada |
+
+  @wip
+  Escenario: Los huéspedes no ven las publicaciones rechazadas
+    Dado que soy "huesped"
+    Y que existe el "anfitrión" con email "anfitrion@bookbnb.com"
+    Y que el anfitrión "anfitrion@bookbnb.com" tiene una publicación con:
+      | titulo | Departamento en Palermo |
+    Cuando se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
+    E ingreso a la publicación con título "Departamento en Palermo"
+    Entonces obtengo un error 404 con mensaje "Publicación inexistente"
+
+  @wip
+  Escenario: No se listan las publicaciones rechazadas
+    Dado que soy "anfitrión"
+    Cuando creo una publicación con:
+      | titulo | Departamento en Palermo |
+    Y se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
+    Y busco las primeras 5 publicaciones
+    Entonces veo que no hay publicaciones
