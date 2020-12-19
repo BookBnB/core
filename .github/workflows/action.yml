@@ -1,5 +1,5 @@
 name: CD to heroku
-on: [push, pull_request]
+on: [ push, pull_request ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,5 +13,7 @@ jobs:
       - name: Check logs
         run: sleep 1; docker-compose logs
       - name: Run test suite
-        run: docker-compose exec app npm run test:coverage
+        run: |
+          docker-compose exec app npm install
+          docker-compose exec app npm run test:coverage
 
