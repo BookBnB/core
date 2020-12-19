@@ -28,14 +28,6 @@ Característica:
     Entonces veo un mensaje de confirmación
 
   @wip
-  Escenario: No se listan las publicaciones pendientes
-    Dado que soy "anfitrión"
-    Cuando creo una publicación con:
-      | titulo | Departamento en Palermo |
-    Y busco las primeras 5 publicaciones
-    Entonces veo que no hay publicaciones
-
-  @wip
   Escenario: Rechazo de publicación creada
     Dado que soy "anfitrión"
     Cuando creo una publicación con:

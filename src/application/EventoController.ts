@@ -1,4 +1,4 @@
-import {IsEnum, IsObject, ValidateNested} from "class-validator";
+import {IsEnum, IsObject} from "class-validator";
 import { Body, HttpCode, JsonController, Post } from "routing-controllers";
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
 import { ConfirmarNuevaPublicacion } from "../domain/publicaciones/casos-uso/ConfirmarNuevaPublicacion";
@@ -6,9 +6,7 @@ import { ConfirmarAceptacionReserva } from "../domain/reservas/casos-uso/Confirm
 import { ConfirmarNuevaReserva } from "../domain/reservas/casos-uso/ConfirmarNuevaReserva";
 import { UseCase } from "../domain/UseCase";
 import ResultadoEvento from "./common/ResultadoEvento";
-import {Type} from "class-transformer";
 import {JSONSchema} from "class-validator-jsonschema";
-import Direccion from "../domain/lugares/entidades/Direccion";
 
 export enum TipoEvento {
     NUEVA_PUBLICACION = 'NUEVA_PUBLICACION',

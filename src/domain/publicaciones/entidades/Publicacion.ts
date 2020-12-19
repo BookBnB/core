@@ -36,6 +36,9 @@ export default class Publicacion {
     @Column('int', { nullable: true })
     public contratoId?: number;
 
+    @Column({ type: 'enum', enum: EstadoPublicacion, default: EstadoPublicacion.pendienteCreacion })
+    public estado!: EstadoPublicacion;
+
     @Column()
     public titulo!: string;
 
@@ -65,9 +68,6 @@ export default class Publicacion {
 
     @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
     public preguntas!: Promise<Pregunta[]>;
-
-    @Column({ type: 'enum', enum: EstadoPublicacion, default: EstadoPublicacion.pendienteCreacion })
-    public estado!: EstadoPublicacion;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);

@@ -1,6 +1,7 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import {World} from "cucumber";
+import {TipoEvento} from "../../src/application/EventoController";
 
 chai.use(chaiHttp);
 
@@ -16,5 +17,15 @@ export default class Eventos {
             .post(`${this.baseUlr()}`)
             .type("json")
             .send(evento)
+    }
+
+    public static async publicacionRegistrada(context: World, publicacionId: string, contratoId: number = 1) {
+        await this.notificar(context, {
+            tipo: TipoEvento.NUEVA_PUBLICACION,
+            payload: {
+                publicacionId,
+                contratoId
+            }
+        })
     }
 }

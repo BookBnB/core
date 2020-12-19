@@ -1,10 +1,9 @@
 import {Connection, Repository} from "typeorm";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
-import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
+import Publicacion, {EstadoPublicacion} from "../../domain/publicaciones/entidades/Publicacion";
 import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import {ConsultaDePublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
 import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
-import Respuesta from "../../domain/publicaciones/entidades/Respuesta";
 
 export class PublicacionRepositorio implements IPublicacionRepositorio {
     public constructor(private readonly repo: Repository<Publicacion>,
@@ -36,6 +35,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
             .take(limit)
             .leftJoinAndSelect("publicacion.imagenes", "imagenes")
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
+            .andWhere("publicacion.estado = :estado")
             .andWhere(tipoDeAlojamiento ? "publicacion.tipoDeAlojamiento = :tipoDeAlojamiento" : "TRUE")
             .andWhere(cantidadDeHuespedes ? "publicacion.cantidadDeHuespedes >= :cantidadDeHuespedes" : "TRUE")
             .andWhere(precioPorNocheMinimo ? "publicacion.precioPorNoche >= :precioPorNocheMinimo" : "TRUE")
@@ -44,6 +44,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
                 latitud: coordenadas.latitud,
                 longitud: coordenadas.longitud,
                 radio,
+                estado: EstadoPublicacion.creada,
                 tipoDeAlojamiento,
                 cantidadDeHuespedes,
                 precioPorNocheMinimo,

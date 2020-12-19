@@ -56,6 +56,7 @@ Given('que existe una publicacion con:', async function (publicacion: TableDefin
 
     await this.sesiones.ejecutarBajoSesion(async () => {
         await crearPublicacion.bind(this)(publicacion)
+        await Eventos.publicacionRegistrada(this, this.last_response.body.id)
     }, 'anfitrion@bookbnb.com');
 });
 

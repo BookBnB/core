@@ -1,6 +1,6 @@
 # language: es
 Característica:
-  Como huespued
+  Como huésped
   Quiero poder ver las publicaciones disponibles
   Para tomar una decisión de reserva
 
@@ -14,7 +14,15 @@ Característica:
       | titulo                  | imagenes[0].url       |
       | Departamento en Palermo | google.com/una-imagen |
 
-  Escenario: Ver publicaciones sin publicaciones
+  Escenario: Listado sin publicaciones
     Dado que soy "huesped"
+    Cuando busco las primeras 5 publicaciones
+    Entonces veo que no hay publicaciones
+
+  Escenario: No se listan las publicaciones pendientes
+    Dado que soy "huesped"
+    Y que existe el "anfitrión" con email "anfitrion@bookbnb.com"
+    Y que el anfitrión "anfitrion@bookbnb.com" tiene una publicación con:
+      | titulo | Departamento en Palermo |
     Cuando busco las primeras 5 publicaciones
     Entonces veo que no hay publicaciones
