@@ -7,6 +7,11 @@ jobs:
       - name: Cache docker layers
         uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true # Ignore the failure of a step and avoid terminating the job.
+      - name: Cache node dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-dependencies
       - name: Checkout code
         uses: actions/checkout@v1
       - name: Build docker services
@@ -21,4 +26,3 @@ jobs:
         run: |
           docker-compose exec -T app npm install
           docker-compose exec -T app npm run test:coverage
-
