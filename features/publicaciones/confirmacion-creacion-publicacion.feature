@@ -1,13 +1,15 @@
 # language: es
 Característica:
-    Como servicio
-    Quiero poder notificar la creacion efectiva de una nueva publicacion
-    Para que el notificado pueda actualizar su estado acorde al evento
+  Como servicio de pagos
+  Quiero poder notificar la creación exitosa de una nueva publicación
+  Para que la publicación pueda recibir reservas
 
-    Escenario: Confirmación de creación de publicacion
-        Dado que existe una publicacion con:
-        | titulo | Departamento en Palermo |
-        Cuando se notifica un evento para la publicacion creada
-        Entonces ingreso a la publicación con título "Departamento en Palermo"
-        Y veo una publicación con:
-        | estado | Creada |
+  @only
+  Escenario: Confirmación de creación de publicacion
+    Dado que soy "huesped"
+    Dado que existe una publicacion con:
+      | titulo | Departamento en Palermo |
+    Cuando se notifica un evento para la publicacion creada
+    E ingreso a la publicación con título "Departamento en Palermo"
+    Entonces veo una publicación con:
+      | estado | Creada |

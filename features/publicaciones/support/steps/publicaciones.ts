@@ -9,6 +9,7 @@ import Usuarios from "../../../usuarios/support/Usuarios";
 import { v4 as uuidv4 } from 'uuid';
 import Eventos from "../../../common/Eventos";
 import { TipoEvento } from "../../../../src/application/EventoController";
+import Sesiones from "../../../sesiones/support/Sesiones";
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
@@ -46,8 +47,16 @@ Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
 })
 
 Given('que existe una publicacion con:', async function (publicacion: TableDefinition) {
-    await Usuarios.crearActual(this, 'anfitrión')
-    await crearPublicacion.bind(this)(publicacion)
+    await Usuarios.crear(this, {
+        ...Usuarios.ejemplo(),
+        role: 'anfitrión',
+        email: 'anfitrion@bookbnb.com'
+    })
+    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
+
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await crearPublicacion.bind(this)(publicacion)
+    }, 'anfitrion@bookbnb.com');
 });
 
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
