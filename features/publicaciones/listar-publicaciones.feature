@@ -28,8 +28,7 @@ Característica:
 
   Escenario: No se listan las publicaciones rechazadas
     Dado que soy "huesped"
-    Y que el "anfitrión" con email "anfitrion@bookbnb.com" tiene una publicación "creada" con:
+    Y que el "anfitrión" con email "anfitrion@bookbnb.com" tiene una publicación "rechazada" con:
       | titulo | Departamento en Palermo |
-    Y que se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
     Cuando busco las primeras 5 publicaciones
     Entonces veo que no hay publicaciones
