@@ -6,9 +6,8 @@ import Publicaciones from "../Publicaciones";
 import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import chaiSubset from "chai-subset";
 import Usuarios from "../../../usuarios/support/Usuarios";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import Eventos from "../../../common/Eventos";
-import { TipoEvento } from "../../../../src/application/EventoController";
 import Sesiones from "../../../sesiones/support/Sesiones";
 
 chai.use(chaiHttp);
@@ -35,7 +34,7 @@ Then('veo que está publicada a mí nombre', function () {
 
 When('creo una publicación con:', crearPublicacion)
 
-Given('que existe una publicacion', async function() {
+Given('que existe una publicacion', async function () {
     const publicacion = Publicaciones.ejemplo()
     await Publicaciones.crear(this, publicacion)
 });
@@ -144,7 +143,7 @@ When('listo las publicaciones del anfitrion {string}', async function (email) {
     const usuario = this.sesiones.obtenerUsuario(email)
 
     const id = usuario ? usuario.id : uuidv4()
-    
+
     await Usuarios.listarPublicaciones(this, id)
 });
 
@@ -152,31 +151,34 @@ When('listo las publicaciones del anfitrion de id {string}', async function (id)
     await Usuarios.listarPublicaciones(this, id);
 });
 
-Given('que el anfitrión {string} tiene una publicación con:', async function (email, dataTable) {
+Given('que el {string} con email {string} tiene una publicación {string} con:', async function (rol: string, email: string, estadoPublicacion: string, dataTable) {
+    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: rol})
+    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
+
     await this.sesiones.ejecutarBajoSesion(async () => {
         await crearPublicacion.bind(this)(dataTable)
     }, email);
+
+    const estados = new Map([
+        ['creada', () => Eventos.publicacionRegistrada(this, this.last_response.body.id)],
+        ['rechazada', () => Eventos.publicacionRechazada(this, this.last_response.body.id)],
+        ['pendiente', () => Promise.resolve()]
+    ])
+
+    const evento = estados.get(estadoPublicacion)
+    expect(evento).not.to.be.undefined
+    // @ts-ignore
+    await evento();
 });
 
 When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
     expect(this.last_publicacion.body.titulo).to.eql(titulo)
 
-    await Eventos.notificar(this, {
-        tipo: TipoEvento.NUEVA_PUBLICACION,
-        payload: {
-            publicacionId: this.last_publicacion.body.id,
-            contratoId: 1
-        }
-    })
+    await Eventos.publicacionRegistrada(this, this.last_publicacion.body.id)
 });
 
 When(/^(?:notifico|se notifica|que se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
     expect(this.last_publicacion.body.titulo).to.eql(titulo)
 
-    await Eventos.notificar(this, {
-        tipo: TipoEvento.PUBLICACION_RECHAZADA,
-        payload: {
-            publicacionId: this.last_publicacion.body.id
-        }
-    })
+    await Eventos.publicacionRechazada(this, this.last_publicacion.body.id)
 });

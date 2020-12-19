@@ -1,4 +1,5 @@
-import {Usuario} from "../usuarios/support/Usuarios";
+import Usuarios, {Usuario} from "../usuarios/support/Usuarios";
+import Sesiones from "../sesiones/support/Sesiones";
 
 interface Entrada {
     usuario: Usuario,

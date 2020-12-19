@@ -5,8 +5,7 @@ Característica:
   Para ver en qué alojamiento voy a hospedarme
 
   Antecedentes:
-    Dado que existe el "anfitrión" con email "anfitrion@book.bnb"
-    Y que el anfitrión "anfitrion@book.bnb" tiene una publicación con:
+    Y que el "anfitrión" con email "anfitrion@book.bnb" tiene una publicación "creada" con:
       | titulo | Departamento en Palermo |
     Y que soy "huesped"
 

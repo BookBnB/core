@@ -5,10 +5,9 @@ Característica:
   Para administrarlas
 
   Antecedentes:
-    Dado que existe el "anfitrión" con email "unanfitrion@test.test"
-    Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
+    Y que el "anfitrión" con email "unanfitrion@test.test" tiene una publicación "creada" con:
       | titulo | Casa en Salta |
-    Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
+    Y que el "anfitrión" con email "unanfitrion@test.test" tiene una publicación "creada" con:
       | titulo | Departamento en Palermo |
 
   Escenario: Listado de mis publicaciones

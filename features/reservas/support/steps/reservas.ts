@@ -3,7 +3,6 @@ import chaiHttp from "chai-http";
 import { Given, TableDefinition, Then, When } from 'cucumber';
 import _ from "lodash";
 import sinonChai from "sinon-chai"
-import { TipoEvento } from "../../../../src/application/EventoController";
 import Eventos from "../../../common/Eventos";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
 import { crearPublicacion } from "../../../publicaciones/support/steps/publicaciones";
@@ -131,28 +130,14 @@ Then('veo una reserva con:', function (dataTable: TableDefinition) {
 });
 
 When('se notifica un evento para la reserva creada', async function () {
-    const evento = {
-        tipo: TipoEvento.NUEVA_RESERVA,
-        payload: {
-            reservaId: this.last_reserva.body.id
-        }
-    }
-
-    await Eventos.notificar(this, evento)
+    await Eventos.reservaRegistrada(this, this.last_reserva.body.id)
 
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json
 });
 
 When('se notifica un evento de aprobacion para la reserva', async function () {
-    const evento = {
-        tipo: TipoEvento.RESERVA_ACEPTADA,
-        payload: {
-            reservaId: this.last_reserva.body.id
-        }
-    }
-
-    await Eventos.notificar(this, evento)
+    await Eventos.reservaAceptada(this, this.last_reserva.body.id)
 
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json

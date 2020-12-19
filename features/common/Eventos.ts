@@ -28,4 +28,31 @@ export default class Eventos {
             }
         })
     }
+
+    public static async publicacionRechazada(context: World, publicacionId: string) {
+        await this.notificar(context, {
+            tipo: TipoEvento.PUBLICACION_RECHAZADA,
+            payload: {
+                publicacionId
+            }
+        })
+    }
+
+    public static async reservaRegistrada(context: World, reservaId: string) {
+        await this.notificar(context, {
+            tipo: TipoEvento.NUEVA_RESERVA,
+            payload: {
+                reservaId
+            }
+        })
+    }
+
+    public static async reservaAceptada(context: World, reservaId: string) {
+        await this.notificar(context, {
+            tipo: TipoEvento.RESERVA_ACEPTADA,
+            payload: {
+                reservaId
+            }
+        })
+    }
 }
