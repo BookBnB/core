@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
-import {After, AfterAll, Before, BeforeAll, setWorldConstructor} from "cucumber";
+import {After, AfterAll, Before, BeforeAll} from "cucumber";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
 import Store from "./util/Store";

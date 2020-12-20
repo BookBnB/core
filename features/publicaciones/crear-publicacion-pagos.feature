@@ -6,14 +6,14 @@ Característica:
 
   Escenario: Recepción de notificación de confirmación
     Dado que soy "el servicio de pagos"
-    Y que existe una publicacion "pendiente" con:
+    Y que existe una publicación "pendiente" con:
       | titulo | Departamento en Palermo |
     Cuando notifico que la publicación con título "Departamento en Palermo" fue registrada con éxito
     Entonces veo un mensaje de confirmación
 
   Escenario: Confirmación de publicación pendiente
     Dado que soy "huesped"
-    Y que existe una publicacion "pendiente" con:
+    Y que existe una publicación "pendiente" con:
       | titulo | Departamento en Palermo |
     Cuando se notifica que la publicación con título "Departamento en Palermo" fue registrada con éxito
     E ingreso a la publicación con título "Departamento en Palermo"
@@ -22,7 +22,7 @@ Característica:
 
   Escenario: Recepción de notificación de rechazo
     Dado que soy "el servicio de pagos"
-    Y que existe una publicacion "pendiente" con:
+    Y que existe una publicación "pendiente" con:
       | titulo | Departamento en Palermo |
     Cuando notifico que la publicación con título "Departamento en Palermo" no pudo registrarse
     Entonces veo un mensaje de confirmación

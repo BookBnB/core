@@ -38,7 +38,7 @@ export async function crearPublicacionConEstado(this: any, estado: string, email
     await Eventos.registarEstadoPublicacion(this, estado, this.last_response.body.id)
 }
 
-Given(/^que existe una publicacion (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
+Given(/^que existe una publicación (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
     await crearPublicacionConEstado.bind(this)(estado || 'creada', 'anfitrion@bookbnb.com', publicacion)
 });
 

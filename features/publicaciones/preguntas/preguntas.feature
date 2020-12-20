@@ -5,7 +5,7 @@ Característica:
   Para poder consultarle al anfitrion mis dudas
 
   Antecedentes:
-    Dado que existe una publicacion con:
+    Dado que existe una publicación con:
       | titulo | Casa en Salta |
     Y que soy "huesped"
 

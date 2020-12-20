@@ -5,16 +5,16 @@ Característica:
   Para visualizar las publicaciones y así concretar una reserva
 
   Antecedentes:
-    Dado que existe una publicacion con:
+    Dado que existe una publicación con:
       | titulo         | Casa en Salta |
       | precioPorNoche | 10            |
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo         | Departamento en Palermo |
       | precioPorNoche | 20                      |
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo         | Hotel en Mar del Plata |
       | precioPorNoche | 25                     |
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo         | Hostel en Congreso |
       | precioPorNoche | 30                 |
 

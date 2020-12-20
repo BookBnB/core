@@ -5,7 +5,7 @@ Característica:
   Para que el huésped y el anfitrión de la reserva sepan que la reserva está confirmada
 
   Antecedentes:
-    Dado que existe una publicacion con:
+    Dado que existe una publicación con:
       | titulo | Departamento en Palermo |
 
   Escenario: Confirmación de creación de reserva

@@ -5,12 +5,12 @@ Característica:
   Para visualizar las publicaciones y así concretar una reserva
 
   Antecedentes:
-    Dado que existe una publicacion con:
+    Dado que existe una publicación con:
       | titulo                         | Casa en Salta   |
       | direccion.ciudad               | Ciudad de Salta |
       | direccion.coordenadas.latitud  | -24.7893        |
       | direccion.coordenadas.longitud | -65.4103        |
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo                         | Departamento en Palermo |
       | direccion.ciudad               | Buenos Aires            |
       | direccion.coordenadas.latitud  | -34.6002                |

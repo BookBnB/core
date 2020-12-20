@@ -1,11 +1,11 @@
 # language: es
 Característica:
-  Como huesped
+  Como huésped
   Quiero poder reservarme en un alojamiento
   Para poder alojarme en el mismo
 
   Antecedentes:
-    Dado que existe una publicacion con:
+    Dado que existe una publicación con:
       | titulo         | Departamento en Palermo |
       | precioPorNoche | 200                     |
     Y que soy "huesped"

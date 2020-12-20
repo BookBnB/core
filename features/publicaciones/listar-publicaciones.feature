@@ -6,7 +6,7 @@ Característica:
 
   Escenario: Ver publicaciones con imágenes
     Dado que soy "huesped"
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo          | Departamento en Palermo |
       | imagenes[0].url | google.com/una-imagen   |
     Cuando busco las primeras 5 publicaciones

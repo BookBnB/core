@@ -6,7 +6,7 @@ Característica:
 
   Escenario: Ver una publicacion
     Dado que soy "huesped"
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo                         | Departamento con vista                                 |
       | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
       | precioPorNoche                 | 10                                                     |

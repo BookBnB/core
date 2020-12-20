@@ -6,7 +6,7 @@ Característica:
 
   Antecedentes:
     Dado que soy "anfitrión"
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo | Casa en Salta |
     Y que la publicacion con titulo "Casa en Salta" tiene las preguntas:
       | descripcion               |

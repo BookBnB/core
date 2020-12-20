@@ -5,16 +5,16 @@ Característica:
   Para visualizar las publicaciones y así concretar una reserva
 
   Antecedentes:
-    Dado que existe una publicacion con:
+    Dado que existe una publicación con:
       | titulo            | Casa en Salta      |
       | tipoDeAlojamiento | Alojamiento entero |
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo            | Departamento en Palermo |
       | tipoDeAlojamiento | Habitación privada      |
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo            | Hostel en Congreso    |
       | tipoDeAlojamiento | Habitación compartida |
-    Y que existe una publicacion con:
+    Y que existe una publicación con:
       | titulo            | Hotel en Mar del Plata |
       | tipoDeAlojamiento | Habitación de hotel    |
 
