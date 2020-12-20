@@ -55,4 +55,16 @@ export default class Eventos {
             }
         })
     }
+
+    public static async registarEstadoPublicacion(context: World, estadoPublicacion: string, publicacionId: string) {
+        const estados = new Map([
+            ['creada', () => this.publicacionRegistrada(context, publicacionId)],
+            ['rechazada', () => this.publicacionRechazada(context, publicacionId)],
+            ['pendiente', () => Promise.resolve()]
+        ])
+
+        const evento = estados.get(estadoPublicacion)
+        if(!evento) throw Error(`Estado de publicación inválido: ${estadoPublicacion}.`)
+        await evento();
+    }
 }

@@ -1,4 +1,4 @@
-import {Given, When, Then, TableDefinition} from "cucumber"
+import {Given, When, Then, TableDefinition, And} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
 import _ from "lodash"
@@ -45,7 +45,7 @@ Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
     validarObjeto(this.last_response.body, dataTable)
 })
 
-Given('que existe una publicacion con:', async function (publicacion: TableDefinition) {
+Given(/^que existe una publicacion (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
     await Usuarios.crear(this, {
         ...Usuarios.ejemplo(),
         role: 'anfitrión',
@@ -55,7 +55,7 @@ Given('que existe una publicacion con:', async function (publicacion: TableDefin
 
     await this.sesiones.ejecutarBajoSesion(async () => {
         await crearPublicacion.bind(this)(publicacion)
-        await Eventos.publicacionRegistrada(this, this.last_response.body.id)
+        await Eventos.registarEstadoPublicacion(this, estado || 'creada', this.last_response.body.id)
     }, 'anfitrion@bookbnb.com');
 });
 
@@ -159,16 +159,7 @@ Given('que el {string} con email {string} tiene una publicación {string} con:',
         await crearPublicacion.bind(this)(dataTable)
     }, email);
 
-    const estados = new Map([
-        ['creada', () => Eventos.publicacionRegistrada(this, this.last_response.body.id)],
-        ['rechazada', () => Eventos.publicacionRechazada(this, this.last_response.body.id)],
-        ['pendiente', () => Promise.resolve()]
-    ])
-
-    const evento = estados.get(estadoPublicacion)
-    expect(evento).not.to.be.undefined
-    // @ts-ignore
-    await evento();
+    await Eventos.registarEstadoPublicacion(this, estadoPublicacion, this.last_response.body.id)
 });
 
 When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
