@@ -1,6 +1,7 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import Recurso from "../../util/Recurso";
+import {World} from "cucumber";
 
 chai.use(chaiHttp);
 
@@ -32,12 +33,12 @@ export default class Publicaciones extends Recurso {
         }
     }
 
-    public static async crear(context: any, publicacion: any) {
+    public static async crear(context: World, publicacion: any) {
         await this.post(context, '/', publicacion)
         context.last_publicacion = context.last_response
     }
 
-    public static async obtener(context: any, idPublicacion: string) {
+    public static async obtener(context: World, idPublicacion: string) {
         await this.get(context, `/${idPublicacion}`)
     }
 

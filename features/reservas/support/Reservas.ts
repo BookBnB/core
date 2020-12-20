@@ -1,7 +1,7 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import {World} from "cucumber";
 import Recurso from "../../util/Recurso";
+import {World} from "cucumber";
 
 chai.use(chaiHttp);
 

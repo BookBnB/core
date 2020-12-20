@@ -11,7 +11,7 @@ export default class Recurso {
     }
 
     protected static tokenActual(context: World): string {
-        return context.sesiones.tokenActual()
+        return context.sesiones.tokenActual() || ''
     }
 
     protected static async post(context: World, path: string, data: object) {
