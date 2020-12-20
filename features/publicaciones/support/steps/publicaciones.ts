@@ -34,33 +34,16 @@ export async function crearPublicacionConEstado(this: any, estado: string, email
 
     await this.sesiones.ejecutarBajoSesion(async () => {
         await crearPublicacion.bind(this)(publicacion)
-        await Eventos.registarEstadoPublicacion(this, estado || 'creada', this.last_response.body.id)
     }, email);
+    await Eventos.registarEstadoPublicacion(this, estado, this.last_response.body.id)
 }
 
 Given(/^que existe una publicacion (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
-    await Usuarios.crear(this, {
-        ...Usuarios.ejemplo(),
-        role: 'anfitrión',
-        email: 'anfitrion@bookbnb.com'
-    })
-    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
-
-    await this.sesiones.ejecutarBajoSesion(async () => {
-        await crearPublicacion.bind(this)(publicacion)
-        await Eventos.registarEstadoPublicacion(this, estado || 'creada', this.last_response.body.id)
-    }, 'anfitrion@bookbnb.com');
+    await crearPublicacionConEstado.bind(this)(estado || 'creada', 'anfitrion@bookbnb.com', publicacion)
 });
 
-Given('que el anfitrión con email {string} tiene una publicación {string} con:', async function (email: string, estadoPublicacion: string, dataTable) {
-    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: "anfitrión"})
-    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
-
-    await this.sesiones.ejecutarBajoSesion(async () => {
-        await crearPublicacion.bind(this)(dataTable)
-    }, email);
-
-    await Eventos.registarEstadoPublicacion(this, estadoPublicacion, this.last_response.body.id)
+Given('que el anfitrión con email {string} tiene una publicación {string} con:', async function (email: string, estadoPublicacion: string, publicacion: TableDefinition) {
+    await crearPublicacionConEstado.bind(this)(estadoPublicacion, email, publicacion)
 });
 
 When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
