@@ -5,7 +5,7 @@ Característica:
   Para ver sus fotos y/o videos y revisar sus características.
 
   Escenario: Ver una publicacion
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Y que existe una publicación con:
       | titulo                         | Departamento con vista                                 |
       | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
@@ -35,17 +35,17 @@ Característica:
       | tipoDeAlojamiento              | Alojamiento entero                                      |
 
   Escenario: Ver una publicacion inexistente
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando ingreso a la publicación con id "91c687f1-52a7-4f1e-8755-9f0b3f551692"
     Entonces obtengo un error 404 con mensaje "La publicación con id 91c687f1-52a7-4f1e-8755-9f0b3f551692 no existe."
 
   Escenario: Ver una publicacion con id inválido
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando ingreso a la publicación con id "algo que no es un uuid"
     Entonces veo un error indicado en el campo "id"
 
   Escenario: Los huéspedes no ven las publicaciones rechazadas
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Y que el anfitrión con email "anfitrion@bookbnb.com" tiene una publicación "rechazada" con:
       | titulo | Departamento en Palermo |
     Cuando ingreso a la publicación con título "Departamento en Palermo"

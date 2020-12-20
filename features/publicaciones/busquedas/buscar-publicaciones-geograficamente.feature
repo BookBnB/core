@@ -1,6 +1,6 @@
 # language: es
 Característica:
-  Como huesped
+  Como huésped
   Quiero poder realizar búsquedas de alojamientos geograficamente
   Para visualizar las publicaciones y así concretar una reserva
 
@@ -17,21 +17,21 @@ Característica:
       | direccion.coordenadas.longitud | -58.3909                |
 
   Escenario: Buscar en las mismas coordenadas
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a -34.6002, -58.3909
     Entonces veo las publicaciones:
       | titulo                  |
       | Departamento en Palermo |
 
   Escenario: Buscar en Buenos Aires
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a -34.6009, -58.3912
     Entonces veo las publicaciones:
       | titulo                  |
       | Departamento en Palermo |
 
   Escenario: Buscar en Argentina
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando busco las primeras 5 publicaciones en un radio de 3000000 metros a -34.6002, -58.3909
     Entonces veo las publicaciones:
       | titulo                  |
@@ -39,13 +39,13 @@ Característica:
       | Casa en Salta           |
 
   Escenario: Paginado
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando busco las primeras 1 publicaciones en un radio de 3000000 metros a -34.6002, -58.3909
     Entonces veo las publicaciones:
       | titulo        |
       | Casa en Salta |
 
   Escenario: Falla si las coordenadas son inválidas
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando busco las primeras 5 publicaciones en un radio de 3000 metros a 1200, -500
     Entonces veo un error indicado en el campo "coordenadas"

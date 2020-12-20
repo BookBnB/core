@@ -1,13 +1,13 @@
 # language: es
 Característica:
-  Como huesped
+  Como huésped
   Quiero poder listar mis reservas
   Para ver en qué alojamiento voy a hospedarme
 
   Antecedentes:
     Y que el "anfitrión" con email "anfitrion@book.bnb" tiene una publicación "creada" con:
       | titulo | Departamento en Palermo |
-    Y que soy "huesped"
+    Y que soy "huésped"
 
   @wip
   Escenario: Listado sin reservas

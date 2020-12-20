@@ -36,6 +36,6 @@ Característica:
     Entonces veo un error indicado en el campo "id"
 
   Escenario: No puede ver publicaciones si no soy anfitrión
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando listo mis publicaciones
     Entonces obtengo un error 403 con mensaje "Access is denied"

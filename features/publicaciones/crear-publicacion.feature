@@ -87,8 +87,8 @@ Característica:
       | cantidadDeHuespedes            | cantidadDeHuespedes |
       | tipoDeAlojamiento              | tipoDeAlojamiento   |
 
-  Escenario: Un huesped no puede crear publicaciones
-    Dado que soy "huesped"
+  Escenario: Un huésped no puede crear publicaciones
+    Dado que soy "huésped"
     Cuando creo una publicación con:
       | titulo                         | Departamento con vista                                 |
       | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |

@@ -5,7 +5,7 @@ Característica:
   Para tomar una decisión de reserva
 
   Escenario: Ver publicaciones con imágenes
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Y que existe una publicación con:
       | titulo          | Departamento en Palermo |
       | imagenes[0].url | google.com/una-imagen   |
@@ -15,19 +15,19 @@ Característica:
       | Departamento en Palermo | google.com/una-imagen |
 
   Escenario: Listado sin publicaciones
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando busco las primeras 5 publicaciones
     Entonces veo que no hay publicaciones
 
   Escenario: No se listan las publicaciones pendientes
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Y que el anfitrión con email "anfitrion@bookbnb.com" tiene una publicación "pendiente" con:
       | titulo | Departamento en Palermo |
     Cuando busco las primeras 5 publicaciones
     Entonces veo que no hay publicaciones
 
   Escenario: No se listan las publicaciones rechazadas
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Y que el anfitrión con email "anfitrion@bookbnb.com" tiene una publicación "rechazada" con:
       | titulo | Departamento en Palermo |
     Cuando busco las primeras 5 publicaciones

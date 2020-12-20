@@ -2,7 +2,7 @@
 Característica:
   Como anfitrion
   Quiero poder buscar la dirección de mi alojamiento
-  Para que los huespedes puedan llegar a esta
+  Para que los huéspedes puedan llegar a esta
 
   Escenario: Buscar dirección existente
     Dado que soy "anfitrión"

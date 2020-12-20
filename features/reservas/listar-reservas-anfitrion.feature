@@ -8,13 +8,13 @@ Característica:
     Dado que soy "anfitrión"
     Y que realicé una publicación con:
       | titulo | Departamento en Palermo |
-    Y que existe el "huesped" con email "unHuesped@book.bnb"
-    Y que el huesped con email "unHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
+    Y que existe el "huésped" con email "unHuesped@book.bnb"
+    Y que el huésped con email "unHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
       | fechaInicio | 2020-12-01             |
       | fechaFin    | 2020-12-07             |
       | estado      | pendiente de creacion  |
-    Y que existe el "huesped" con email "otroHuesped@book.bnb"
-    Y que el huesped con email "otroHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
+    Y que existe el "huésped" con email "otroHuesped@book.bnb"
+    Y que el huésped con email "otroHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
       | fechaInicio | 2020-12-08             |
       | fechaFin    | 2020-12-10             |
       | estado      | pendiente de creacion  |
@@ -57,7 +57,7 @@ Característica:
 
   @wip
   Escenario: Listado de reservas aceptadas
-    Dado que un huesped tiene una reserva en la publicación con título "Departamento en Palermo" con:
+    Dado que un huésped tiene una reserva en la publicación con título "Departamento en Palermo" con:
       | fechaInicio | 2020-12-25 |
       | fechaFin    | 2020-12-30 |
       | estado      | aceptada   |

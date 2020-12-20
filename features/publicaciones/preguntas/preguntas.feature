@@ -1,13 +1,13 @@
 # language: es
 Característica:
-  Como huesped
+  Como huésped
   Quiero poder realizar comentarios con consultas en una publicación
   Para poder consultarle al anfitrion mis dudas
 
   Antecedentes:
     Dado que existe una publicación con:
       | titulo | Casa en Salta |
-    Y que soy "huesped"
+    Y que soy "huésped"
 
   Escenario: No hay preguntas en una publicación nueva
     Cuando listo las preguntas de la publicación con título "Casa en Salta"

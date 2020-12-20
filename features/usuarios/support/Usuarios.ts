@@ -31,7 +31,7 @@ export default class Usuarios extends Recurso {
     public static roles(): Map<string, string> {
         return new Map([
             ["anfitrión", "host"],
-            ["huesped", "guest"]
+            ["huésped", "guest"]
         ])
     }
 

@@ -7,7 +7,7 @@ Característica:
     Escenario: Confirmacion de aceptacion de reserva
         Dado que existe una publicación con:
         | titulo | Departamento en Palermo |
-        Y que soy "huesped"
+        Y que soy "huésped"
         Y intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Departamento en Palermo"
         Y se notifica un evento para la reserva creada
         Cuando se notifica un evento de aprobacion para la reserva

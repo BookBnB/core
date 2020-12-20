@@ -8,7 +8,7 @@ Característica:
     Dado que existe una publicación con:
       | titulo         | Departamento en Palermo |
       | precioPorNoche | 200                     |
-    Y que soy "huesped"
+    Y que soy "huésped"
 
   Escenario: Creación de reserva exitosa
     Cuando intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Departamento en Palermo"

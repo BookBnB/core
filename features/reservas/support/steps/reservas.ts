@@ -65,7 +65,7 @@ Then('veo que está reservada a mí nombre', function () {
     expect(this.last_response.body).to.have.property('huespedId', this.sesiones.usuarioActual().id)
 });
 
-Given('que el huesped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email, titulo, dataTable) {
+Given('que el huésped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email, titulo, dataTable) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
 
     await this.sesiones.ejecutarBajoSesion(async () => {
