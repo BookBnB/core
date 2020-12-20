@@ -28,6 +28,16 @@ export async function crearPublicacion(this: any, dataTable: TableDefinition) {
     await Publicaciones.crear(this, publicacion)
 }
 
+export async function crearPublicacionConEstado(this: any, estado: string, email: string, publicacion: TableDefinition) {
+    await Usuarios.crear(this, {...Usuarios.ejemplo(), role: 'anfitrión', email})
+    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
+
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await crearPublicacion.bind(this)(publicacion)
+        await Eventos.registarEstadoPublicacion(this, estado || 'creada', this.last_response.body.id)
+    }, email);
+}
+
 Given(/^que existe una publicacion (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
     await Usuarios.crear(this, {
         ...Usuarios.ejemplo(),
@@ -42,8 +52,8 @@ Given(/^que existe una publicacion (:?"([^"]*)" )?con:$/, async function (estado
     }, 'anfitrion@bookbnb.com');
 });
 
-Given('que el {string} con email {string} tiene una publicación {string} con:', async function (rol: string, email: string, estadoPublicacion: string, dataTable) {
-    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: rol})
+Given('que el anfitrión con email {string} tiene una publicación {string} con:', async function (email: string, estadoPublicacion: string, dataTable) {
+    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: "anfitrión"})
     await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
 
     await this.sesiones.ejecutarBajoSesion(async () => {

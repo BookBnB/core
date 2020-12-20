@@ -46,14 +46,14 @@ Característica:
 
   Escenario: Los huéspedes no ven las publicaciones rechazadas
     Dado que soy "huesped"
-    Y que el "anfitrión" con email "anfitrion@bookbnb.com" tiene una publicación "rechazada" con:
+    Y que el anfitrión con email "anfitrion@bookbnb.com" tiene una publicación "rechazada" con:
       | titulo | Departamento en Palermo |
     Cuando ingreso a la publicación con título "Departamento en Palermo"
     Entonces obtengo un error 404 con mensaje "La publicación con id .* no existe."
 
   Escenario: Los no dueños de una publicación no la pueden ver si está rechazada
     Dado que soy "anfitrión"
-    Y que el "anfitrión" con email "anfitrion@bookbnb.com" tiene una publicación "rechazada" con:
+    Y que el anfitrión con email "anfitrion@bookbnb.com" tiene una publicación "rechazada" con:
       | titulo | Departamento en Palermo |
     Cuando ingreso a la publicación con título "Departamento en Palermo"
     Entonces obtengo un error 404 con mensaje "La publicación con id .* no existe."
