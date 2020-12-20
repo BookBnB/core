@@ -1,13 +1,8 @@
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
-
-// Needs to load before mockServer
-dotenvExpand(dotenv.config({path: 'features/.env'}))
-
 import {After, AfterAll, Before, BeforeAll} from "cucumber";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
-import {mockServer} from './doubles/mockServer';
 import Store from "./util/Store";
 import RelojFake from "./doubles/RelojFake";
 import TestRegistry from "./doubles/TestRegistry";
@@ -17,6 +12,12 @@ import logConfig from "../config/log-config.json";
 import app from "../src/app"
 import ServicioPagos from '../src/infra/servicios/ServicioPagos';
 import sinon from 'sinon'
+import {setupServer} from "msw/node";
+import {buildHandlers} from "./doubles/handlers";
+
+dotenvExpand(dotenv.config({path: 'features/.env'}))
+
+const mockServer = setupServer(...buildHandlers());
 
 /**
  * Setup mock server
@@ -45,6 +46,7 @@ Before(async function () {
     this.reservas = {}
 
     this.reloj = new RelojFake()
+    this.mockServer = mockServer
     this.mockServicioPagos = sinon.createStubInstance(ServicioPagos)
     this.container = new DIContainer()
     await new TestRegistry(

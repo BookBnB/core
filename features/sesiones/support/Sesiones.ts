@@ -1,7 +1,6 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import {World} from "cucumber";
-import {mockServer} from "../../doubles/mockServer";
 import {rest} from "msw";
 import {generateToken} from "../../doubles/handlers";
 
@@ -32,18 +31,18 @@ export default class Sesiones {
             .send({token: 'some token'});
     }
 
-    public static mockTokenValido(email: string) {
+    public static mockTokenValido(context: World, email: string) {
         const mockedToken: string = generateToken(email)
 
-        mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
+        context.mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
             return res(context.json({
                 token: mockedToken
             }))
         }))
     }
 
-    static mockTokenInvalido() {
-        mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
+    static mockTokenInvalido(context: World) {
+        context.mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
             return res(
                 context.status(400),
                 context.json({
@@ -53,8 +52,8 @@ export default class Sesiones {
         }))
     }
 
-    static mockTokenDeUsuarioNoRegistrado() {
-        mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
+    static mockTokenDeUsuarioNoRegistrado(context: World) {
+        context.mockServer.use(rest.post(this.SESION_GOOGLE_URL, (req, res, context) => {
             return res(
                 context.status(401),
                 context.json({

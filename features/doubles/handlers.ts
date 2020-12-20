@@ -95,3 +95,7 @@ export function buildHandlers() {
         userCreationHandler()
     ]
 }
+
+export interface mockServer {
+
+}

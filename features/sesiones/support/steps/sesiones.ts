@@ -60,16 +60,16 @@ Then('obtengo un token con:', function (dataTable: TableDefinition) {
 });
 
 When('inicio sesión correctamente con un proovedor de identidad federada', async function () {
-    Sesiones.mockTokenValido('john@doe.com')
+    Sesiones.mockTokenValido(this, 'john@doe.com')
     await Sesiones.crearConGoogle(this)
 });
 
 When('inicio sesión con un token inválido de proovedor de identidad federada', async function () {
-    Sesiones.mockTokenInvalido()
+    Sesiones.mockTokenInvalido(this)
     await Sesiones.crearConGoogle(this)
 });
 
 When('inicio sesión con un token de proovedor de identidad federada cuyo usuario no está registrado', async function () {
-    Sesiones.mockTokenDeUsuarioNoRegistrado()
+    Sesiones.mockTokenDeUsuarioNoRegistrado(this)
     await Sesiones.crearConGoogle(this)
 });
