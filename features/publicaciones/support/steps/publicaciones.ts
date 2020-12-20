@@ -161,4 +161,3 @@ Then('veo que no hay publicaciones', async function () {
 Then('no obtengo publicaciones', async function () {
     expect(this.last_response.body).to.eql([])
 });
-

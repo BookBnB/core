@@ -1,6 +1,6 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import {mockServer} from "../../doubles/server";
+import {mockServer} from "../../doubles/mockServer";
 import {rest} from "msw";
 import Recurso from "../../util/Recurso";
 

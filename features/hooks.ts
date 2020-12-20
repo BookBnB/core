@@ -7,7 +7,7 @@ dotenvExpand(dotenv.config({path: 'features/.env'}))
 import {After, AfterAll, Before, BeforeAll} from "cucumber";
 import {DIContainer} from "@wessberg/di";
 import {Connection} from "typeorm";
-import {mockServer} from './doubles/server';
+import {mockServer} from './doubles/mockServer';
 import Store from "./util/Store";
 import RelojFake from "./doubles/RelojFake";
 import TestRegistry from "./doubles/TestRegistry";
