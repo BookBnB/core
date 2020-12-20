@@ -1,4 +1,4 @@
-import {Given, When, Then, TableDefinition, And} from "cucumber"
+import {Given, When, Then, TableDefinition} from "cucumber"
 import chai from "chai"
 import chaiHttp from "chai-http"
 import _ from "lodash"
@@ -28,23 +28,6 @@ export async function crearPublicacion(this: any, dataTable: TableDefinition) {
     await Publicaciones.crear(this, publicacion)
 }
 
-Then('veo que está publicada a mí nombre', function () {
-    expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)
-});
-
-When('creo una publicación con:', crearPublicacion)
-
-Given('que existe una publicacion', async function () {
-    const publicacion = Publicaciones.ejemplo()
-    await Publicaciones.crear(this, publicacion)
-});
-
-Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
-    expect(this.last_response).to.have.status(201)
-    expect(this.last_response).to.be.json
-    validarObjeto(this.last_response.body, dataTable)
-})
-
 Given(/^que existe una publicacion (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
     await Usuarios.crear(this, {
         ...Usuarios.ejemplo(),
@@ -59,19 +42,34 @@ Given(/^que existe una publicacion (:?"([^"]*)" )?con:$/, async function (estado
     }, 'anfitrion@bookbnb.com');
 });
 
+Given('que el {string} con email {string} tiene una publicación {string} con:', async function (rol: string, email: string, estadoPublicacion: string, dataTable) {
+    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: rol})
+    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
+
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await crearPublicacion.bind(this)(dataTable)
+    }, email);
+
+    await Eventos.registarEstadoPublicacion(this, estadoPublicacion, this.last_response.body.id)
+});
+
+When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Eventos.publicacionRegistrada(this, this.last_publicacion.body.id)
+});
+
+When(/^(?:notifico|se notifica|que se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Eventos.publicacionRechazada(this, this.last_publicacion.body.id)
+});
+
+When('creo una publicación con:', crearPublicacion)
+
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
     expect(this.last_publicacion.body.titulo).to.eql(titulo)
     await Publicaciones.obtener(this, this.last_publicacion.body.id)
-});
-
-Then('veo una publicación con:', function (dataTable: TableDefinition) {
-    expect(this.last_response).to.have.status(200)
-    expect(this.last_response).to.be.json
-    validarObjeto(this.last_response.body, dataTable)
-})
-
-Then('veo una nueva publicación con {string} nulo', function (campo: string) {
-    expect(this.last_response.body).to.have.nested.property(campo).be.null
 });
 
 When('creo una publicación sin {string}', async function (campo: string) {
@@ -84,15 +82,6 @@ When('creo una publicación con el {string} vacío', async function (campo: stri
     const publicacion = Publicaciones.ejemplo()
     _.set(publicacion, campo, "")
     await Publicaciones.crear(this, publicacion)
-});
-
-Then('veo que no hay publicaciones', async function () {
-    await Publicaciones.listar(this)
-    expect(this.last_response.body).to.eql([])
-});
-
-Then('no obtengo publicaciones', async function () {
-    expect(this.last_response.body).to.eql([])
 });
 
 When('listo las publicaciones', async function () {
@@ -151,25 +140,32 @@ When('listo las publicaciones del anfitrion de id {string}', async function (id)
     await Usuarios.listarPublicaciones(this, id);
 });
 
-Given('que el {string} con email {string} tiene una publicación {string} con:', async function (rol: string, email: string, estadoPublicacion: string, dataTable) {
-    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: rol})
-    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
+Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
+    validarObjeto(this.last_response.body, dataTable)
+})
 
-    await this.sesiones.ejecutarBajoSesion(async () => {
-        await crearPublicacion.bind(this)(dataTable)
-    }, email);
-
-    await Eventos.registarEstadoPublicacion(this, estadoPublicacion, this.last_response.body.id)
+Then('veo que está publicada a mí nombre', function () {
+    expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)
 });
 
-When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
-    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+Then('veo una publicación con:', function (dataTable: TableDefinition) {
+    expect(this.last_response).to.have.status(200)
+    expect(this.last_response).to.be.json
+    validarObjeto(this.last_response.body, dataTable)
+})
 
-    await Eventos.publicacionRegistrada(this, this.last_publicacion.body.id)
+Then('veo una nueva publicación con {string} nulo', function (campo: string) {
+    expect(this.last_response.body).to.have.nested.property(campo).be.null
 });
 
-When(/^(?:notifico|se notifica|que se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
-    expect(this.last_publicacion.body.titulo).to.eql(titulo)
-
-    await Eventos.publicacionRechazada(this, this.last_publicacion.body.id)
+Then('veo que no hay publicaciones', async function () {
+    await Publicaciones.listar(this)
+    expect(this.last_response.body).to.eql([])
 });
+
+Then('no obtengo publicaciones', async function () {
+    expect(this.last_response.body).to.eql([])
+});
+
