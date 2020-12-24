@@ -11,7 +11,6 @@ import {
     UseBefore
 } from "routing-controllers";
 import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
-import UUID from "../domain/common/UUID";
 import { AprobarReserva } from "../domain/reservas/casos-uso/AprobarReserva";
 import { CrearReserva, CrearReservaDTO } from "../domain/reservas/casos-uso/CrearReserva";
 import { VerReserva } from "../domain/reservas/casos-uso/VerReserva";

@@ -4,6 +4,23 @@ Característica:
   Quiero notificar la registración exitosa de una nueva publicación
   Para luego aceptar reservas de la publicación
 
+  Escenario: Aviso de creación de publicación
+    Dado que soy el "servicio de pagos"
+    Cuando el anfitrión con email "anfitrion@boob.bnb" realiza una publicación con:
+      | titulo | Departamento en Palermo |
+    Entonces recibo un pedido de registro de publicación
+
+  @wip
+  Escenario: Creación de publicación fallida
+    Dado que soy "anfitrión"
+    Y que el servicio de pagos no se encuentra disponible
+    Cuando creo una publicación con:
+      | titulo | Departamento en Palermo |
+    Entonces obtengo un error 500 con mensaje "Servicio no disponible"
+    Y además
+    Cuando listo mis publicaciones
+    Entonces no obtengo publicaciones
+
   Escenario: Recepción de notificación de confirmación
     Dado que soy "el servicio de pagos"
     Y que existe una publicación "pendiente" con:

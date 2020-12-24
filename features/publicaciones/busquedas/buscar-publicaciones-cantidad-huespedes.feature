@@ -26,7 +26,6 @@ Característica:
       | Casa en Salta           |
       | Departamento en Palermo |
 
-  @only
   Escenario: Buscar alojamientos para viajeros solos
     Dado que soy "huésped"
     Cuando busco las primeras 5 publicaciones con capacidad para al menos 1 huéspedes

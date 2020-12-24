@@ -9,6 +9,8 @@ import Usuarios from "../../../usuarios/support/Usuarios";
 import {v4 as uuidv4} from 'uuid';
 import Eventos from "../../../common/Eventos";
 import Sesiones from "../../../sesiones/support/Sesiones";
+import {DIContainer} from "@wessberg/di";
+import IServicioPagos from "../../../../src/domain/common/servicios/ServicioPagos";
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
@@ -44,6 +46,10 @@ Given(/^que existe una publicación (:?"([^"]*)" )?con:$/, async function (estad
 
 Given('que el anfitrión con email {string} tiene una publicación {string} con:', async function (email: string, estadoPublicacion: string, publicacion: TableDefinition) {
     await crearPublicacionConEstado.bind(this)(estadoPublicacion, email, publicacion)
+});
+
+When('el anfitrión con email {string} realiza una publicación con:', async function (email, publicacion) {
+    await crearPublicacionConEstado.bind(this)("pendiente", email, publicacion)
 });
 
 When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
@@ -160,4 +166,11 @@ Then('veo que no hay publicaciones', async function () {
 
 Then('no obtengo publicaciones', async function () {
     expect(this.last_response.body).to.eql([])
+});
+
+
+Then('recibo un pedido de registro de publicación', function () {
+    expect(this.servicioPagos.crearPublicacion).to.have.been.calledWithMatch({
+        id: this.last_publicacion.body.id
+    })
 });

@@ -10,10 +10,10 @@ import GestorDeSesiones from "./util/GestorDeSesiones";
 import {configure} from "log4js";
 import logConfig from "../config/log-config.json";
 import app from "../src/app"
-import ServicioPagos from '../src/infra/servicios/ServicioPagos';
-import sinon from 'sinon'
 import {setupServer} from "msw/node";
 import {buildHandlers} from "./doubles/handlers";
+import ServicioPagos from "../src/infra/servicios/ServicioPagos";
+import sinon from 'sinon';
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
@@ -50,11 +50,14 @@ Before(async function () {
 
     this.reloj = new RelojFake()
     this.mockServer = mockServer
-    this.mockServicioPagos = sinon.createStubInstance(ServicioPagos)
+
+    this.servicioPagos = new ServicioPagos(<string>process.env.PAYMENTS_SERVICE_URL);
+    sinon.spy(this.servicioPagos)
+
     this.container = new DIContainer()
     await new TestRegistry(
         this.reloj,
-        this.mockServicioPagos
+        this.servicioPagos
     ).registrar(this.container)
     this.app = await app(this.container)
 });

@@ -3,6 +3,10 @@ import chaiHttp from "chai-http"
 import {Given, Then} from 'cucumber';
 import Usuarios from "../../../../usuarios/support/Usuarios";
 import Sesiones from "../../../../sesiones/support/Sesiones";
+import {DIContainer} from "@wessberg/di";
+import IServicioPagos from "../../../../../src/domain/common/servicios/ServicioPagos";
+import sinon from "sinon";
+import ServicioPagos from "../../../../../src/infra/servicios/ServicioPagos";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -13,7 +17,10 @@ Given('que existe el {string} con email {string}', async function (rol, email) {
 });
 
 Given('que soy {string}', async function (rol: string) {
-    if(Usuarios.roles().get(rol)) await Usuarios.crearActual(this, rol)
+    await Usuarios.crearActual(this, rol)
+});
+
+Given('que soy el {string}', function (servicio: string) {
 });
 
 Then('obtengo un mensaje de error {string}', function (error: string) {

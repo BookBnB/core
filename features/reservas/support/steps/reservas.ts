@@ -1,14 +1,15 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import { Given, TableDefinition, Then, When } from 'cucumber';
+import {Given, TableDefinition, Then, When} from 'cucumber';
 import _ from "lodash";
 import sinonChai from "sinon-chai"
 import Eventos from "../../../common/Eventos";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
-import { crearPublicacion } from "../../../publicaciones/support/steps/publicaciones";
+import {crearPublicacion} from "../../../publicaciones/support/steps/publicaciones";
 import Usuarios from "../../../usuarios/support/Usuarios";
-import { validarConjunto, validarObjeto } from "../../../util/Validacion";
+import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
+import Sesiones from "../../../sesiones/support/Sesiones";
 
 chai.use(chaiHttp);
 chai.use(sinonChai)
@@ -67,6 +68,9 @@ Then('veo que está reservada a mí nombre', function () {
 
 Given('que el huésped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email, titulo, dataTable) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
+
+    await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: 'huésped'})
+    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
 
     await this.sesiones.ejecutarBajoSesion(async () => {
         const reserva = dataTable.rowsHash()
@@ -148,12 +152,15 @@ When('apruebo la reserva del usuario {string}', async function (email) {
     await Reservas.aprobar(this, reserva.id)
 });
 
-Then('se desencadena el proceso de aceptación del usuario {string}', async function (email) {
-    expect(this.last_response).to.have.status(200)
-    expect(this.last_response).to.be.json
+When('el anfitrión con email {string} aprueba la reserva del usuario {string}', async function (anfitrionEmail, huespedEmail) {
+    const reserva = this.reservas[huespedEmail]
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Reservas.aprobar(this, reserva.id)
+    }, anfitrionEmail)
+});
 
-    const reserva = this.reservas[email]
-    expect(this.mockServicioPagos.aceptarReserva).to.have.been.calledWithMatch({
-        id: reserva.id
+Then('recibo un pedido de aprobación de reserva', function () {
+    expect(this.servicioPagos.aceptarReserva).to.have.been.calledWithMatch({
+        id: this.last_reserva.body.id
     })
 });
