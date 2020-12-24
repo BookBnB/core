@@ -10,7 +10,8 @@ When('se registra un {string} con email {string}', async function (rol, email) {
     await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: rol})
 });
 
-Then('veo que se creo un usuario email {string}', function (email) {
-    expect(this.last_response).to.have.status(201)
-    expect(this.last_response.body.email).to.eql(email)
+Then('recibo un pedido de creación de billetera', function () {
+    expect(this.servicioPagos.crearBilletera).to.have.been.calledWithMatch({
+        id: this.last_usuario.body.id
+    })
 });

@@ -44,6 +44,8 @@ export default class Usuarios extends Recurso {
 
         usuario.id = context.last_response.body.id;
 
+        context.last_usuario = context.last_response
+
         context.sesiones.registrarUsuario(usuario);
     }
 
