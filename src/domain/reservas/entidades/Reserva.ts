@@ -52,11 +52,11 @@ export default class Reserva {
         }
     }
 
-    aceptar() {
-        this.estado = EstadoReserva.ACEPTADA
-    }
-
     confirmarCreacion() {
         this.estado = EstadoReserva.CREADA
+    }
+
+    aceptar() {
+        this.estado = EstadoReserva.ACEPTADA
     }
 }
