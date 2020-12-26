@@ -14,7 +14,7 @@ export interface ReservaConstructor {
 
 export enum EstadoReserva {
     PENDIENTE_CREACION = 'pendiente de creacion',
-    PENDIENTE_ACEPTACION = 'pendiente de aceptacion',
+    CREADA = 'creada',
     ACEPTADA = 'aceptada',
     REACHAZADA = 'rechazada'
 }
@@ -54,5 +54,9 @@ export default class Reserva {
 
     aceptar() {
         this.estado = EstadoReserva.ACEPTADA
+    }
+
+    confirmarCreacion() {
+        this.estado = EstadoReserva.CREADA
     }
 }

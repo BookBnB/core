@@ -1,4 +1,3 @@
-import { EstadoReserva } from "../entidades/Reserva";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
 import { UseCase } from "../../UseCase";
 
@@ -15,7 +14,7 @@ export class ConfirmarNuevaReserva implements UseCase {
     async execute(params: ParametrosConfirmarNuevaReserva) {
         const reserva = await this.reservas.obtener(params.reservaId)
 
-        reserva.estado = EstadoReserva.PENDIENTE_ACEPTACION
+        reserva.confirmarCreacion()
 
         await this.reservas.guardar(reserva)
     }

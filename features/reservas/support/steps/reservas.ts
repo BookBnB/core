@@ -11,11 +11,12 @@ import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
 import Sesiones from "../../../sesiones/support/Sesiones";
 
+
 chai.use(chaiHttp);
 chai.use(sinonChai)
 const expect = chai.expect;
 
-export async function reservar(this: any, email: string, tituloDePublicacion: string, reserva: { [firstColumn: string]: string }) {
+export async function reservarConUsuario(this: any, email: string, tituloDePublicacion: string, reserva: { [firstColumn: string]: string }) {
     expect(this.last_publicacion.body.titulo).to.eq(tituloDePublicacion, `No se encuentra la publicación con título ${tituloDePublicacion}`)
 
     await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: 'huésped'})
@@ -33,11 +34,11 @@ Given('que realicé una publicación con:', async function (dataTable) {
 });
 
 Given('que el huésped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email: string, titulo: string, dataTable: TableDefinition) {
-    await reservar.bind(this)(email, titulo, dataTable.rowsHash())
+    await reservarConUsuario.bind(this)(email, titulo, dataTable.rowsHash())
 });
 
 When('el huésped con email {string} realiza una reserva en la publicación con título {string} con:', async function (email: string, titulo: string, dataTable: TableDefinition) {
-    await reservar.bind(this)(email, titulo, dataTable.rowsHash())
+    await reservarConUsuario.bind(this)(email, titulo, dataTable.rowsHash())
 });
 
 When('intento hacer una reserva del {string} al {string} en la publicación con título {string}', async function (fechaInicio, fechaFin, titulo) {
@@ -183,16 +184,27 @@ Then('no recibo un pedido de registro de reserva', function () {
 });
 
 Given('que existe una reserva {string} en la publicación con título {string}', async function (estado, tituloPublicacion) {
-    await reservar.bind(this)('huesped@book.bnb', tituloPublicacion, {
+    await reservarConUsuario.bind(this)('huesped@book.bnb', tituloPublicacion, {
         'fechaInicio': '2020-12-01',
         'fechaFin': '2020-12-07'
     })
 });
 
-When('notifico que dicha reserva fue registrada con éxito', async function () {
+When(/^(?:notifico|se notifica) que dicha reserva fue registrada con éxito$/, async function () {
     await Eventos.nuevaReservaRegistrada(this, this.last_reserva.body.id)
 });
 
 When('notifico que dicha reserva fue rechazada', async function () {
     await Eventos.nuevaReservaRechazada(this, this.last_reserva.body.id)
+});
+
+Given('que realicé una reserva en la publicación con título {string}', async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
+    const reserva = {
+        fechaInicio: '2020-12-01',
+        fechaFin: '2020-12-07',
+        publicacionId: this.last_publicacion.body.id,
+    }
+
+    await Reservas.crear(this, reserva);
 });

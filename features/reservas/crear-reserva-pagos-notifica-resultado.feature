@@ -19,3 +19,11 @@ Característica:
     Y que existe una reserva "pendiente" en la publicación con título "Departamento en Palermo"
     Cuando notifico que dicha reserva fue rechazada
     Entonces veo un mensaje de confirmación
+
+  Escenario: El estado de la reserva es "creada" si la reserva se registró correctamente en el servicio de pagos
+    Dado que soy "huésped"
+    Y que realicé una reserva en la publicación con título "Departamento en Palermo"
+    Cuando se notifica que dicha reserva fue registrada con éxito
+    E ingreso a la reserva
+    Entonces veo una reserva con:
+      | estado | creada |
