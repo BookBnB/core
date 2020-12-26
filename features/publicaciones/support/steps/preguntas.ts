@@ -58,6 +58,6 @@ Then('veo que la pregunta {string} no tiene respuesta', function (pregunta) {
     expect(preguntaEncontrada.respuesta).to.be.undefined
 });
 
-When('respondo una pregunta una pregunta que no existe', async function () {
+When('respondo una pregunta que no existe', async function () {
     await Publicaciones.responder(this, this.last_publicacion.body.id, '8ee665f4-0e95-4854-8037-70e55ccbab71', 'respuesta')
 });

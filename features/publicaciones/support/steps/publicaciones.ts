@@ -9,8 +9,7 @@ import Usuarios from "../../../usuarios/support/Usuarios";
 import {v4 as uuidv4} from 'uuid';
 import Eventos from "../../../common/Eventos";
 import Sesiones from "../../../sesiones/support/Sesiones";
-import {DIContainer} from "@wessberg/di";
-import IServicioPagos from "../../../../src/domain/common/servicios/ServicioPagos";
+
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
