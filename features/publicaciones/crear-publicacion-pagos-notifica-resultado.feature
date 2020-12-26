@@ -1,14 +1,8 @@
 # language: es
 Característica:
   Como servicio de pagos
-  Quiero notificar la registración exitosa de una nueva publicación
-  Para luego aceptar reservas de la publicación
-
-  Escenario: Aviso de creación de publicación
-    Dado que soy el "servicio de pagos"
-    Cuando el anfitrión con email "anfitrion@boob.bnb" realiza una publicación con:
-      | titulo | Departamento en Palermo |
-    Entonces recibo un pedido de registro de publicación
+  Quiero notificar la registración exitosa (o no) de una nueva publicación
+  Para luego aceptar reservas (o no) de la publicación
 
   Escenario: Recepción de notificación de confirmación
     Dado que soy "el servicio de pagos"

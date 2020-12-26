@@ -180,7 +180,5 @@ Then('recibo un pedido de registro de reserva', function () {
 });
 
 Then('no recibo un pedido de registro de reserva', function () {
-    expect(this.servicioPagos.crearReserva).not.to.have.been.calledWithMatch({
-        id: this.last_reserva.body.id
-    })
+    expect(this.servicioPagos.crearReserva).not.to.have.been.called
 });

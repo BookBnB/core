@@ -174,3 +174,8 @@ Then('recibo un pedido de registro de publicación', function () {
         id: this.last_publicacion.body.id
     })
 });
+
+
+Then('no recibo un pedido de registro de publicación', function () {
+    expect(this.servicioPagos.crearPublicacion).not.to.have.been.called
+});

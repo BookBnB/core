@@ -20,6 +20,12 @@ Característica:
       | precioPorNoche     | 200                      |
     Y veo que está reservada a mí nombre
 
+  Escenario: La reserva se crea con estado pendiente
+    Dado que soy "huésped"
+    Cuando intento hacer una reserva del "2020-12-01" al "2020-12-07" en la publicación con título "Departamento en Palermo"
+    Entonces veo una nueva reserva con:
+      | estado | pendiente de creacion |
+
   Escenario: Creación de reserva exitosa (fechas ISO)
     Cuando intento hacer una reserva del '2020-12-01T00:00:00.000Z' al '2020-12-07T00:00:00.000Z' en la publicación con título "Departamento en Palermo"
     Entonces veo una nueva reserva con:
