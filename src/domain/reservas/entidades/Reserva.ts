@@ -8,7 +8,6 @@ export interface ReservaConstructor {
     fechaFin: Date;
     huesped: Usuario;
     publicacion: Publicacion;
-    estado: EstadoReserva;
     precioPorNoche: number;
 }
 
@@ -46,6 +45,7 @@ export default class Reserva {
 
     public constructor(args: ReservaConstructor) {
         Object.assign(this, args);
+        this.estado = EstadoReserva.PENDIENTE_CREACION
 
         if (this.fechaFin < this.fechaInicio) {
             throw new FechasInvertidasError('Fechas de reserva invertidas');

@@ -4,7 +4,7 @@ import Publicacion from "../../publicaciones/entidades/Publicacion";
 import IPublicacionRepositorio from "../../publicaciones/repositorios/PublicacionRepositorio";
 import Usuario from "../../usuarios/entidades/Usuario";
 import ReservaDTO from "../dtos/ReservaDTO";
-import Reserva, { EstadoReserva } from "../entidades/Reserva";
+import Reserva from "../entidades/Reserva";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
 import {JSONSchema} from "class-validator-jsonschema";
 import IServicioPagos from "../../common/servicios/ServicioPagos";
@@ -37,7 +37,6 @@ export class CrearReserva {
             precioPorNoche: publicacion.precioPorNoche,
             publicacion: publicacion,
             huesped: usuario,
-            estado: EstadoReserva.PENDIENTE_CREACION
         });
 
         await this.reservas.guardar(reserva)
