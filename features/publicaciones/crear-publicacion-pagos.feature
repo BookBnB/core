@@ -10,17 +10,6 @@ Característica:
       | titulo | Departamento en Palermo |
     Entonces recibo un pedido de registro de publicación
 
-  @wip
-  Escenario: Creación de publicación fallida
-    Dado que soy "anfitrión"
-    Y que el servicio de pagos no se encuentra disponible
-    Cuando creo una publicación con:
-      | titulo | Departamento en Palermo |
-    Entonces obtengo un error 500 con mensaje "Servicio no disponible"
-    Y además
-    Cuando listo mis publicaciones
-    Entonces no obtengo publicaciones
-
   Escenario: Recepción de notificación de confirmación
     Dado que soy "el servicio de pagos"
     Y que existe una publicación "pendiente" con:
@@ -35,7 +24,8 @@ Característica:
     Cuando se notifica que la publicación con título "Departamento en Palermo" fue registrada con éxito
     E ingreso a la publicación con título "Departamento en Palermo"
     Entonces veo una publicación con:
-      | estado | Creada |
+      | titulo | Departamento en Palermo |
+      | estado | Creada                  |
 
   Escenario: Recepción de notificación de rechazo
     Dado que soy "el servicio de pagos"
@@ -51,4 +41,5 @@ Característica:
     Y se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
     E ingreso a la publicación con título "Departamento en Palermo"
     Entonces veo una publicación con:
+      | titulo | Departamento en Palermo |
       | estado | Rechazada |
