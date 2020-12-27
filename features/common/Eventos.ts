@@ -24,7 +24,7 @@ export default class Eventos {
      */
     public static async publicacionRegistrada(context: World, publicacionId: string, contratoId: number = 1) {
         await this.notificar(context, {
-            tipo: TipoEvento.NUEVA_PUBLICACION,
+            tipo: TipoEvento.PUBLICACION_CREADA,
             payload: {
                 publicacionId,
                 contratoId
@@ -70,7 +70,7 @@ export default class Eventos {
 
     public static async nuevaReservaRegistrada(context: World, reservaId: string) {
         await this.notificar(context, {
-            tipo: TipoEvento.NUEVA_RESERVA,
+            tipo: TipoEvento.RESERVA_CREADA,
             payload: {
                 reservaId
             }

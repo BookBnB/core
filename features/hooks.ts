@@ -64,7 +64,8 @@ Before(async function () {
 
 After(async function () {
     const container: DIContainer = this.container;
-    return await container.get<Connection>().close()
+    await container.get<Connection>().close()
+    sinon.restore()
 });
 
 /**

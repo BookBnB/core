@@ -82,7 +82,7 @@ export default class Registry {
     }
 
     protected async registrarLogger(container: DIContainer) {
-        container.registerSingleton<ILogger>(() => new Log4JSLogger('Api'));
+        container.registerSingleton<ILogger>(() => new Log4JSLogger('App'));
     }
 
     protected async registrarTypeOrmConnection(container: DIContainer) {

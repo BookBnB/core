@@ -11,9 +11,9 @@ import {RechazarNuevaPublicacion} from "../domain/publicaciones/casos-uso/Rechaz
 import {RechazarReserva} from "../domain/reservas/casos-uso/RechazarReserva";
 
 export enum TipoEvento {
-    NUEVA_PUBLICACION = 'NUEVA_PUBLICACION',
+    PUBLICACION_CREADA = 'PUBLICACION_CREADA',
     PUBLICACION_RECHAZADA = 'PUBLICACION_RECHAZADA',
-    NUEVA_RESERVA = "NUEVA_RESERVA",
+    RESERVA_CREADA = "RESERVA_CREADA",
     RESERVA_ACEPTADA = "RESERVA_ACEPTADA",
     RESERVA_RECHAZADA = "RESERVA_RECHAZADA"
 }
@@ -44,9 +44,9 @@ export class EventoController {
         aceptarReserva: ConfirmarAceptacionReserva
     ) {
         this.eventos = {
-            [TipoEvento.NUEVA_PUBLICACION]: confirmarNuevaPublicacion,
+            [TipoEvento.PUBLICACION_CREADA]: confirmarNuevaPublicacion,
             [TipoEvento.PUBLICACION_RECHAZADA]: rechazarNuevaPublicacion,
-            [TipoEvento.NUEVA_RESERVA]: confirmarNuevaReserva,
+            [TipoEvento.RESERVA_CREADA]: confirmarNuevaReserva,
             [TipoEvento.RESERVA_RECHAZADA]: rechazarReserva,
             [TipoEvento.RESERVA_ACEPTADA]: aceptarReserva,
         }

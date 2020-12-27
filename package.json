@@ -23,8 +23,6 @@
   "author": "seblaz mpicco FrancoMaz franfusaro",
   "license": "ISC",
   "dependencies": {
-    "@wessberg/di": "^2.0.3",
-    "@wessberg/di-compiler": "^2.1.1",
     "algoliasearch": "^4.8.3",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
@@ -53,6 +51,8 @@
     "typeorm": "^0.2.29"
   },
   "devDependencies": {
+    "@wessberg/di": "^2.0.3",
+    "@wessberg/di-compiler": "^2.1.1",
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/body-parser": "^1.19.0",
     "@types/chai": "^4.2.14",
