@@ -48,7 +48,7 @@ export class ReservaController {
 
     @Put('/:id/aprobacion')
     @ResponseSchema(ReservaDTO)
-    @OpenAPI({ summary: 'Muestra una reserva' })
+    @OpenAPI({ summary: 'Aprueba una reserva' })
     async aprobar(@Params() { id }: any): Promise<any> {
         await this.aprobarReserva.execute(id)
         return ResultadoEvento.success()

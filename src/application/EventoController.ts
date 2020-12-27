@@ -47,8 +47,8 @@ export class EventoController {
             [TipoEvento.NUEVA_PUBLICACION]: confirmarNuevaPublicacion,
             [TipoEvento.PUBLICACION_RECHAZADA]: rechazarNuevaPublicacion,
             [TipoEvento.NUEVA_RESERVA]: confirmarNuevaReserva,
+            [TipoEvento.RESERVA_RECHAZADA]: rechazarReserva,
             [TipoEvento.RESERVA_ACEPTADA]: aceptarReserva,
-            [TipoEvento.RESERVA_RECHAZADA]: rechazarReserva
         }
     }
 

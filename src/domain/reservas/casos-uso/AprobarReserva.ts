@@ -12,6 +12,6 @@ export class AprobarReserva implements UseCase {
     async execute(id: string): Promise<void> {
         const reserva = await this.reservas.obtener(id)
 
-        await this.servicioPagos.aceptarReserva(reserva)
+        await this.servicioPagos.aprobarReserva(reserva)
     }
 }

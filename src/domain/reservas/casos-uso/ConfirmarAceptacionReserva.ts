@@ -1,10 +1,5 @@
-import IPublicacionRepositorio from "../../publicaciones/repositorios/PublicacionRepositorio";
 import { UseCase } from "../../UseCase";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
-
-interface ParametrosAceptarReserva {
-    reservaId: string
-}
 
 export class ConfirmarAceptacionReserva implements UseCase {
     constructor(
@@ -12,8 +7,8 @@ export class ConfirmarAceptacionReserva implements UseCase {
     ) {
     }
 
-    async execute(params: ParametrosAceptarReserva) {
-        const reserva = await this.reservas.obtener(params.reservaId)
+    async execute({ reservaId }: { reservaId: string }) {
+        const reserva = await this.reservas.obtener(reservaId)
 
         reserva.aceptar()
 

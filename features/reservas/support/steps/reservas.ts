@@ -168,7 +168,7 @@ Then('veo una reserva con:', function (dataTable: TableDefinition) {
 });
 
 Then('recibo un pedido de aprobación de reserva', function () {
-    expect(this.servicioPagos.aceptarReserva).to.have.been.calledWithMatch({
+    expect(this.servicioPagos.aprobarReserva).to.have.been.calledWithMatch({
         id: this.last_reserva.body.id
     })
 });

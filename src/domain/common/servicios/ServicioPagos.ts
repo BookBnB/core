@@ -4,7 +4,7 @@ import Usuario from "../../usuarios/entidades/Usuario";
 
 export default interface IServicioPagos {
     crearPublicacion(publicacion: Publicacion): Promise<void>
-    aceptarReserva(reserva: Reserva): Promise<void>
+    aprobarReserva(reserva: Reserva): Promise<void>
     crearReserva(reserva: Reserva): Promise<void>;
     crearBilletera(usuario: Usuario): Promise<void>;
 }

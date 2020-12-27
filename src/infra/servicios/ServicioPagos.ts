@@ -17,7 +17,7 @@ export default class ServicioPagos extends ServicioExterno implements IServicioP
         })
     }
 
-    async aceptarReserva(reserva: Reserva): Promise<void> {
+    async aprobarReserva(reserva: Reserva): Promise<void> {
         await this.put(`${this.url}/v1/reservas/${reserva.id}/aprobacion`, {
             reservaId: reserva.id,
             huespedId: reserva.huesped.id,
