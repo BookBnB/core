@@ -27,3 +27,11 @@ Característica:
     E ingreso a la reserva
     Entonces veo una reserva con:
       | estado | creada |
+
+  Escenario: El estado de la reserva es "rechazada" si la reserva se rechazó en el servicio de pagos
+    Dado que soy "huésped"
+    Y que realicé una reserva en la publicación con título "Departamento en Palermo"
+    Cuando se notifica que dicha reserva fue rechazada
+    E ingreso a la reserva
+    Entonces veo una reserva con:
+      | estado | rechazada |

@@ -59,4 +59,8 @@ export default class Reserva {
     aceptar() {
         this.estado = EstadoReserva.ACEPTADA
     }
+
+    rechazar() {
+        this.estado = EstadoReserva.REACHAZADA
+    }
 }

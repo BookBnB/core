@@ -194,7 +194,7 @@ When(/^(?:notifico|se notifica) que dicha reserva fue registrada con éxito$/, a
     await Eventos.nuevaReservaRegistrada(this, this.last_reserva.body.id)
 });
 
-When('notifico que dicha reserva fue rechazada', async function () {
+When(/^(?:notifico|se notifica) que dicha reserva fue rechazada$/, async function () {
     await Eventos.nuevaReservaRechazada(this, this.last_reserva.body.id)
 });
 

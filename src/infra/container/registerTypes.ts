@@ -54,6 +54,7 @@ import { ConfirmarAceptacionReserva } from "../../domain/reservas/casos-uso/Conf
 import { AprobarReserva } from "../../domain/reservas/casos-uso/AprobarReserva";
 import { CrearUsuario } from "../../domain/usuarios/casos-uso/CrearUsuario";
 import {RechazarNuevaPublicacion} from "../../domain/publicaciones/casos-uso/RechazarNuevaPublicacion";
+import {RechazarReserva} from "../../domain/reservas/casos-uso/RechazarReserva";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -175,6 +176,7 @@ export default class Registry {
         container.registerTransient<ConfirmarNuevaPublicacion>()
         container.registerTransient<RechazarNuevaPublicacion>()
         container.registerTransient<ConfirmarNuevaReserva>()
+        container.registerTransient<RechazarReserva>()
         container.registerTransient<ConfirmarAceptacionReserva>()
         container.registerSingleton<EventoController>()
     }
