@@ -3,7 +3,7 @@ import PublicacionDTO from "../dtos/PublicacionDTO";
 import {IsEnum, IsOptional, IsPositive, IsString, MinLength, ValidateNested} from "class-validator";
 import {JSONSchema} from "class-validator-jsonschema";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
-import Publicacion, {EstadoPublicacion, TipoDeAlojamiento} from "../entidades/Publicacion";
+import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";

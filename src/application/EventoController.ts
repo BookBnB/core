@@ -1,10 +1,10 @@
 import {IsEnum, IsObject} from "class-validator";
-import { Body, HttpCode, JsonController, Post } from "routing-controllers";
-import { OpenAPI, ResponseSchema } from "routing-controllers-openapi";
-import { ConfirmarNuevaPublicacion } from "../domain/publicaciones/casos-uso/ConfirmarNuevaPublicacion";
-import { ConfirmarAceptacionReserva } from "../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
-import { ConfirmarNuevaReserva } from "../domain/reservas/casos-uso/ConfirmarNuevaReserva";
-import { UseCase } from "../domain/UseCase";
+import {Body, HttpCode, JsonController, Post} from "routing-controllers";
+import {OpenAPI, ResponseSchema} from "routing-controllers-openapi";
+import {ConfirmarNuevaPublicacion} from "../domain/publicaciones/casos-uso/ConfirmarNuevaPublicacion";
+import {ConfirmarAceptacionReserva} from "../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
+import {ConfirmarNuevaReserva} from "../domain/reservas/casos-uso/ConfirmarNuevaReserva";
+import {UseCase} from "../domain/UseCase";
 import ResultadoEvento from "./common/ResultadoEvento";
 import {JSONSchema} from "class-validator-jsonschema";
 import {RechazarNuevaPublicacion} from "../domain/publicaciones/casos-uso/RechazarNuevaPublicacion";

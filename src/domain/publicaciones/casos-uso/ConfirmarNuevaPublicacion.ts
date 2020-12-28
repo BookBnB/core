@@ -1,7 +1,7 @@
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import { UseCase } from "../../UseCase";
 
-interface ParametrosConfirmarNuevaPublicacion {
+export interface ConfirmarNuevaPublicacionDTO {
     publicacionId: string
     contratoId: number
 }
@@ -12,7 +12,7 @@ export class ConfirmarNuevaPublicacion implements UseCase {
     ) { 
     }
 
-    async execute(params: ParametrosConfirmarNuevaPublicacion) {
+    async execute(params: ConfirmarNuevaPublicacionDTO) {
         const publicacion = await this.publicaciones.obtener(params.publicacionId)
 
         publicacion.confirmar()
