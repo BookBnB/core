@@ -54,7 +54,7 @@ When('el anfitrión con email {string} realiza una publicación con:', async fun
 When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
     expect(this.last_publicacion.body.titulo).to.eql(titulo)
 
-    await Eventos.publicacionRegistrada(this, this.last_publicacion.body.id)
+    await Eventos.publicacionCreada(this, this.last_publicacion.body.id)
 });
 
 When(/^(?:notifico|se notifica|que se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
@@ -167,13 +167,11 @@ Then('no obtengo publicaciones', async function () {
     expect(this.last_response.body).to.eql([])
 });
 
-
 Then('recibo un pedido de registro de publicación', function () {
     expect(this.servicioPagos.crearPublicacion).to.have.been.calledWithMatch({
         id: this.last_publicacion.body.id
     })
 });
-
 
 Then('no recibo un pedido de registro de publicación', function () {
     expect(this.servicioPagos.crearPublicacion).not.to.have.been.called

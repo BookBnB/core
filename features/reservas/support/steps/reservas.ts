@@ -111,7 +111,7 @@ When('listo las reservas de una publicación que no es mía', async function () 
 });
 
 When('se notifica un evento para la reserva creada', async function () {
-    await Eventos.nuevaReservaRegistrada(this, this.last_reserva.body.id)
+    await Eventos.reservaCreada(this, this.last_reserva.body.id)
 
     expect(this.last_response).to.have.status(200)
     expect(this.last_response).to.be.json
@@ -204,11 +204,11 @@ Given('que existe una reserva {string} en la publicación con título {string}',
 });
 
 When(/^(?:notifico|se notifica) que dicha reserva fue registrada con éxito$/, async function () {
-    await Eventos.nuevaReservaRegistrada(this, this.last_reserva.body.id)
+    await Eventos.reservaCreada(this, this.last_reserva.body.id)
 });
 
 When(/^(?:notifico|se notifica) que dicha reserva fue rechazada$/, async function () {
-    await Eventos.nuevaReservaRechazada(this, this.last_reserva.body.id)
+    await Eventos.reservaRechazada(this, this.last_reserva.body.id)
 });
 
 Given('que realicé una reserva en la publicación con título {string}', async function (titulo) {

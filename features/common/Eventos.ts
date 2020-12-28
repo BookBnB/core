@@ -22,7 +22,19 @@ export default class Eventos {
     /*
      * Eventos de publicaciones
      */
-    public static async publicacionRegistrada(context: World, publicacionId: string, contratoId: number = 1) {
+    public static async registarEstadoPublicacion(context: World, estadoPublicacion: string, publicacionId: string) {
+        const estados = new Map([
+            ['creada', () => this.publicacionCreada(context, publicacionId)],
+            ['rechazada', () => this.publicacionRechazada(context, publicacionId)],
+            ['pendiente', () => Promise.resolve()]
+        ])
+
+        const evento = estados.get(estadoPublicacion)
+        if(!evento) throw Error(`Estado de publicación inválido: ${estadoPublicacion}.`)
+        await evento();
+    }
+
+    public static async publicacionCreada(context: World, publicacionId: string, contratoId: number = 1) {
         await this.notificar(context, {
             tipo: TipoEvento.PUBLICACION_CREADA,
             payload: {
@@ -44,22 +56,10 @@ export default class Eventos {
     /*
      * Eventos de reservas
      */
-    public static async registarEstadoPublicacion(context: World, estadoPublicacion: string, publicacionId: string) {
+    public static async registarEstadoReserva(context: World, estadoReserva: string, reservaId: string) {
         const estados = new Map([
-            ['creada', () => this.publicacionRegistrada(context, publicacionId)],
-            ['rechazada', () => this.publicacionRechazada(context, publicacionId)],
-            ['pendiente', () => Promise.resolve()]
-        ])
-
-        const evento = estados.get(estadoPublicacion)
-        if(!evento) throw Error(`Estado de publicación inválido: ${estadoPublicacion}.`)
-        await evento();
-    }
-
-    public static async registarEstadoDeNuevaReserva(context: World, estadoReserva: string, reservaId: string) {
-        const estados = new Map([
-            ['creada', () => this.nuevaReservaRegistrada(context, reservaId)],
-            ['rechazada', () => this.nuevaReservaRechazada(context, reservaId)],
+            ['creada', () => this.reservaCreada(context, reservaId)],
+            ['rechazada', () => this.reservaRechazada(context, reservaId)],
             ['pendiente', () => Promise.resolve()]
         ])
 
@@ -68,7 +68,7 @@ export default class Eventos {
         await evento();
     }
 
-    public static async nuevaReservaRegistrada(context: World, reservaId: string) {
+    public static async reservaCreada(context: World, reservaId: string) {
         await this.notificar(context, {
             tipo: TipoEvento.RESERVA_CREADA,
             payload: {
@@ -77,7 +77,7 @@ export default class Eventos {
         })
     }
 
-    public static async nuevaReservaRechazada(context: World, reservaId: string) {
+    public static async reservaRechazada(context: World, reservaId: string) {
         await this.notificar(context, {
             tipo: TipoEvento.RESERVA_RECHAZADA,
             payload: {
