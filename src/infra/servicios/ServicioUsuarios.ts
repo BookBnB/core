@@ -5,9 +5,9 @@ import UsuarioNoReconocidoError from "../../domain/sesiones/excepciones/UsuarioN
 import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios";
 import { CrearUsuarioDTO } from "../../domain/usuarios/casos-uso/CrearUsuario";
 import UsuarioDTO from "../../domain/usuarios/dtos/UsuarioDTO";
-import ServicioExterno from "./ServicioExterno";
+import ApiExterna from "./ApiExterna";
 
-export default class ServicioUsuarios extends ServicioExterno implements IServicioUsuarios {
+export default class ServicioUsuarios extends ApiExterna implements IServicioUsuarios {
     private readonly RUTA_CREAR = '/v1/usuarios'
     private readonly RUTA_SESION = '/v1/sesiones';
     private readonly RUTA_SESION_GOOGLE = '/v1/sesiones/google';

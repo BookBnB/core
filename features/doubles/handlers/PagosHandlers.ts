@@ -20,7 +20,7 @@ export default function pagosCreationHandler() {
                 ctx.json({})
             )
         }),
-        rest.post(`${paymentsUrl}/v1/billeteras/:usuarioId`, (req, res, ctx) => {
+        rest.post(`${paymentsUrl}/v1/billeteras`, (req, res, ctx) => {
             return res(
                 ctx.json({})
             )

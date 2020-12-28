@@ -2,9 +2,9 @@ import IServicioPagos from "../../domain/common/servicios/ServicioPagos";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import Reserva from '../../domain/reservas/entidades/Reserva';
 import Usuario from '../../domain/usuarios/entidades/Usuario';
-import ServicioExterno from './ServicioExterno';
+import ApiExterna from './ApiExterna';
 
-export default class ServicioPagos extends ServicioExterno implements IServicioPagos {
+export default class ServicioPagos extends ApiExterna implements IServicioPagos {
     constructor(private readonly url: string) {
         super()
     }
@@ -39,6 +39,6 @@ export default class ServicioPagos extends ServicioExterno implements IServicioP
     }
 
     async crearBilletera(usuario: Usuario): Promise<void> {
-        await this.post(`${this.url}/v1/billeteras/${usuario.id}`)
+        await this.post(`${this.url}/v1/billeteras`, {id: usuario.id})
     }
 }
