@@ -12,12 +12,12 @@ Característica:
     Y que el huésped con email "unHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
       | fechaInicio | 2020-12-01            |
       | fechaFin    | 2020-12-07            |
-      | estado      | pendiente de creacion |
+      | estado      | pendiente de creación |
     Y que existe el "huésped" con email "otroHuesped@book.bnb"
     Y que el huésped con email "otroHuesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
       | fechaInicio | 2020-12-08            |
       | fechaFin    | 2020-12-10            |
-      | estado      | pendiente de creacion |
+      | estado      | pendiente de creación |
 
   Escenario: Listado sin reservas
     Dado que realicé una publicación con:
@@ -41,15 +41,15 @@ Característica:
     Cuando listo las reservas de la publicación con título "Departamento en Palermo"
     Entonces veo las reservas:
       | fechaInicio | fechaFin   | estado                |
-      | 2020-12-01  | 2020-12-07 | pendiente de creacion |
-      | 2020-12-08  | 2020-12-10 | pendiente de creacion |
+      | 2020-12-01  | 2020-12-07 | pendiente de creación |
+      | 2020-12-08  | 2020-12-10 | pendiente de creación |
 
   Escenario: Listado de reservas pendientes
     Cuando listo las reservas "pendientes de creacion" de la publicación con título "Departamento en Palermo"
     Entonces veo las reservas:
       | fechaInicio | fechaFin   | estado                |
-      | 2020-12-01  | 2020-12-07 | pendiente de creacion |
-      | 2020-12-08  | 2020-12-10 | pendiente de creacion |
+      | 2020-12-01  | 2020-12-07 | pendiente de creación |
+      | 2020-12-08  | 2020-12-10 | pendiente de creación |
 
   Escenario: Listado sin reservas aceptadas pero con pendientes
     Cuando listo las reservas "aceptadas" de la publicación con título "Departamento en Palermo"

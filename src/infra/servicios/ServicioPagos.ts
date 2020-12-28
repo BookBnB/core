@@ -9,11 +9,25 @@ export default class ServicioPagos extends ApiExterna implements IServicioPagos 
         super()
     }
 
+    async crearBilletera(usuario: Usuario): Promise<void> {
+        await this.post(`${this.url}/v1/billeteras`, {id: usuario.id})
+    }
+
     async crearPublicacion(publicacion: Publicacion): Promise<void> {
         await this.post(`${this.url}/v1/publicaciones`, {
             publicacionId: publicacion.id,
             usuarioId: publicacion.anfitrion.id,
             precioPorNoche: publicacion.precioPorNoche
+        })
+    }
+
+    async crearReserva(reserva: Reserva): Promise<void> {
+        await this.post(`${this.url}/v1/reservas`, {
+            reservaId: reserva.id,
+            publicacionContratoId: reserva.publicacion.contratoId,
+            huespedId: reserva.huesped.id,
+            fechaInicio: reserva.fechaInicio,
+            fechaFin: reserva.fechaFin
         })
     }
 
@@ -28,17 +42,14 @@ export default class ServicioPagos extends ApiExterna implements IServicioPagos 
         })
     }
 
-    async crearReserva(reserva: Reserva): Promise<void> {
-        await this.post(`${this.url}/v1/reservas`, {
+    async rechazarReserva(reserva: Reserva): Promise<void> {
+        await this.put(`${this.url}/v1/reservas/${reserva.id}/rechazo`, {
             reservaId: reserva.id,
-            publicacionContratoId: reserva.publicacion.contratoId,
             huespedId: reserva.huesped.id,
             fechaInicio: reserva.fechaInicio,
-            fechaFin: reserva.fechaFin
+            fechaFin: reserva.fechaFin,
+            publicacionContratoId: reserva.publicacion.contratoId,
+            anfitrionId: reserva.publicacion.anfitrion.id
         })
-    }
-
-    async crearBilletera(usuario: Usuario): Promise<void> {
-        await this.post(`${this.url}/v1/billeteras`, {id: usuario.id})
     }
 }

@@ -6,7 +6,7 @@ interface ParametrosConfirmarNuevaPublicacion {
     contratoId: number
 }
 
-export class RechazarNuevaPublicacion implements UseCase {
+export class ConfirmarRechazoPublicacion implements UseCase {
     constructor(
         private readonly publicaciones: IPublicacionRepositorio
     ) { 

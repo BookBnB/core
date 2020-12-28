@@ -31,6 +31,10 @@ export default class Reservas extends Recurso {
         await this.put(context, `/${id}/aprobacion`, { reservaId: id })
     }
 
+    public static async rechazar(context: World, id: any) {
+        await this.put(context, `/${id}/rechazo`, { reservaId: id })
+    }
+
     static async listarPorPublicacion(context: World, publicacionId: string, estado: string | undefined = undefined) {
         context.last_response = await chai.request(context.app)
             .get(`/v1/publicaciones/${publicacionId}/reservas`)

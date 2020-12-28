@@ -14,7 +14,7 @@ Característica:
     Cuando intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Departamento en Palermo"
     Entonces veo una nueva reserva con:
       | publicacion.titulo | Departamento en Palermo  |
-      | estado             | pendiente de creacion    |
+      | estado             | pendiente de creación    |
       | fechaInicio        | 2020-12-01T00:00:00.000Z |
       | fechaFin           | 2020-12-07T00:00:00.000Z |
       | precioPorNoche     | 200                      |
@@ -24,12 +24,12 @@ Característica:
     Dado que soy "huésped"
     Cuando intento hacer una reserva del "2020-12-01" al "2020-12-07" en la publicación con título "Departamento en Palermo"
     Entonces veo una nueva reserva con:
-      | estado | pendiente de creacion |
+      | estado | pendiente de creación |
 
   Escenario: Creación de reserva exitosa (fechas ISO)
     Cuando intento hacer una reserva del '2020-12-01T00:00:00.000Z' al '2020-12-07T00:00:00.000Z' en la publicación con título "Departamento en Palermo"
     Entonces veo una nueva reserva con:
-      | estado         | pendiente de creacion    |
+      | estado         | pendiente de creación    |
       | fechaInicio    | 2020-12-01T00:00:00.000Z |
       | fechaFin       | 2020-12-07T00:00:00.000Z |
       | precioPorNoche | 200                      |

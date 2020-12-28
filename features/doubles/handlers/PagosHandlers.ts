@@ -20,6 +20,11 @@ export default function pagosCreationHandler() {
                 ctx.json({})
             )
         }),
+        rest.put(`${paymentsUrl}/v1/reservas/:reservaId/rechazo`, (req, res, ctx) => {
+            return res(
+                ctx.json({})
+            )
+        }),
         rest.post(`${paymentsUrl}/v1/billeteras`, (req, res, ctx) => {
             return res(
                 ctx.json({})

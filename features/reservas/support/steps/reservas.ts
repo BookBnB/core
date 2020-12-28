@@ -89,7 +89,7 @@ When('listo las reservas {string} de la publicación con título {string}', asyn
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
 
     const estados = new Map([
-        ["pendientes de creacion", "pendiente de creacion"],
+        ["pendientes de creacion", "pendiente de creación"],
         ["pendientes", "pendiente"],
         ["aceptadas", "aceptada"],
         ["rechazadas", "rechazada"],
@@ -136,6 +136,13 @@ When('el anfitrión con email {string} aprueba la reserva del usuario {string}',
     }, anfitrionEmail)
 });
 
+When('el anfitrión con email {string} rechaza la reserva del usuario {string}', async function (anfitrionEmail, huespedEmail) {
+    const reserva = this.reservas[huespedEmail]
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Reservas.rechazar(this, reserva.id)
+    }, anfitrionEmail)
+});
+
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
@@ -169,6 +176,12 @@ Then('veo una reserva con:', function (dataTable: TableDefinition) {
 
 Then('recibo un pedido de aprobación de reserva', function () {
     expect(this.servicioPagos.aprobarReserva).to.have.been.calledWithMatch({
+        id: this.last_reserva.body.id
+    })
+});
+
+Then('recibo un pedido de rechazo de reserva', function () {
+    expect(this.servicioPagos.rechazarReserva).to.have.been.calledWithMatch({
         id: this.last_reserva.body.id
     })
 });

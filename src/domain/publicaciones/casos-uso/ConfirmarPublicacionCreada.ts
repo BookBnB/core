@@ -6,7 +6,7 @@ export interface ConfirmarNuevaPublicacionDTO {
     contratoId: number
 }
 
-export class ConfirmarNuevaPublicacion implements UseCase {
+export class ConfirmarPublicacionCreada implements UseCase {
     constructor(
         private readonly publicaciones: IPublicacionRepositorio
     ) { 

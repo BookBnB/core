@@ -1,14 +1,14 @@
 import {IsEnum, IsObject} from "class-validator";
 import {Body, HttpCode, JsonController, Post} from "routing-controllers";
 import {OpenAPI, ResponseSchema} from "routing-controllers-openapi";
-import {ConfirmarNuevaPublicacion} from "../domain/publicaciones/casos-uso/ConfirmarNuevaPublicacion";
+import {ConfirmarPublicacionCreada} from "../domain/publicaciones/casos-uso/ConfirmarPublicacionCreada";
 import {ConfirmarAceptacionReserva} from "../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
-import {ConfirmarNuevaReserva} from "../domain/reservas/casos-uso/ConfirmarNuevaReserva";
+import {ConfirmarReservaCreada} from "../domain/reservas/casos-uso/ConfirmarReservaCreada";
 import {UseCase} from "../domain/UseCase";
 import ResultadoEvento from "./common/ResultadoEvento";
 import {JSONSchema} from "class-validator-jsonschema";
-import {RechazarNuevaPublicacion} from "../domain/publicaciones/casos-uso/RechazarNuevaPublicacion";
-import {RechazarReserva} from "../domain/reservas/casos-uso/RechazarReserva";
+import {ConfirmarRechazoPublicacion} from "../domain/publicaciones/casos-uso/ConfirmarRechazoPublicacion";
+import {ConfirmarRechazoReserva} from "../domain/reservas/casos-uso/ConfirmarRechazoReserva";
 
 export enum TipoEvento {
     PUBLICACION_CREADA = 'PUBLICACION_CREADA',
@@ -37,11 +37,11 @@ export class EventoController {
     private readonly eventos: any
 
     constructor(
-        confirmarNuevaPublicacion: ConfirmarNuevaPublicacion,
-        rechazarNuevaPublicacion: RechazarNuevaPublicacion,
-        confirmarNuevaReserva: ConfirmarNuevaReserva,
-        rechazarReserva: RechazarReserva,
-        aceptarReserva: ConfirmarAceptacionReserva
+        confirmarNuevaPublicacion: ConfirmarPublicacionCreada,
+        rechazarNuevaPublicacion: ConfirmarRechazoPublicacion,
+        confirmarNuevaReserva: ConfirmarReservaCreada,
+        aceptarReserva: ConfirmarAceptacionReserva,
+        rechazarReserva: ConfirmarRechazoReserva
     ) {
         this.eventos = {
             [TipoEvento.PUBLICACION_CREADA]: confirmarNuevaPublicacion,

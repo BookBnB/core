@@ -5,7 +5,7 @@ interface ParametrosConfirmarNuevaReserva {
     reservaId: string
 }
 
-export class ConfirmarNuevaReserva implements UseCase {
+export class ConfirmarReservaCreada implements UseCase {
     constructor(
         private readonly reservas: IReservaRepositorio
     ) {

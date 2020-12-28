@@ -12,7 +12,7 @@ export interface ReservaConstructor {
 }
 
 export enum EstadoReserva {
-    PENDIENTE_CREACION = 'pendiente de creacion',
+    PENDIENTE_CREACION = 'pendiente de creación',
     CREADA = 'creada',
     ACEPTADA = 'aceptada',
     REACHAZADA = 'rechazada'
