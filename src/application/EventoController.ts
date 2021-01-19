@@ -12,10 +12,13 @@ import {ConfirmarRechazoReserva} from "../domain/reservas/casos-uso/ConfirmarRec
 
 export enum TipoEvento {
     PUBLICACION_CREADA = 'PUBLICACION_CREADA',
-    PUBLICACION_RECHAZADA = 'PUBLICACION_RECHAZADA',
     RESERVA_CREADA = "RESERVA_CREADA",
     RESERVA_ACEPTADA = "RESERVA_ACEPTADA",
-    RESERVA_RECHAZADA = "RESERVA_RECHAZADA"
+    RESERVA_RECHAZADA = "RESERVA_RECHAZADA",
+    PUBLICACION_CREACION_FALLIDA = 'PUBLICACION_CREACION_FALLIDA',
+    RESERVA_CREACION_FALLIDA = "RESERVA_CREACION_FALLIDA",
+    RESERVA_ACEPTACION_FALLIDA = "RESERVA_ACEPTACION_FALLIDA",
+    RESERVA_RECHAZO_FALLIDO = "RESERVA_RECHAZO_FALLIDO"
 }
 
 class Payload {
@@ -37,18 +40,19 @@ export class EventoController {
     private readonly eventos: any
 
     constructor(
-        confirmarNuevaPublicacion: ConfirmarPublicacionCreada,
-        rechazarNuevaPublicacion: ConfirmarRechazoPublicacion,
-        confirmarNuevaReserva: ConfirmarReservaCreada,
+        confirmarPublicacionCreada: ConfirmarPublicacionCreada,
+        confirmarReservaCreada: ConfirmarReservaCreada,
         aceptarReserva: ConfirmarAceptacionReserva,
-        rechazarReserva: ConfirmarRechazoReserva
+        rechazarReserva: ConfirmarRechazoReserva,
+        rechazarNuevaPublicacion: ConfirmarRechazoPublicacion,
     ) {
         this.eventos = {
-            [TipoEvento.PUBLICACION_CREADA]: confirmarNuevaPublicacion,
-            [TipoEvento.PUBLICACION_RECHAZADA]: rechazarNuevaPublicacion,
-            [TipoEvento.RESERVA_CREADA]: confirmarNuevaReserva,
-            [TipoEvento.RESERVA_RECHAZADA]: rechazarReserva,
+            [TipoEvento.PUBLICACION_CREADA]: confirmarPublicacionCreada,
+            [TipoEvento.RESERVA_CREADA]: confirmarReservaCreada,
             [TipoEvento.RESERVA_ACEPTADA]: aceptarReserva,
+            [TipoEvento.RESERVA_RECHAZADA]: rechazarReserva,
+            [TipoEvento.PUBLICACION_CREACION_FALLIDA]: rechazarNuevaPublicacion,
+            [TipoEvento.RESERVA_CREACION_FALLIDA]: rechazarReserva
         }
     }
 

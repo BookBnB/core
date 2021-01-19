@@ -11,6 +11,7 @@ export class ConfirmarAceptacionReserva implements UseCase {
         const reserva = await this.reservas.obtener(reservaId)
 
         reserva.aceptar()
+        // TODO: rechazar las reservas que eran para los mismos días
 
         await this.reservas.guardar(reserva)
     }

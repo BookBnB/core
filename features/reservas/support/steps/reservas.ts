@@ -207,8 +207,8 @@ When(/^(?:notifico|se notifica) que dicha reserva fue registrada con éxito$/, a
     await Eventos.reservaCreada(this, this.last_reserva.body.id)
 });
 
-When(/^(?:notifico|se notifica) que dicha reserva fue rechazada$/, async function () {
-    await Eventos.reservaRechazada(this, this.last_reserva.body.id)
+When(/^(?:notifico|se notifica) que falló la creación de dicha reserva$/, async function () {
+    await Eventos.creacionDeReservaFallido(this, this.last_reserva.body.id)
 });
 
 Given('que realicé una reserva en la publicación con título {string}', async function (titulo) {

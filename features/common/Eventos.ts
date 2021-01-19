@@ -25,7 +25,7 @@ export default class Eventos {
     public static async registarEstadoPublicacion(context: World, estadoPublicacion: string, publicacionId: string) {
         const estados = new Map([
             ['creada', () => this.publicacionCreada(context, publicacionId)],
-            ['rechazada', () => this.publicacionRechazada(context, publicacionId)],
+            ['rechazada', () => this.publicacionCreacionFallida(context, publicacionId)],
             ['pendiente', () => Promise.resolve()]
         ])
 
@@ -44,9 +44,9 @@ export default class Eventos {
         })
     }
 
-    public static async publicacionRechazada(context: World, publicacionId: string) {
+    public static async publicacionCreacionFallida(context: World, publicacionId: string) {
         await this.notificar(context, {
-            tipo: TipoEvento.PUBLICACION_RECHAZADA,
+            tipo: TipoEvento.PUBLICACION_CREACION_FALLIDA,
             payload: {
                 publicacionId
             }
@@ -89,6 +89,15 @@ export default class Eventos {
     public static async reservaAceptada(context: World, reservaId: string) {
         await this.notificar(context, {
             tipo: TipoEvento.RESERVA_ACEPTADA,
+            payload: {
+                reservaId
+            }
+        })
+    }
+
+    public static async creacionDeReservaFallido(context: World, reservaId: string) {
+        await this.notificar(context, {
+            tipo: TipoEvento.RESERVA_CREACION_FALLIDA,
             payload: {
                 reservaId
             }

@@ -60,7 +60,7 @@ When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue re
 When(/^(?:notifico|se notifica|que se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
     expect(this.last_publicacion.body.titulo).to.eql(titulo)
 
-    await Eventos.publicacionRechazada(this, this.last_publicacion.body.id)
+    await Eventos.publicacionCreacionFallida(this, this.last_publicacion.body.id)
 });
 
 When('creo una publicación con:', crearPublicacion)
