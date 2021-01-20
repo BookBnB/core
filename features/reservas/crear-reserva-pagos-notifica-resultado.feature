@@ -28,7 +28,6 @@ Característica:
     Entonces veo una reserva con:
       | estado | creada |
 
-  @only
   Escenario: El estado de la reserva es "rechazada" si la reserva no se pudo crear en el servicio de pagos
     Dado que soy "huésped"
     Y que realicé una reserva en la publicación con título "Departamento en Palermo"

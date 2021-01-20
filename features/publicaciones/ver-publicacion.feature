@@ -1,10 +1,10 @@
 # language: es
 Característica:
-  Como huesped
-  Quiero poder visualizar una publicacion de un alojamiento
+  Como huésped
+  Quiero poder visualizar una publicación de un alojamiento
   Para ver sus fotos y/o videos y revisar sus características.
 
-  Escenario: Ver una publicacion
+  Escenario: Ver una publicación
     Dado que soy "huésped"
     Y que existe una publicación con:
       | titulo                         | Departamento con vista                                 |
@@ -34,12 +34,12 @@ Característica:
       | cantidadDeHuespedes            | 2                                                      |
       | tipoDeAlojamiento              | Alojamiento entero                                      |
 
-  Escenario: Ver una publicacion inexistente
+  Escenario: Ver una publicación inexistente
     Dado que soy "huésped"
     Cuando ingreso a la publicación con id "91c687f1-52a7-4f1e-8755-9f0b3f551692"
     Entonces obtengo un error 404 con mensaje "La publicación con id 91c687f1-52a7-4f1e-8755-9f0b3f551692 no existe."
 
-  Escenario: Ver una publicacion con id inválido
+  Escenario: Ver una publicación con id inválido
     Dado que soy "huésped"
     Cuando ingreso a la publicación con id "algo que no es un uuid"
     Entonces veo un error indicado en el campo "id"

@@ -5,7 +5,7 @@ import _ from "lodash";
 import sinonChai from "sinon-chai"
 import Eventos from "../../../common/Eventos";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
-import {crearPublicacion} from "../../../publicaciones/support/steps/publicaciones";
+import {crearPublicacion, crearPublicacionConEstado} from "../../../publicaciones/support/steps/publicaciones";
 import Usuarios from "../../../usuarios/support/Usuarios";
 import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
@@ -31,6 +31,7 @@ export async function reservarConUsuario(this: any, email: string, tituloDePubli
 
 Given('que realicé una publicación con:', async function (dataTable) {
     await crearPublicacion.bind(this)(dataTable)
+    await Eventos.publicacionCreada(this, this.last_response.body.id)
 });
 
 Given('que el huésped con email {string} tiene una reserva en la publicación con título {string} con:', async function (email: string, titulo: string, dataTable: TableDefinition) {

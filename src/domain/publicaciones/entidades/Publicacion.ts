@@ -5,6 +5,8 @@ import Imagen from "./Imagen";
 import Reserva from "../../reservas/entidades/Reserva";
 import Pregunta from "./Pregunta";
 import PreguntaInexistenteError from "../excepciones/PreguntaInexistenteError";
+import {CrearReservaDTO} from "../../reservas/casos-uso/CrearReserva";
+import PublicacionConEstadoInvalidoError from "../../reservas/excepciones/PublicacionConEstadoInvalidoError";
 
 export interface PublicacionConstructor {
     titulo: string
@@ -34,10 +36,10 @@ export default class Publicacion {
     @PrimaryGeneratedColumn("uuid")
     public id?: string;
 
-    @Column('int', { nullable: true })
+    @Column('int', {nullable: true})
     public contratoId?: number;
 
-    @Column({ type: 'enum', enum: EstadoPublicacion, default: EstadoPublicacion.pendienteCreacion })
+    @Column({type: 'enum', enum: EstadoPublicacion, default: EstadoPublicacion.pendienteCreacion})
     public estado!: EstadoPublicacion;
 
     @Column()
@@ -98,11 +100,24 @@ export default class Publicacion {
         this.estado = EstadoPublicacion.rechazada
     }
 
-    esValida() : boolean{
+    esValida(): boolean {
         return this.estado === EstadoPublicacion.creada;
     }
 
     perteneceA(usuario: Usuario) {
         return this.anfitrion.esIgualA(usuario);
+    }
+
+    crearReserva(huesped: Usuario, body: CrearReservaDTO): Reserva {
+        if(this.estado !== EstadoPublicacion.creada)
+            throw PublicacionConEstadoInvalidoError.noSePuedeCrearReserva(this.estado)
+
+        return new Reserva({
+            fechaInicio: body.fechaInicio,
+            fechaFin: body.fechaFin,
+            precioPorNoche: this.precioPorNoche,
+            publicacion: this,
+            huesped,
+        });
     }
 }

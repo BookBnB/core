@@ -28,16 +28,9 @@ export class CrearReserva {
     ) {
     }
 
-    async execute(usuario: Usuario, body: CrearReservaDTO): Promise<ReservaDTO> {
+    async execute(huesped: Usuario, body: CrearReservaDTO): Promise<ReservaDTO> {
         const publicacion: Publicacion = await this.publicaciones.obtener(body.publicacionId);
-
-        const reserva: Reserva = new Reserva({
-            fechaInicio: body.fechaInicio,
-            fechaFin: body.fechaFin,
-            precioPorNoche: publicacion.precioPorNoche,
-            publicacion: publicacion,
-            huesped: usuario,
-        });
+        const reserva: Reserva = publicacion.crearReserva(huesped, body)
 
         await this.reservas.guardar(reserva)
 

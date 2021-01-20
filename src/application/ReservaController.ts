@@ -1,9 +1,9 @@
 import {
-    Authorized,
+    Authorized, BadRequestError,
     Body,
     CurrentUser,
     Get,
-    HttpCode,
+    HttpCode, InternalServerError,
     JsonController,
     Params,
     Post,
@@ -20,6 +20,7 @@ import ResultadoEvento from "./common/ResultadoEvento";
 import AuthenticationMiddleware from "./middlewares/AuthenticationMiddleware";
 import {RechazarReserva} from "../domain/reservas/casos-uso/RechazarReserva";
 import {IsNotEmpty, IsString} from "class-validator";
+import PublicacionConEstadoInvalidoError from "../domain/reservas/excepciones/PublicacionConEstadoInvalidoError";
 
 class IdReserva {
     @IsString() @IsNotEmpty()
@@ -48,7 +49,13 @@ export class ReservaController {
     @ResponseSchema(ReservaDTO)
     @OpenAPI({summary: 'Crea una reserva para una publicación'})
     async crear(@CurrentUser() usuario: Usuario, @Body() body: CrearReservaDTO): Promise<ReservaDTO> {
-        return await this.crearReserva.execute(usuario, body)
+        try {
+            return await this.crearReserva.execute(usuario, body)
+        } catch (e) {
+            if (e instanceof PublicacionConEstadoInvalidoError)
+                throw new BadRequestError(e.message)
+            throw e
+        }
     }
 
     @Get('/:id')
