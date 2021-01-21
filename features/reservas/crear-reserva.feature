@@ -35,7 +35,6 @@ Característica:
       | precioPorNoche | 200                      |
     Y veo que está reservada a mí nombre
 
-  @only
   Escenario: Creación de reserva con fechas invertidas
     Cuando intento hacer una reserva del '2020-12-07' al '2020-12-01' en la publicación con título "Departamento en Palermo"
     Entonces obtengo un mensaje de error "Fechas de reserva invertidas"
@@ -78,7 +77,6 @@ Característica:
     Cuando intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Departamento en Palermo"
     Entonces obtengo un error 403 con mensaje "Access is denied"
 
-  @only
   Escenario: No se puede crear una reserva en una publicación que se encuentra pendiente
     Dado que soy "huésped"
     Y que existe una publicación "pendiente" con:

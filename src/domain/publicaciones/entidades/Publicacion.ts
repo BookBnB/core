@@ -6,7 +6,11 @@ import Reserva from "../../reservas/entidades/Reserva";
 import Pregunta from "./Pregunta";
 import PreguntaInexistenteError from "../excepciones/PreguntaInexistenteError";
 import {CrearReservaDTO} from "../../reservas/casos-uso/CrearReserva";
-import PublicacionConEstadoInvalidoError from "../../reservas/excepciones/PublicacionConEstadoInvalidoError";
+import EstadoDePublicacion from "./estados-publicacion/EstadoDePublicacion";
+import Creada from "./estados-publicacion/Creada";
+import PendienteDeCreacion from "./estados-publicacion/PendienteDeCreacion";
+import Rechazada from "./estados-publicacion/Rechazada";
+import EstadoPublicacionTransformer from "./estados-publicacion/EstadoPublicacionTransformer";
 
 export interface PublicacionConstructor {
     titulo: string
@@ -25,12 +29,6 @@ export enum TipoDeAlojamiento {
     habitacionDeHotel = 'Habitación de hotel'
 }
 
-export enum EstadoPublicacion {
-    pendienteCreacion = 'Pendiente de creación',
-    creada = 'Creada',
-    rechazada = 'Rechazada',
-}
-
 @Entity()
 export default class Publicacion {
     @PrimaryGeneratedColumn("uuid")
@@ -39,8 +37,8 @@ export default class Publicacion {
     @Column('int', {nullable: true})
     public contratoId?: number;
 
-    @Column({type: 'enum', enum: EstadoPublicacion, default: EstadoPublicacion.pendienteCreacion})
-    public estado!: EstadoPublicacion;
+    @Column("text", {transformer: new EstadoPublicacionTransformer()})
+    public estado!: EstadoDePublicacion;
 
     @Column()
     public titulo!: string;
@@ -74,7 +72,8 @@ export default class Publicacion {
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
-        this.estado = EstadoPublicacion.pendienteCreacion
+        // this.estado = EstadoPublicacion.pendienteCreacion
+        this.estado = new PendienteDeCreacion()
     }
 
     async preguntar(usuario: Usuario, descripcion: string): Promise<Pregunta> {
@@ -89,7 +88,7 @@ export default class Publicacion {
     }
 
     confirmar() {
-        this.estado = EstadoPublicacion.creada
+        this.estado = new Creada()
     }
 
     setContratoId(contratoId: number) {
@@ -97,11 +96,11 @@ export default class Publicacion {
     }
 
     rechazar() {
-        this.estado = EstadoPublicacion.rechazada
+        this.estado = new Rechazada()
     }
 
     esValida(): boolean {
-        return this.estado === EstadoPublicacion.creada;
+        return this.estado.esValida()
     }
 
     perteneceA(usuario: Usuario) {
@@ -109,8 +108,7 @@ export default class Publicacion {
     }
 
     crearReserva(huesped: Usuario, body: CrearReservaDTO): Reserva {
-        if(this.estado !== EstadoPublicacion.creada)
-            throw PublicacionConEstadoInvalidoError.noSePuedeCrearReserva(this.estado)
+        this.estado.crearReserva(huesped, body, this)
 
         return new Reserva({
             fechaInicio: body.fechaInicio,

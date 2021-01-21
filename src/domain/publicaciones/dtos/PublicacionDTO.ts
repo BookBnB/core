@@ -33,8 +33,12 @@ class PublicacionDTO {
     @ValidateNested({each: true}) @Type(() => Imagen)
     public imagenes: Imagen[] = []
 
+    @IsString()
+    public estado!: string
+
     constructor(publicacion: Publicacion) {
         Object.assign(this, publicacion)
+        this.estado = publicacion.estado.toString()
     }
 }
 

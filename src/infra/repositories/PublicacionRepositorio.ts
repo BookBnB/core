@@ -1,9 +1,10 @@
 import {Connection, Repository} from "typeorm";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
-import Publicacion, {EstadoPublicacion} from "../../domain/publicaciones/entidades/Publicacion";
+import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import {ConsultaDePublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
 import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
+import Creada from "../../domain/publicaciones/entidades/estados-publicacion/Creada";
 
 export class PublicacionRepositorio implements IPublicacionRepositorio {
     public constructor(private readonly repo: Repository<Publicacion>,
@@ -44,7 +45,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
                 latitud: coordenadas.latitud,
                 longitud: coordenadas.longitud,
                 radio,
-                estado: EstadoPublicacion.creada,
+                estado: Creada.DISCRIMINANTE,
                 tipoDeAlojamiento,
                 cantidadDeHuespedes,
                 precioPorNocheMinimo,
