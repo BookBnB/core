@@ -103,4 +103,13 @@ export default class Eventos {
             }
         })
     }
+
+    public static async aceptacionDeReservaFallida(context: World, reservaId: string) {
+        await this.notificar(context, {
+            tipo: TipoEvento.RESERVA_ACEPTACION_FALLIDA,
+            payload: {
+                reservaId
+            }
+        })
+    }
 }

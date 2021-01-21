@@ -130,10 +130,16 @@ When('apruebo la reserva del usuario {string}', async function (email) {
     await Reservas.aprobar(this, reserva.id)
 });
 
-When('el anfitrión con email {string} aprueba la reserva del usuario {string}', async function (anfitrionEmail, huespedEmail) {
+When(/^(?:que )?el anfitrión con email "(.*)" (?:aprueba|aprobó) la reserva del usuario "(.*)"$/, async function (anfitrionEmail, huespedEmail) {
     const reserva = this.reservas[huespedEmail]
     await this.sesiones.ejecutarBajoSesion(async () => {
         await Reservas.aprobar(this, reserva.id)
+    }, anfitrionEmail)
+});
+
+Given('que el anfitrión con email {string} aprobó mi reserva', async function (anfitrionEmail) {
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Reservas.aprobar(this, this.last_reserva.id)
     }, anfitrionEmail)
 });
 
@@ -150,6 +156,10 @@ When('ingreso a la reserva', async function () {
 
 When('ingreso a la reserva con id {string}', async function (id) {
     await Reservas.obtener(this, id)
+});
+
+When(/^(?:se notifica|notifico) que falló la aprobación de dicha reserva$/, async function () {
+    await Eventos.aceptacionDeReservaFallida(this, this.last_reserva.body.id)
 });
 
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
