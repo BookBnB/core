@@ -72,7 +72,6 @@ export default class Publicacion {
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args);
-        // this.estado = EstadoPublicacion.pendienteCreacion
         this.estado = new PendienteDeCreacion()
     }
 
@@ -87,11 +86,8 @@ export default class Publicacion {
         return pregunta
     }
 
-    confirmar() {
+    confirmar(contratoId: number) {
         this.estado = new Creada()
-    }
-
-    setContratoId(contratoId: number) {
         this.contratoId = contratoId
     }
 

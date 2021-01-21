@@ -3,6 +3,8 @@ import Reserva from "../../domain/reservas/entidades/Reserva";
 import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
 import {customAlphabet} from "nanoid";
 import {ConsultaDeReservasPorPublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
+import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
+import ReservaInexistenteError from "../../domain/reservas/excepciones/ReservaInexistenteError";
 
 export default class ReservaRepositorio implements IReservaRepositorio {
     public constructor(
@@ -17,10 +19,14 @@ export default class ReservaRepositorio implements IReservaRepositorio {
     }
 
     async obtener(id: string): Promise<Reserva> {
-        return this.repo.createQueryBuilder("reserva")
+        const reserva = await this.repo.createQueryBuilder("reserva")
             .innerJoinAndSelect("reserva.publicacion", "publicacion")
             .where("reserva.id = :id", { id })
-            .getOneOrFail()
+            .getOne()
+
+        if(!reserva)
+            throw new ReservaInexistenteError(`La reserva con id ${id} no existe.`)
+        return reserva;
     }
 
     private async guardarNuevo(reserva: Reserva): Promise<Reserva> {

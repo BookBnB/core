@@ -15,8 +15,7 @@ export class ConfirmarPublicacionCreada implements UseCase {
     async execute(params: ConfirmarNuevaPublicacionDTO) {
         const publicacion = await this.publicaciones.obtener(params.publicacionId)
 
-        publicacion.confirmar()
-        publicacion.setContratoId(params.contratoId)
+        publicacion.confirmar(params.contratoId)
 
         await this.publicaciones.guardar(publicacion)
     }

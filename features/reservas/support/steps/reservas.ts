@@ -5,7 +5,7 @@ import _ from "lodash";
 import sinonChai from "sinon-chai"
 import Eventos from "../../../common/Eventos";
 import Publicaciones from "../../../publicaciones/support/Publicaciones";
-import {crearPublicacion, crearPublicacionConEstado} from "../../../publicaciones/support/steps/publicaciones";
+import {crearPublicacion} from "../../../publicaciones/support/steps/publicaciones";
 import Usuarios from "../../../usuarios/support/Usuarios";
 import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
@@ -16,7 +16,7 @@ chai.use(chaiHttp);
 chai.use(sinonChai)
 const expect = chai.expect;
 
-export async function reservarConUsuario(this: any, email: string, tituloDePublicacion: string, reserva: { [firstColumn: string]: string }) {
+export async function reservarConUsuario(this: any, email: string, tituloDePublicacion: string, reserva: any) {
     expect(this.last_publicacion.body.titulo).to.eq(tituloDePublicacion, `No se encuentra la publicación con título ${tituloDePublicacion}`)
 
     await Usuarios.crear(this, {...Usuarios.ejemplo(), email, role: 'huésped'})
@@ -144,6 +144,14 @@ When('el anfitrión con email {string} rechaza la reserva del usuario {string}',
     }, anfitrionEmail)
 });
 
+When('ingreso a la reserva', async function () {
+    await Reservas.obtener(this, this.last_reserva.body.id)
+});
+
+When('ingreso a la reserva con id {string}', async function (id) {
+    await Reservas.obtener(this, id)
+});
+
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
@@ -163,10 +171,6 @@ Then('no obtengo reservas', function () {
 
 Then('veo las reservas:', function (dataTable: TableDefinition) {
     validarConjunto.bind(this)(dataTable)
-});
-
-Then('ingreso a la reserva', async function () {
-    await Reservas.obtener(this, this.last_reserva.body.id)
 });
 
 Then('veo una reserva con:', function (dataTable: TableDefinition) {
