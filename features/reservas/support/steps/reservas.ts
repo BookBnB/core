@@ -149,7 +149,7 @@ Given('que el anfitrión con email {string} rechazó mi reserva', async function
     }, anfitrionEmail)
 });
 
-When('el anfitrión con email {string} rechaza la reserva del usuario {string}', async function (anfitrionEmail, huespedEmail) {
+When(/^(?:que )?el anfitrión con email "(.*)" rechaza la reserva del usuario "(.*)"$/, async function (anfitrionEmail, huespedEmail) {
     const reserva = this.reservas[huespedEmail]
     await this.sesiones.ejecutarBajoSesion(async () => {
         await Reservas.rechazar(this, reserva.id)
@@ -234,6 +234,10 @@ When(/^(?:notifico|se notifica) que dicha reserva fue registrada con éxito$/, a
 
 When(/^(?:notifico|se notifica) que falló la creación de dicha reserva$/, async function () {
     await Eventos.creacionDeReservaFallido(this, this.last_reserva.body.id)
+});
+
+When(/^(?:notifico|se notifica) que dicha reserva se rechazó con éxito$/, async function () {
+    await Eventos.reservaRechazada(this, this.last_reserva.body.id)
 });
 
 Given('que realicé una reserva en la publicación con título {string}', async function (titulo) {
