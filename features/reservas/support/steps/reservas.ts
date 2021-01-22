@@ -111,20 +111,6 @@ When('listo las reservas de una publicación que no es mía', async function () 
     await Reservas.listarPorPublicacion(this, publicacionId)
 });
 
-When('se notifica un evento para la reserva creada', async function () {
-    await Eventos.reservaCreada(this, this.last_reserva.body.id)
-
-    expect(this.last_response).to.have.status(200)
-    expect(this.last_response).to.be.json
-});
-
-When('se notifica un evento de aprobacion para la reserva', async function () {
-    await Eventos.reservaAceptada(this, this.last_reserva.body.id)
-
-    expect(this.last_response).to.have.status(200)
-    expect(this.last_response).to.be.json
-});
-
 When('apruebo la reserva del usuario {string}', async function (email) {
     const reserva = this.reservas[email]
     await Reservas.aprobar(this, reserva.id)
@@ -170,6 +156,10 @@ When(/^(?:se notifica|notifico) que falló la aprobación de dicha reserva$/, as
 
 When(/^(?:se notifica|notifico) que falló el rechazo de dicha reserva$/, async function () {
     await Eventos.rechazoDeReservaFallido(this, this.last_reserva.body.id)
+});
+
+When(/^(?:se notifica|notifico) que se registró la aprobación de dicha reserva$/, async function () {
+    await Eventos.reservaAceptada(this, this.last_reserva.body.id)
 });
 
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {

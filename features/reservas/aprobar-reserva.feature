@@ -25,6 +25,15 @@ Característica:
     Cuando notifico que falló la aprobación de dicha reserva
     Entonces veo un mensaje de confirmación
 
+  Escenario: Pagos notifica que registró la aprobación de la reserva
+    Dado que soy "el servicio de pagos"
+    Y que el huésped con email "huesped@book.bnb" tiene una reserva en la publicación con título "Departamento en Palermo" con:
+      | fechaInicio | 2020-12-01            |
+      | fechaFin    | 2020-12-07            |
+    Y que el anfitrión con email "anfitrion@book.bnb" aprobó la reserva del usuario "huesped@book.bnb"
+    Cuando notifico que se registró la aprobación de dicha reserva
+    Entonces veo un mensaje de confirmación
+
   Escenario: El estado de la reserva es "creada" si falla la aprobación de la reserva
     Dado que soy "huésped"
     Y que realicé una reserva en la publicación con título "Departamento en Palermo"
@@ -34,3 +43,13 @@ Característica:
     E ingreso a la reserva
     Entonces veo una reserva con:
       | estado | creada |
+
+  Escenario: El estado de la reserva es "aprobada" si se logra registrar la aprobación de la reserva
+    Dado que soy "huésped"
+    Y que realicé una reserva en la publicación con título "Departamento en Palermo"
+    Cuando se notifica que dicha reserva fue registrada con éxito
+    Y que el anfitrión con email "anfitrion@book.bnb" aprobó mi reserva
+    Cuando se notifica que se registró la aprobación de dicha reserva
+    E ingreso a la reserva
+    Entonces veo una reserva con:
+      | estado | aceptada |
