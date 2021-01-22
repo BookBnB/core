@@ -114,4 +114,8 @@ export default class Publicacion {
             huesped,
         });
     }
+
+    getReservas(): Reserva[] {
+        return this.reservas
+    }
 }

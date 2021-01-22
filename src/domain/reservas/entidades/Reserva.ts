@@ -58,9 +58,33 @@ export default class Reserva {
 
     aceptar() {
         this.estado = EstadoReserva.ACEPTADA
+        const reservas = this.publicacion.getReservas();
+        reservas.forEach(reserva => {
+            if (reserva.igualA(this)) {
+                // Actualizo la reserva anidada por consistencia,
+                // dado que al cargar las entidades a memoria TypeOrm
+                // crea dos objetos para la reserva actual
+                // (queda pendiente investigar si esto se puede mejorar).
+                reserva.estado = EstadoReserva.ACEPTADA
+            } else if (reserva.fechasSolapadas(this)) {
+                reserva.rechazar()
+            }
+        })
     }
 
     rechazar() {
         this.estado = EstadoReserva.REACHAZADA
+    }
+
+    fechasSolapadas(otra: Reserva): boolean {
+        return (this.fechaInicio <= otra.fechaFin) && (otra.fechaInicio <= this.fechaFin)
+    }
+
+    igualA(otra: Reserva): boolean {
+        return Boolean(this.id) && (this.id === otra.id)
+    }
+
+    getPublicacion(): Publicacion {
+        return this.publicacion;
     }
 }

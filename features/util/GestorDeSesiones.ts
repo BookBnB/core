@@ -21,6 +21,9 @@ export default class GestorDeSesiones {
 
     registrarUsuario(usuario: Usuario) {
         this.entradas.set(GestorDeSesiones.getClave(usuario.email), {usuario})
+    }
+
+    registrarActual(usuario: Usuario) {
         this._usuarioActual = usuario;
     }
 

@@ -42,15 +42,17 @@ export default class Usuarios extends Recurso {
             .type('json')
             .send(usuario);
 
-        usuario.id = context.last_response.body.id;
+        usuario.id = context.last_response.body.id
 
         context.last_usuario = context.last_response
 
-        context.sesiones.registrarUsuario(usuario);
+        context.sesiones.registrarUsuario(usuario)
+        return usuario
     }
 
     public static async crearActual(context: World, rol: string, email: string = 'john@doe.com') {
-        await this.crear(context, {...this.ejemplo(), role: rol, email})
+        const usuario = await this.crear(context, {...this.ejemplo(), role: rol, email})
+        context.sesiones.registrarActual(usuario);
         await Sesiones.crear(context, context.last_response.body.email, context.last_response.body.password)
         context.sesiones.setTokenActual(context.last_response.body.token)
     }

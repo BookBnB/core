@@ -11,7 +11,7 @@ Característica:
     Y que soy "huésped"
 
   Escenario: Creación de reserva exitosa
-    Cuando intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Departamento en Palermo"
+    Cuando intento hacer una reserva del "2020-12-01" al "2020-12-07" en la publicación con título "Departamento en Palermo"
     Entonces veo una nueva reserva con:
       | publicacion.titulo | Departamento en Palermo  |
       | estado             | pendiente de creación    |
@@ -27,7 +27,7 @@ Característica:
       | estado | pendiente de creación |
 
   Escenario: Creación de reserva exitosa (fechas ISO)
-    Cuando intento hacer una reserva del '2020-12-01T00:00:00.000Z' al '2020-12-07T00:00:00.000Z' en la publicación con título "Departamento en Palermo"
+    Cuando intento hacer una reserva del "2020-12-01T00:00:00.000Z" al "2020-12-07T00:00:00.000Z" en la publicación con título "Departamento en Palermo"
     Entonces veo una nueva reserva con:
       | estado         | pendiente de creación    |
       | fechaInicio    | 2020-12-01T00:00:00.000Z |
@@ -36,7 +36,7 @@ Característica:
     Y veo que está reservada a mí nombre
 
   Escenario: Creación de reserva con fechas invertidas
-    Cuando intento hacer una reserva del '2020-12-07' al '2020-12-01' en la publicación con título "Departamento en Palermo"
+    Cuando intento hacer una reserva del "2020-12-07" al "2020-12-01" en la publicación con título "Departamento en Palermo"
     Entonces obtengo un mensaje de error "Fechas de reserva invertidas"
 
   Esquema del escenario: Campos de reserva faltantes
@@ -74,7 +74,7 @@ Característica:
 
   Escenario: Un anfitrión no puede realizar reservas
     Dado que soy "anfitrión"
-    Cuando intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Departamento en Palermo"
+    Cuando intento hacer una reserva del "2020-12-01" al "2020-12-07" en la publicación con título "Departamento en Palermo"
     Entonces obtengo un error 403 con mensaje "Access is denied"
 
   Escenario: No se puede crear una reserva en una publicación que se encuentra pendiente
@@ -82,5 +82,5 @@ Característica:
     Y que existe una publicación "pendiente" con:
       | titulo         | Casa en Salta |
       | precioPorNoche | 200           |
-    Cuando intento hacer una reserva del '2020-12-01' al '2020-12-07' en la publicación con título "Casa en Salta"
+    Cuando intento hacer una reserva del "2020-12-01" al "2020-12-07" en la publicación con título "Casa en Salta"
     Entonces obtengo un error 400 con mensaje "No se puede crear una reserva en esta publicación porque se encuentra en estado Pendiente de creación"

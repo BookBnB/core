@@ -7,4 +7,6 @@ export default interface IReservaRepositorio {
     listar(publicacionId:string, consulta: ConsultaDeReservasPorPublicacion): Promise<Reserva[]>;
 
     obtener(id: string): Promise<Reserva>
+
+    obtenerConReservasAnidadas(id: string): Promise<Reserva>
 }

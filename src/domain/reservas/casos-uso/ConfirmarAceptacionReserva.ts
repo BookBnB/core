@@ -1,18 +1,21 @@
-import { UseCase } from "../../UseCase";
+import {UseCase} from "../../UseCase";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
 
 export class ConfirmarAceptacionReserva implements UseCase {
     constructor(
-       private readonly reservas: IReservaRepositorio
+        private readonly reservas: IReservaRepositorio
     ) {
     }
 
-    async execute({ reservaId }: { reservaId: string }) {
-        const reserva = await this.reservas.obtener(reservaId)
+    async execute({reservaId}: { reservaId: string }) {
+        const reserva = await this.reservas.obtenerConReservasAnidadas(reservaId)
 
         reserva.aceptar()
-        // TODO: rechazar las reservas que eran para los mismos días
 
-        await this.reservas.guardar(reserva)
+        // Guardo las reservas anidadas porque puede ser que se haya
+        // rechazado alguna por solapamiento de fechas.
+        for (const reservaAGuardar of reserva.getPublicacion().getReservas()) {
+            await this.reservas.guardar(reservaAGuardar)
+        }
     }
 }

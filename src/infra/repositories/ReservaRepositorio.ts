@@ -29,6 +29,18 @@ export default class ReservaRepositorio implements IReservaRepositorio {
         return reserva;
     }
 
+    async obtenerConReservasAnidadas(id: string): Promise<Reserva> {
+        const reserva = await this.repo.createQueryBuilder("reserva")
+            .innerJoinAndSelect("reserva.publicacion", "publicacion")
+            .innerJoinAndSelect("publicacion.reservas", "reservas")
+            .where("reserva.id = :id", { id })
+            .getOne()
+
+        if(!reserva)
+            throw new ReservaInexistenteError(`La reserva con id ${id} no existe.`)
+        return reserva;
+    }
+
     private async guardarNuevo(reserva: Reserva): Promise<Reserva> {
         const nanoid = customAlphabet(ReservaRepositorio.ALFABETO_IDS, Reserva.LONGITUD_ID)
         let error;

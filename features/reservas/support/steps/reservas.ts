@@ -38,11 +38,41 @@ Given('que el huésped con email {string} tiene una reserva en la publicación c
     await reservarConUsuario.bind(this)(email, titulo, dataTable.rowsHash())
 });
 
+Given('que existe una reserva {string} en la publicación con título {string}', async function (estado, tituloPublicacion) {
+    await reservarConUsuario.bind(this)('huesped@book.bnb', tituloPublicacion, {
+        'fechaInicio': '2020-12-01',
+        'fechaFin': '2020-12-07'
+    })
+});
+
+Given('que realicé una reserva en la publicación con título {string}', async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
+    const reserva = {
+        fechaInicio: '2020-12-01',
+        fechaFin: '2020-12-07',
+        publicacionId: this.last_publicacion.body.id,
+    }
+
+    await Reservas.crear(this, reserva);
+});
+
+Given('que el anfitrión con email {string} aprobó mi reserva', async function (anfitrionEmail) {
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Reservas.aprobar(this, this.last_reserva.id)
+    }, anfitrionEmail)
+});
+
+Given('que el anfitrión con email {string} rechazó mi reserva', async function (anfitrionEmail) {
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Reservas.rechazar(this, this.last_reserva.id)
+    }, anfitrionEmail)
+});
+
 When('el huésped con email {string} realiza una reserva en la publicación con título {string} con:', async function (email: string, titulo: string, dataTable: TableDefinition) {
     await reservarConUsuario.bind(this)(email, titulo, dataTable.rowsHash())
 });
 
-When('intento hacer una reserva del {string} al {string} en la publicación con título {string}', async function (fechaInicio, fechaFin, titulo) {
+When(/^(?:intento hacer|que realicé) una reserva del "(.*)" al "(.*)" en la publicación con título "(.*)"$/, async function (fechaInicio, fechaFin, titulo) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
     const reserva = {
         fechaInicio: fechaInicio,
@@ -51,6 +81,7 @@ When('intento hacer una reserva del {string} al {string} en la publicación con 
     }
 
     await Reservas.crear(this, reserva);
+    this.reservas[this.sesiones.usuarioActual().email] = this.last_reserva.body
 });
 
 When('intento hacer una reserva sin {string}', async function (campo) {
@@ -123,18 +154,6 @@ When(/^(?:que )?el anfitrión con email "(.*)" (?:aprueba|aprobó) la reserva de
     }, anfitrionEmail)
 });
 
-Given('que el anfitrión con email {string} aprobó mi reserva', async function (anfitrionEmail) {
-    await this.sesiones.ejecutarBajoSesion(async () => {
-        await Reservas.aprobar(this, this.last_reserva.id)
-    }, anfitrionEmail)
-});
-
-Given('que el anfitrión con email {string} rechazó mi reserva', async function (anfitrionEmail) {
-    await this.sesiones.ejecutarBajoSesion(async () => {
-        await Reservas.rechazar(this, this.last_reserva.id)
-    }, anfitrionEmail)
-});
-
 When(/^(?:que )?el anfitrión con email "(.*)" rechaza la reserva del usuario "(.*)"$/, async function (anfitrionEmail, huespedEmail) {
     const reserva = this.reservas[huespedEmail]
     await this.sesiones.ejecutarBajoSesion(async () => {
@@ -144,6 +163,11 @@ When(/^(?:que )?el anfitrión con email "(.*)" rechaza la reserva del usuario "(
 
 When('ingreso a la reserva', async function () {
     await Reservas.obtener(this, this.last_reserva.body.id)
+});
+
+When('ingreso a mi reserva', async function () {
+    const reserva = this.reservas[this.sesiones.usuarioActual().email]
+    await Reservas.obtener(this, reserva.id)
 });
 
 When('ingreso a la reserva con id {string}', async function (id) {
@@ -160,6 +184,18 @@ When(/^(?:se notifica|notifico) que falló el rechazo de dicha reserva$/, async 
 
 When(/^(?:se notifica|notifico) que se registró la aprobación de dicha reserva$/, async function () {
     await Eventos.reservaAceptada(this, this.last_reserva.body.id)
+});
+
+When(/^(?:notifico|se notifica) que dicha reserva fue registrada con éxito$/, async function () {
+    await Eventos.reservaCreada(this, this.last_reserva.body.id)
+});
+
+When(/^(?:notifico|se notifica) que falló la creación de dicha reserva$/, async function () {
+    await Eventos.creacionDeReservaFallido(this, this.last_reserva.body.id)
+});
+
+When(/^(?:notifico|se notifica) que dicha reserva se rechazó con éxito$/, async function () {
+    await Eventos.reservaRechazada(this, this.last_reserva.body.id)
 });
 
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
@@ -209,34 +245,4 @@ Then('recibo un pedido de registro de reserva', function () {
 
 Then('no recibo un pedido de registro de reserva', function () {
     expect(this.servicioPagos.crearReserva).not.to.have.been.called
-});
-
-Given('que existe una reserva {string} en la publicación con título {string}', async function (estado, tituloPublicacion) {
-    await reservarConUsuario.bind(this)('huesped@book.bnb', tituloPublicacion, {
-        'fechaInicio': '2020-12-01',
-        'fechaFin': '2020-12-07'
-    })
-});
-
-When(/^(?:notifico|se notifica) que dicha reserva fue registrada con éxito$/, async function () {
-    await Eventos.reservaCreada(this, this.last_reserva.body.id)
-});
-
-When(/^(?:notifico|se notifica) que falló la creación de dicha reserva$/, async function () {
-    await Eventos.creacionDeReservaFallido(this, this.last_reserva.body.id)
-});
-
-When(/^(?:notifico|se notifica) que dicha reserva se rechazó con éxito$/, async function () {
-    await Eventos.reservaRechazada(this, this.last_reserva.body.id)
-});
-
-Given('que realicé una reserva en la publicación con título {string}', async function (titulo) {
-    expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
-    const reserva = {
-        fechaInicio: '2020-12-01',
-        fechaFin: '2020-12-07',
-        publicacionId: this.last_publicacion.body.id,
-    }
-
-    await Reservas.crear(this, reserva);
 });
