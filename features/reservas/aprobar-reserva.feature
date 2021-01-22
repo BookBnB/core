@@ -25,7 +25,6 @@ Característica:
     Cuando notifico que falló la aprobación de dicha reserva
     Entonces veo un mensaje de confirmación
 
-#    TODO: mejorar los steps
   Escenario: El estado de la reserva es "creada" si falla la aprobación de la reserva
     Dado que soy "huésped"
     Y que realicé una reserva en la publicación con título "Departamento en Palermo"

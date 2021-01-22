@@ -112,4 +112,13 @@ export default class Eventos {
             }
         })
     }
+
+    public static async rechazoDeReservaFallido(context: World, reservaId: string) {
+        await this.notificar(context, {
+            tipo: TipoEvento.RESERVA_RECHAZO_FALLIDO,
+            payload: {
+                reservaId
+            }
+        })
+    }
 }
