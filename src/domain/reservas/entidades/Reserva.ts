@@ -66,7 +66,7 @@ export default class Reserva {
                 // crea dos objetos para la reserva actual
                 // (queda pendiente investigar si esto se puede mejorar).
                 reserva.estado = EstadoReserva.ACEPTADA
-            } else if (reserva.fechasSolapadas(this)) {
+            } else if (reserva.solapada(this)) {
                 reserva.rechazar()
             }
         })
@@ -76,8 +76,8 @@ export default class Reserva {
         this.estado = EstadoReserva.REACHAZADA
     }
 
-    fechasSolapadas(otra: Reserva): boolean {
-        return (this.fechaInicio <= otra.fechaFin) && (otra.fechaInicio <= this.fechaFin)
+    solapada(otra: Reserva): boolean {
+        return (this.fechaInicio < otra.fechaFin) && (otra.fechaInicio < this.fechaFin)
     }
 
     igualA(otra: Reserva): boolean {
