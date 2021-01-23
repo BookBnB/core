@@ -122,10 +122,8 @@ When('listo las reservas {string} de la publicación con título {string}', asyn
 
     const estados = new Map([
         ["pendientes de creacion", "pendiente de creación"],
-        ["pendientes", "pendiente"],
         ["aceptadas", "aceptada"],
-        ["rechazadas", "rechazada"],
-        ["canceladas", "cancelada"]
+        ["rechazadas", "rechazada"]
     ])
     await Reservas.listarPorPublicacion(this, this.last_publicacion.body.id, estados.get(estado));
 });
