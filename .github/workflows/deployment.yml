@@ -79,5 +79,5 @@ jobs:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
           KUBE_NAMESPACE: seblaz
         run: |
-          cat ${KUBECONFIG} > $HOME/.kube/config
+          echo ${KUBECONFIG} > $HOME/.kube/config
           kubernetes/deploy.sh
