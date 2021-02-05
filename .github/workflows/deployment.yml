@@ -62,8 +62,9 @@ jobs:
       - name: Deploy app
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          BRANCH: ${{ github.ref##*/ }}
-        run: heroku/deploy.sh
+        run: |
+          export BRANCH=${GITHUB_REF##*/}
+          heroku/deploy.sh
 
   deploy-in-kubernetes:
     runs-on: ubuntu-20.04
