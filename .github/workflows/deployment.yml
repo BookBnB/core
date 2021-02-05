@@ -65,3 +65,19 @@ jobs:
         run: |
           export BRANCH=${GITHUB_REF##*/}
           docker/heroku_push.sh
+
+  deploy-in-kubernetes:
+    runs-on: ubuntu-20.04
+    needs: package
+    if: contains('
+      refs/heads/master
+      refs/heads/develop
+      ', github.ref)
+    steps:
+      - name: Deploy app
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBE_NAMESPACE: seblaz
+        run: |
+          cat ${KUBECONFIG} > $HOME/.kube/config
+          kubernetes/deploy.sh

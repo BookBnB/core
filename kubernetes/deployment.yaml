@@ -19,3 +19,8 @@ spec:
         image: ghcr.io/bookbnb/core
         ports:
         - containerPort: 80
+        envFrom:
+          - secretRef:
+              name: core-secret
+          - configMapRef:
+              name: core-config
