@@ -62,22 +62,23 @@ jobs:
       - name: Deploy app
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          BRANCH: ${{ github.ref }}
+          BRANCH: $(${GITHUB_REF##*/})
         run: heroku/deploy.sh
 
   deploy-in-kubernetes:
-    runs-on: ubuntu-20.04
+    runs-on: bitnami/kubectl
     needs: package
     if: contains('
       refs/heads/master
       refs/heads/develop
       ', github.ref)
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
       - name: Deploy app
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
           KUBE_NAMESPACE: seblaz
         run: |
-          mkdir $HOME/.kube
           echo ${KUBECONFIG} > $HOME/.kube/config
           kubernetes/deploy.sh
