@@ -68,6 +68,7 @@ jobs:
 
   deploy-in-kubernetes:
     runs-on: ubuntu-20.04
+    container: bitnami/kubectl
     needs: package
     if: contains('
       refs/heads/master
@@ -76,17 +77,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
-      - name: Config kubectl
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
-        run: |
-          mkdir .kube
-          echo ${KUBECONFIG} > .kube/config
       - name: Deploy app
-        container:
-          image: bitnami/kubectl
-          volumes:
-            - .kube:/.kube
         env:
+          KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG: /tmp/config
           KUBE_NAMESPACE: seblaz
-        run: kubernetes/deploy.sh
+        run: |
+          echo ${KUBECONFIG_CONTENT} > ${KUBECONFIG}
+          kubernetes/deploy.sh
