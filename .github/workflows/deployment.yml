@@ -54,12 +54,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v1
-      - name: Deploy app
+      - name: Build image
         env:
           REGISTRY_URL: ghcr.io
-          REGISTRY_USERNAME: $GITHUB_ACTOR
-          REGISTRY_PASSWORD: $CONTAINER_REGISTRY_TOKEN
-          IMAGE_VERSION: $GITHUB_SHA
-          IMAGE_NAME: ghcr.io/github/bookbnb/core
+          REGISTRY_USERNAME: ${{ env.GITHUB_ACTOR }}
+          REGISTRY_PASSWORD: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+          IMAGE_VERSION: ${{ env.GITHUB_SHA }}
+          IMAGE_NAME: ghcr.io/bookbnb/core
         run: |
           kubernetes/push_image.sh
