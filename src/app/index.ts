@@ -7,6 +7,8 @@ import UsersServiceProxy from "./UsersServiceProxy";
 import Api from "./Api";
 import OpenApiSpec from "./OpenApiSpec";
 import {IContainer} from "../infra/container/Container";
+import apiMetrics, { ApiMetricsOpts } from "prometheus-api-metrics";
+import PrometheusMiddleware from "./PrometheusMiddleware";
 
 export default async (container: IContainer): Promise<Application> => {
     const app = express();
@@ -27,6 +29,7 @@ export default async (container: IContainer): Promise<Application> => {
     })
     new UsersServiceProxy({app, logger})
     new HTTPErrorHandlerLogger({app, logger})
+    new PrometheusMiddleware(app)
 
     return app
 }

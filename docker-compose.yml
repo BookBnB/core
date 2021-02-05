@@ -42,9 +42,34 @@ services:
     networks:
       - core-net
 
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./config/prometheus.yml:/etc/prometheus/prometheus.yml"
+    depends_on:
+      - app
+    networks:
+      - bookbnb-net
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3333:3333"
+    depends_on:
+      - prometheus
+    volumes:
+      - bookbnb-grafana-data:/var/lib/grafana
+      - ./config/grafana.ini:/etc/grafana/grafana.ini
+    command: --config /etc/grafana/grafana.ini
+    networks:
+      - bookbnb-net
+
 volumes:
   bookbnb-postgres13-data:
   bookbnb-pgAdmin-data:
+  bookbnb-grafana-data:
 
 networks:
   core-net:
