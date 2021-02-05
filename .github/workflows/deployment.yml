@@ -27,7 +27,7 @@ jobs:
       - name: Send coverage report
         run: node_modules/.bin/codecov -f coverage/*.json
 
-  deploy:
+  deploy-in-heroku:
     runs-on: ubuntu-20.04
     needs: test
     if: contains('
@@ -57,9 +57,9 @@ jobs:
       - name: Build image
         env:
           REGISTRY_URL: ghcr.io
-          REGISTRY_USERNAME: ${{ env.GITHUB_ACTOR }}
+          REGISTRY_USERNAME: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
-          IMAGE_VERSION: ${{ env.GITHUB_SHA }}
           IMAGE_NAME: ghcr.io/bookbnb/core
+          IMAGE_VERSION: ${{ github.sha }}
         run: |
           kubernetes/push_image.sh
