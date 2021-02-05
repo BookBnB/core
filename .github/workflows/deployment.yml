@@ -57,10 +57,9 @@ jobs:
       - name: Deploy app
         env:
           REGISTRY_URL: ghcr.io
-          REGISTRY_USERNAME: ${{ secrets.HEROKU_API_KEY }}
-          REGISTRY_PASSWORD: $GITHUB_ACTOR
+          REGISTRY_USERNAME: $GITHUB_ACTOR
+          REGISTRY_PASSWORD: $CONTAINER_REGISTRY_TOKEN
           IMAGE_VERSION: $GITHUB_SHA
           IMAGE_NAME: ghcr.io/github/bookbnb/core
         run: |
-          export BRANCH=${GITHUB_REF##*/}
           kubernetes/push_image.sh
