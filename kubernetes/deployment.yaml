@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookbnb-core
+  labels:
+    app: bookbnb-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookbnb-core
+  template:
+    metadata:
+      labels:
+        app: bookbnb-core
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80

@@ -43,3 +43,24 @@ jobs:
         run: |
           export BRANCH=${GITHUB_REF##*/}
           docker/heroku_push.sh
+
+  deploy-in-kubernetes:
+    runs-on: ubuntu-20.04
+    needs: test
+    if: contains('
+      refs/heads/master
+      refs/heads/develop
+      ', github.ref)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Deploy app
+        env:
+          REGISTRY_URL: ghcr.io
+          REGISTRY_USERNAME: ${{ secrets.HEROKU_API_KEY }}
+          REGISTRY_PASSWORD: $GITHUB_ACTOR
+          IMAGE_VERSION: $GITHUB_SHA
+          IMAGE_NAME: ghcr.io/github/bookbnb/core
+        run: |
+          export BRANCH=${GITHUB_REF##*/}
+          kubernetes/push_image.sh
