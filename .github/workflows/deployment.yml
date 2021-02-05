@@ -79,9 +79,9 @@ jobs:
         uses: actions/checkout@v1
       - name: Deploy app
         env:
-          KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG_CONTENT }}
           KUBECONFIG: /tmp/config
           KUBE_NAMESPACE: seblaz
         run: |
-          echo ${KUBECONFIG_CONTENT} > ${KUBECONFIG}
+          echo ${KUBECONFIG_CONTENT} | base64 --decode > ${KUBECONFIG}
           kubernetes/deploy.sh
