@@ -62,11 +62,12 @@ jobs:
       - name: Deploy app
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-          BRANCH: $(${GITHUB_REF##*/})
+          BRANCH: ${{ github.ref##*/ }}
         run: heroku/deploy.sh
 
   deploy-in-kubernetes:
-    runs-on: bitnami/kubectl
+    runs-on: ubuntu-20.04
+    container: bitnami/kubectl
     needs: package
     if: contains('
       refs/heads/master
