@@ -21,6 +21,11 @@ spec:
         - name: core-port
           containerPort: 80
           protocol: TCP
+        resources:
+          limits:
+            memory: "500Mi"
+          requests:
+            memory: "250Mi"
         envFrom:
           - secretRef:
               name: core-secret
