@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: core-config
 data:
+  PORT: "80"
   BACKOFFICE_URL: "*"
   NODE_ENV: "development"
   PAYMENTS_SERVICE_URL: "https://payments-service-develop.herokuapp.com"
   USERS_SERVICE_URL: "https://users-service-develop.herokuapp.com"
   TYPEORM_DRIVER_EXTRA: '{ "ssl": { "rejectUnauthorized": false } }'
-  PORT: "80"

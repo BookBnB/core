@@ -16,9 +16,11 @@ spec:
     spec:
       containers:
       - name: core
-        image: ghcr.io/bookbnb/core
+        image: ghcr.io/bookbnb/core:latest
         ports:
-        - containerPort: 80
+        - name: core-port
+          containerPort: 80
+          protocol: TCP
         envFrom:
           - secretRef:
               name: core-secret
