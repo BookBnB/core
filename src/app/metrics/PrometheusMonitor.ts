@@ -1,8 +1,9 @@
 import { Application } from "express";
 import apiMetrics from "prometheus-api-metrics";
+import { IMetricMonitor } from "./MetricMonitor";
 
-export default class PrometheusMiddleware {
-    public constructor(app: Application) {
+export class PrometheusMonitor implements IMetricMonitor {
+    public monitor(app: Application): void {
         app.use(apiMetrics({
             metricsPath: process.env.PROM_METRICS_PATH || "/v1/metricas"
         }))

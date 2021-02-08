@@ -14,6 +14,7 @@ import {setupServer} from "msw/node";
 import {buildHandlers} from "./doubles/handlers";
 import ServicioPagos from "../src/infra/servicios/ServicioPagos";
 import sinon from 'sinon';
+import MonitorFake from './doubles/MonitorFake';
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
@@ -50,6 +51,7 @@ Before(async function () {
 
     this.reloj = new RelojFake()
     this.mockServer = mockServer
+    this.monitor = new MonitorFake()
 
     this.servicioPagos = new ServicioPagos(<string>process.env.PAYMENTS_SERVICE_URL);
     sinon.spy(this.servicioPagos)
@@ -57,7 +59,8 @@ Before(async function () {
     this.container = new DIContainer()
     await new TestRegistry(
         this.reloj,
-        this.servicioPagos
+        this.servicioPagos,
+        this.monitor
     ).registrar(this.container)
     this.app = await app(this.container)
 });

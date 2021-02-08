@@ -56,6 +56,8 @@ import {CrearUsuario} from "../../domain/usuarios/casos-uso/CrearUsuario";
 import {ConfirmarRechazoPublicacion} from "../../domain/publicaciones/casos-uso/ConfirmarRechazoPublicacion";
 import {ConfirmarRechazoReserva} from "../../domain/reservas/casos-uso/ConfirmarRechazoReserva";
 import {RechazarReserva} from "../../domain/reservas/casos-uso/RechazarReserva";
+import { IMetricMonitor } from "../../app/metrics/MetricMonitor";
+import { PrometheusMonitor } from "../../app/metrics/PrometheusMonitor";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -79,6 +81,7 @@ export default class Registry {
         await this.registrarUsuarios(container)
         await this.registrarEventos(container)
         await this.registrarServicioPagos(container)
+        await this.registrarMetricas(container)
         return container
     }
 
@@ -186,5 +189,9 @@ export default class Registry {
     protected async registrarServicioPagos(container: DIContainer) {
         const servicioPagos = new ServicioPagos(<string>process.env.PAYMENTS_SERVICE_URL);
         container.registerSingleton<IServicioPagos>(() => servicioPagos);
+    }
+
+    protected async registrarMetricas(container: DIContainer) {
+        container.registerSingleton<IMetricMonitor>(() => new PrometheusMonitor())
     }
 }
