@@ -121,4 +121,22 @@ export default class Eventos {
             }
         })
     }
+
+    public static async cancelacionDeReservaFallida(context: World, reservaId: any) {
+        await this.notificar(context, {
+            tipo: TipoEvento.RESERVA_CANCELACION_FALLIDA,
+            payload: {
+                reservaId
+            }
+        })
+    }
+
+    public static async reservaCancelada(context: World, reservaId: any) {
+        await this.notificar(context, {
+            tipo: TipoEvento.RESERVA_CANCELADA,
+            payload: {
+                reservaId
+            }
+        })
+    }
 }

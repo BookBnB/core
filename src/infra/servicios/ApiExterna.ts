@@ -14,6 +14,12 @@ export default class ApiExterna {
         })
     }
 
+    async delete(ruta: string, params: any) {
+        return ApiExterna.ejecutar(() => {
+            return axios.delete(ruta, params)
+        })
+    }
+
     private static async ejecutar(callback: () => Promise<AxiosResponse>) {
         try {
             return await callback()

@@ -15,7 +15,8 @@ export enum EstadoReserva {
     PENDIENTE_CREACION = 'pendiente de creación',
     CREADA = 'creada',
     ACEPTADA = 'aceptada',
-    REACHAZADA = 'rechazada'
+    REACHAZADA = 'rechazada',
+    CANCELADA = 'cancelada'
 }
 
 @Entity()
@@ -74,6 +75,10 @@ export default class Reserva {
 
     rechazar() {
         this.estado = EstadoReserva.REACHAZADA
+    }
+
+    cancelar() {
+        this.estado = EstadoReserva.CANCELADA
     }
 
     solapada(otra: Reserva): boolean {

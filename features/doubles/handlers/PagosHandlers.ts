@@ -30,5 +30,10 @@ export default function pagosCreationHandler() {
                 ctx.json({})
             )
         }),
+        rest.delete(`${paymentsUrl}/v1/reservas/:reservaId`, (req, res, ctx) => {
+            return res(
+                ctx.json({})
+            )
+        }),
     ]
 }
