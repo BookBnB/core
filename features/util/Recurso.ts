@@ -29,7 +29,7 @@ export default class Recurso {
             .set('authorization', this.tokenActual(context) || '')
     }
 
-    protected static async put(context: World, path: string, data: object) {
+    protected static async put(context: World, path: string, data: object = {}) {
         context.last_response = await chai.request(context.app)
             .put(`${this.baseUlr()}${path}`)
             .set('authorization', this.tokenActual(context))

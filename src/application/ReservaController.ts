@@ -84,7 +84,7 @@ export class ReservaController {
         return ResultadoEvento.success()
     }
 
-    @Delete('/:id')
+    @Put('/:id/cancelacion')
     @ResponseSchema(ResultadoEvento)
     @OpenAPI({summary: 'Cancela una reserva'})
     async cancelar(@Params() {id}: IdReserva): Promise<ResultadoEvento> {

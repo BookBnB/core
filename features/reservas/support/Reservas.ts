@@ -36,7 +36,7 @@ export default class Reservas extends Recurso {
     }
 
     public static async cancelar(context: World, id: any) {
-        await this.delete(context, `/${id}`)
+        await this.put(context, `/${id}/cancelacion`)
     }
 
     static async listarPorPublicacion(context: World, publicacionId: string, estado: string | undefined = undefined) {
