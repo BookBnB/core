@@ -54,15 +54,13 @@ export default class ServicioPagos extends ApiExterna implements IServicioPagos 
     }
 
     async cancelarReserva(reserva: Reserva): Promise<void> {
-        await this.delete(`${this.url}/v1/reservas/${reserva.id}`, {
-            data: {
-                reservaId: reserva.id,
-                publicacionContratoId: reserva.publicacion.contratoId,
-                huespedId: reserva.huesped.id,
-                anfitrionId: reserva.publicacion.anfitrion.id,
-                fechaInicio: reserva.fechaInicio,
-                fechaFin: reserva.fechaFin
-            }
+        await this.put(`${this.url}/v1/reservas/${reserva.id}/cancelacion`, {
+            reservaId: reserva.id,
+            publicacionContratoId: reserva.publicacion.contratoId,
+            huespedId: reserva.huesped.id,
+            anfitrionId: reserva.publicacion.anfitrion.id,
+            fechaInicio: reserva.fechaInicio,
+            fechaFin: reserva.fechaFin
         })
     }
 }
