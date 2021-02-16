@@ -14,17 +14,18 @@ Característica:
     Cuando listo mis reservas
     Entonces no obtengo reservas
 
-  @wip
   Escenario: Listado sin reservas pendientes
-    Cuando listo mis reservas "pendientes"
+    Cuando listo mis reservas "pendientes de creación"
     Entonces no obtengo reservas
 
-  @wip
+  Escenario: Listado sin reservas pendientes
+    Cuando listo mis reservas "creadas"
+    Entonces no obtengo reservas
+
   Escenario: Listado sin reservas aceptadas
     Cuando listo mis reservas "aceptadas"
     Entonces no obtengo reservas
 
-  @wip
   Escenario: Listado sin reservas aceptadas
     Cuando listo mis reservas "rechazadas"
     Entonces no obtengo reservas

@@ -10,6 +10,7 @@ import Usuarios from "../../../usuarios/support/Usuarios";
 import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
 import Sesiones from "../../../sesiones/support/Sesiones";
+import {EstadoReserva} from "../../../../src/domain/reservas/entidades/Reserva";
 
 
 chai.use(chaiHttp);
@@ -196,8 +197,14 @@ When(/^(?:notifico|se notifica) que dicha reserva se rechazó con éxito$/, asyn
     await Eventos.reservaRechazada(this, this.last_reserva.body.id)
 });
 
-When('listo mis reservas', async function () {
-    await Reservas.listarMisReservas(this, this.sesiones.usuarioActual().id)
+When(/^listo mis reservas(:? "([^"]*)")?$/, async function (estado: string = '') {
+    const estados = new Map([
+        ['pendientes de creación', EstadoReserva.PENDIENTE_CREACION],
+        ['creadas', EstadoReserva.CREADA],
+        ['aceptadas', EstadoReserva.ACEPTADA],
+        ['rechazadas', EstadoReserva.REACHAZADA]
+    ])
+    await Reservas.listarMisReservas(this, this.sesiones.usuarioActual().id, estados.get(estado) || EstadoReserva.PENDIENTE_CREACION)
 });
 
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
