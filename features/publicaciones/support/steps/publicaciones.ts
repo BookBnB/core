@@ -114,6 +114,10 @@ When('busco las primeras {int} publicaciones con precio entre {float} y {float}'
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
 });
 
+When('busco las primeras {int} publicaciones entre el {string} y el {string}', async function (cantidad, fechaInicio, fechaFin) {
+    await Publicaciones.listar(this, {cantidad, fechaInicio, fechaFin})
+});
+
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
     validarConjunto.bind(this)(dataTable)
 });

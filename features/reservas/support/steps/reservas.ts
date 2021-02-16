@@ -46,6 +46,20 @@ Given('que existe una reserva {string} en la publicación con título {string}',
     })
 });
 
+Given('que existen las siguentes reservas en la publicación con título {string}:', async function (titulo, reservas) {
+    const acciones = new Map([
+        [EstadoReserva.PENDIENTE_CREACION, (_: string) => Promise.resolve()],
+        [EstadoReserva.CREADA, (id: string) => Eventos.reservaCreada(this, id)],
+        [EstadoReserva.ACEPTADA, (id: string) => Eventos.reservaAceptada(this, id)],
+        [EstadoReserva.REACHAZADA, (id: string) => Eventos.reservaRechazada(this, id)]
+    ])
+
+    await Promise.all(reservas.hashes().map(async ({estado, ...reserva}: { estado: EstadoReserva }) => {
+        await reservarConUsuario.bind(this)('huesped@book.bnb', titulo, reserva)
+        await (acciones.get(estado) || (() => Promise.resolve()))(this.last_response.body.id)
+    }))
+});
+
 Given('que realicé una reserva en la publicación con título {string}', async function (titulo) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo, `No se encuentra la publicación con título ${titulo}`)
     const reserva = {

@@ -8,7 +8,7 @@ Característica:
     Dado que soy "anfitrión"
     Y que existe una publicación con:
       | titulo | Casa en Salta |
-    Y que la publicacion con titulo "Casa en Salta" tiene las preguntas:
+    Y que la publicacion con título "Casa en Salta" tiene las preguntas:
       | descripcion               |
       | Hay aire acondicionado?   |
       | Hay televisión satelital? |

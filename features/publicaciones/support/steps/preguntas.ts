@@ -30,7 +30,7 @@ Then('no veo preguntas', function () {
     expect(this.last_response.body).to.eql([])
 });
 
-Given('que la publicacion con titulo {string} tiene las preguntas:', async function (titulo, preguntas: TableDefinition) {
+Given('que la publicacion con título {string} tiene las preguntas:', async function (titulo, preguntas: TableDefinition) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo)
     this.preguntas = []
     await Promise.all(preguntas.hashes().map(async pregunta => {

@@ -3,7 +3,7 @@ import PublicacionDTO from "../dtos/PublicacionDTO";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import ConsultaConPaginacion from "../../common/ConsultaConPaginacion";
-import {IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, ValidateNested} from "class-validator";
+import {IsDate, IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
 import {Coordenadas} from "../../lugares/entidades/Lugar";
 import {JSONSchema} from "class-validator-jsonschema";
@@ -28,6 +28,12 @@ export class ConsultaDePublicaciones extends ConsultaConPaginacion {
 
     @IsNumber() @IsPositive() @IsOptional()
     public precioPorNocheMaximo?: number = undefined
+
+    @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-19"}) @IsOptional()
+    public fechaInicio!: Date;
+
+    @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-21"}) @IsOptional()
+    public fechaFin!: Date;
 }
 
 export class BuscarPublicaciones implements UseCase {

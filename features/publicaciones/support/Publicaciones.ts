@@ -52,7 +52,9 @@ export default class Publicaciones extends Recurso {
             tipoDeAlojamiento = undefined,
             cantidadDeHuespedes = undefined,
             precioPorNocheMinimo = undefined,
-            precioPorNocheMaximo = undefined
+            precioPorNocheMaximo = undefined,
+            fechaInicio = undefined,
+            fechaFin = undefined
         } = {}) {
 
         await this.get(context, '/', {
@@ -66,7 +68,9 @@ export default class Publicaciones extends Recurso {
             tipoDeAlojamiento,
             cantidadDeHuespedes,
             precioPorNocheMinimo,
-            precioPorNocheMaximo
+            precioPorNocheMaximo,
+            fechaInicio,
+            fechaFin
         })
     }
 
