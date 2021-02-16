@@ -11,6 +11,8 @@ import Creada from "./estados-publicacion/Creada";
 import PendienteDeCreacion from "./estados-publicacion/PendienteDeCreacion";
 import Rechazada from "./estados-publicacion/Rechazada";
 import EstadoPublicacionTransformer from "./estados-publicacion/EstadoPublicacionTransformer";
+import CalificacionDePublicacion from "./CalificacionDePublicacion";
+import {CalificarPublicacionDTO} from "../casos-uso/CalificarPublicacion";
 
 export interface PublicacionConstructor {
     titulo: string
@@ -70,8 +72,14 @@ export default class Publicacion {
     @OneToMany(type => Pregunta, pregunta => pregunta.publicacion, {cascade: true})
     public preguntas!: Promise<Pregunta[]>;
 
+    @OneToMany(type => CalificacionDePublicacion, calificacion => calificacion.publicacion, {
+        cascade: true,
+        eager: true
+    })
+    public calificaciones!: CalificacionDePublicacion[];
+
     constructor(args: PublicacionConstructor) {
-        Object.assign(this, args);
+        Object.assign(this, args)
         this.estado = new PendienteDeCreacion()
     }
 
@@ -117,5 +125,16 @@ export default class Publicacion {
 
     getReservas(): Reserva[] {
         return this.reservas
+    }
+
+    calificar(huesped: Usuario, calificacion: CalificarPublicacionDTO): CalificacionDePublicacion {
+        const nuevaCalificacion = new CalificacionDePublicacion({
+            puntos: calificacion.puntos,
+            detalle: calificacion.detalle,
+            huesped,
+            publicacion: this
+        })
+        this.calificaciones.push(nuevaCalificacion)
+        return nuevaCalificacion
     }
 }

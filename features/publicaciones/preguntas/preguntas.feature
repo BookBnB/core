@@ -15,7 +15,7 @@ Característica:
 
   Escenario: Realizar una pregunta
     Cuando pregunto "Hay aire acondicionado?" en la publicación con título "Casa en Salta"
-    Entonces veo una nueva pregunta con:
+    Entonces veo una nueva "pregunta" con:
       | descripcion | Hay aire acondicionado? |
 
   Escenario: Ver pregunta realizada

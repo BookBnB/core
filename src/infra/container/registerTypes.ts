@@ -56,11 +56,12 @@ import {CrearUsuario} from "../../domain/usuarios/casos-uso/CrearUsuario";
 import {ConfirmarRechazoPublicacion} from "../../domain/publicaciones/casos-uso/ConfirmarRechazoPublicacion";
 import {ConfirmarRechazoReserva} from "../../domain/reservas/casos-uso/ConfirmarRechazoReserva";
 import {RechazarReserva} from "../../domain/reservas/casos-uso/RechazarReserva";
-import { IMetricMonitor } from "../../app/metrics/MetricMonitor";
-import { PrometheusMonitor } from "../../app/metrics/PrometheusMonitor";
+import {IMetricMonitor} from "../../app/metrics/MetricMonitor";
+import {PrometheusMonitor} from "../../app/metrics/PrometheusMonitor";
 import {ListarReservasDeHuesped} from "../../domain/reservas/casos-uso/ListarReservasDeHuesped";
-import { CancelarReserva } from "../../domain/reservas/casos-uso/CancelarReserva";
-import { ConfirmarCancelacionReserva } from "../../domain/reservas/casos-uso/ConfirmarCancelacionReserva";
+import {CancelarReserva} from "../../domain/reservas/casos-uso/CancelarReserva";
+import {ConfirmarCancelacionReserva} from "../../domain/reservas/casos-uso/ConfirmarCancelacionReserva";
+import {CalificarPublicacion} from "../../domain/publicaciones/casos-uso/CalificarPublicacion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -165,6 +166,7 @@ export default class Registry {
         container.registerTransient<VerReserva>();
         container.registerTransient<ListarReservasDeHuesped>();
         container.registerTransient<CancelarReserva>();
+        container.registerTransient<CalificarPublicacion>();
 
         const reservasRepo: Repository<Reserva> = await container.get<Connection>().getRepository(Reserva);
         container.registerSingleton<Repository<Reserva>>(() => reservasRepo);

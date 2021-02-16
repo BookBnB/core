@@ -30,6 +30,8 @@ import {
     ConsultaDeReservasPorPublicacion,
     ListarReservasDePublicacion
 } from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
+import {CalificarPublicacion, CalificarPublicacionDTO} from "../domain/publicaciones/casos-uso/CalificarPublicacion";
+import CalificacionDePublicacionDTO from "../domain/publicaciones/dtos/CalificacionDePublicacionDTO";
 
 
 class ResponderPreguntaParams {
@@ -56,7 +58,8 @@ export class PublicacionController {
         private readonly preguntarEnPublicacion: PreguntarEnPublicacion,
         private readonly listarPreguntasDePublicacion: ListarPreguntasDePublicacion,
         private readonly responderEnPublicacion: ResponderEnPublicacion,
-        private readonly listarReservasDePublicacion: ListarReservasDePublicacion
+        private readonly listarReservasDePublicacion: ListarReservasDePublicacion,
+        private readonly calificarPublicacion: CalificarPublicacion
     ) {
     }
 
@@ -135,5 +138,13 @@ export class PublicacionController {
         @Params() {id: publicacionId}: UUID,
         @QueryParams() consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
         return this.listarReservasDePublicacion.execute(usuario, publicacionId, consulta)
+    }
+
+    @Post('/:id/calificaciones')
+    @HttpCode(201)
+    @ResponseSchema(CalificacionDePublicacionDTO)
+    @OpenAPI({summary: 'Califica una publicación'})
+    calificar(@Params() {id: publicacionId}: UUID, @CurrentUser() anfitrion: Usuario, @Body() calificacion: CalificarPublicacionDTO): Promise<CalificacionDePublicacionDTO> {
+        return this.calificarPublicacion.execute(anfitrion, publicacionId, calificacion)
     }
 }

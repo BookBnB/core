@@ -142,12 +142,6 @@ When('listo las publicaciones del anfitrion de id {string}', async function (id)
     await Usuarios.listarPublicaciones(this, id);
 });
 
-Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
-    expect(this.last_response).to.have.status(201)
-    expect(this.last_response).to.be.json
-    validarObjeto(this.last_response.body, dataTable)
-})
-
 Then('veo que está publicada a mí nombre', function () {
     expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)
 });

@@ -1,12 +1,10 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
-import {Given, Then} from 'cucumber';
+import {Given, TableDefinition, Then} from 'cucumber';
 import Usuarios from "../../../../usuarios/support/Usuarios";
 import Sesiones from "../../../../sesiones/support/Sesiones";
-import {DIContainer} from "@wessberg/di";
-import IServicioPagos from "../../../../../src/domain/common/servicios/ServicioPagos";
-import sinon from "sinon";
-import ServicioPagos from "../../../../../src/infra/servicios/ServicioPagos";
+
+import {validarObjeto} from "../../../../util/Validacion";
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -50,3 +48,9 @@ Then('veo un mensaje de confirmación', function () {
     expect(this.last_response.body.message).to.eql('ok')
     expect(this.last_response.body.success).to.eql(true)
 });
+
+Then('veo una nueva {string} con:', function (_: string, dataTable: TableDefinition) {
+    expect(this.last_response).to.have.status(201)
+    expect(this.last_response).to.be.json
+    validarObjeto(this.last_response.body, dataTable)
+})

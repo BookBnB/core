@@ -1,7 +1,7 @@
 import {Given, TableDefinition, Then, When} from "cucumber";
 import chai from "chai";
 import Publicaciones from "../Publicaciones";
-import {validarConjunto, validarObjeto} from "../../../util/Validacion";
+import {validarConjunto} from "../../../util/Validacion";
 import _ from "lodash";
 
 const expect = chai.expect;
@@ -14,12 +14,6 @@ When('listo las preguntas de la publicación con título {string}', async functi
 When('pregunto {string} en la publicación con título {string}', async function (descripcion, titulo) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo)
     await Publicaciones.preguntar(this, this.last_publicacion.body.id, descripcion)
-});
-
-Then('veo una nueva pregunta con:', function (dataTable) {
-    expect(this.last_response).to.have.status(201)
-    expect(this.last_response).to.be.json
-    validarObjeto(this.last_response.body, dataTable)
 });
 
 Then('veo las preguntas:', function (dataTable) {
