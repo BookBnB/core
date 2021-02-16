@@ -20,7 +20,7 @@ export class ListarReservasDePublicacion {
 
     async execute(usuario: Usuario, publicacionId: string, consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
         const publicacion = await this.publicaciones.obtener(publicacionId)
-        if(!publicacion.anfitrion.esIgualA(usuario))
+        if(!publicacion.anfitrion.esIgualA(usuario) && !usuario.tieneRol("admin"))
             throw new UsuarioNoAutorizadoError('El usuario no es el anfitrión de la publicación')
 
         return (await this.reservas.listar(publicacionId, consulta))

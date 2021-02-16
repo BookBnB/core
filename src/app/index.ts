@@ -7,7 +7,6 @@ import UsersServiceProxy from "./UsersServiceProxy";
 import Api from "./Api";
 import OpenApiSpec from "./OpenApiSpec";
 import {IContainer} from "../infra/container/Container";
-import apiMetrics, { ApiMetricsOpts } from "prometheus-api-metrics";
 import { IMetricMonitor } from "./metrics/MetricMonitor";
 
 export default async (container: IContainer): Promise<Application> => {

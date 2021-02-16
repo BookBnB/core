@@ -2,7 +2,7 @@ import {configure} from "log4js";
 import {ILogger} from "./infra/logging/Logger";
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
-import app from "./app"
+import app from "./app/index"
 import logConfig from '../config/log-config.json'
 import {DIContainer} from "@wessberg/di";
 import Registry from "./infra/container/registerTypes";

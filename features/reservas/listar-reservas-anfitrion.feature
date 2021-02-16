@@ -79,3 +79,11 @@ Característica:
     Dado que soy "anfitrión"
     Cuando listo las reservas de una publicación que no es mía
     Entonces obtengo un error 403 con mensaje "El usuario no es el anfitrión de la publicación"
+
+  Escenario: Listado de reservas del admin
+    Dado que soy "admin"
+    Cuando listo las reservas de la publicación con título "Departamento en Palermo"
+    Entonces veo las reservas:
+      | fechaInicio | fechaFin   | estado                |
+      | 2020-12-01  | 2020-12-07 | pendiente de creación |
+      | 2020-12-08  | 2020-12-10 | pendiente de creación |

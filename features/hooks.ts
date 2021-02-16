@@ -9,7 +9,7 @@ import TestRegistry from "./doubles/TestRegistry";
 import GestorDeSesiones from "./util/GestorDeSesiones";
 import {configure} from "log4js";
 import logConfig from "../config/log-config.json";
-import app from "../src/app"
+import app from "../src/app/index"
 import {setupServer} from "msw/node";
 import {buildHandlers} from "./doubles/handlers";
 import ServicioPagos from "../src/infra/servicios/ServicioPagos";
