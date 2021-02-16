@@ -13,3 +13,10 @@ When('califico el alojamiento con título {string} con {int} puntos', async func
 
     await Calificaciones.calificarAlojamiento(this, this.last_publicacion.body.id, {puntos})
 });
+
+When('califico el alojamiento con título {string} con {int} puntos y detalle {string}', async function (titulo, puntos, detalle) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Calificaciones.calificarAlojamiento(this, this.last_publicacion.body.id, {puntos, detalle})
+});
+
