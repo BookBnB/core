@@ -52,4 +52,15 @@ export default class ServicioPagos extends ApiExterna implements IServicioPagos 
             anfitrionId: reserva.publicacion.anfitrion.id
         })
     }
+
+    async cancelarReserva(reserva: Reserva): Promise<void> {
+        await this.put(`${this.url}/v1/reservas/${reserva.id}/cancelacion`, {
+            reservaId: reserva.id,
+            publicacionContratoId: reserva.publicacion.contratoId,
+            huespedId: reserva.huesped.id,
+            anfitrionId: reserva.publicacion.anfitrion.id,
+            fechaInicio: reserva.fechaInicio,
+            fechaFin: reserva.fechaFin
+        })
+    }
 }

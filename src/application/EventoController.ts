@@ -9,6 +9,7 @@ import ResultadoEvento from "./common/ResultadoEvento";
 import {JSONSchema} from "class-validator-jsonschema";
 import {ConfirmarRechazoPublicacion} from "../domain/publicaciones/casos-uso/ConfirmarRechazoPublicacion";
 import {ConfirmarRechazoReserva} from "../domain/reservas/casos-uso/ConfirmarRechazoReserva";
+import { ConfirmarCancelacionReserva } from "../domain/reservas/casos-uso/ConfirmarCancelacionReserva";
 
 export enum TipoEvento {
     PUBLICACION_CREADA = 'PUBLICACION_CREADA',
@@ -18,7 +19,9 @@ export enum TipoEvento {
     PUBLICACION_CREACION_FALLIDA = 'PUBLICACION_CREACION_FALLIDA',
     RESERVA_CREACION_FALLIDA = "RESERVA_CREACION_FALLIDA",
     RESERVA_ACEPTACION_FALLIDA = "RESERVA_ACEPTACION_FALLIDA",
-    RESERVA_RECHAZO_FALLIDO = "RESERVA_RECHAZO_FALLIDO"
+    RESERVA_RECHAZO_FALLIDO = "RESERVA_RECHAZO_FALLIDO",
+    RESERVA_CANCELACION_FALLIDA = "RESERVA_CANCELACION_FALLIDA",
+    RESERVA_CANCELADA = "RESERVA_CANCELADA"
 }
 
 class Payload {
@@ -45,6 +48,7 @@ export class EventoController {
         aceptarReserva: ConfirmarAceptacionReserva,
         rechazarReserva: ConfirmarRechazoReserva,
         rechazarNuevaPublicacion: ConfirmarRechazoPublicacion,
+        cancelarReserva: ConfirmarCancelacionReserva
     ) {
         this.eventos = {
             [TipoEvento.PUBLICACION_CREADA]: confirmarPublicacionCreada,
@@ -52,7 +56,8 @@ export class EventoController {
             [TipoEvento.RESERVA_ACEPTADA]: aceptarReserva,
             [TipoEvento.RESERVA_RECHAZADA]: rechazarReserva,
             [TipoEvento.PUBLICACION_CREACION_FALLIDA]: rechazarNuevaPublicacion,
-            [TipoEvento.RESERVA_CREACION_FALLIDA]: rechazarReserva
+            [TipoEvento.RESERVA_CREACION_FALLIDA]: rechazarReserva,
+            [TipoEvento.RESERVA_CANCELADA]: cancelarReserva
         }
     }
 
