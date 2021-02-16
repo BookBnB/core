@@ -2,6 +2,7 @@ import {
     Authorized, BadRequestError,
     Body,
     CurrentUser,
+    Delete,
     Get,
     HttpCode, InternalServerError,
     JsonController,
@@ -21,6 +22,7 @@ import AuthenticationMiddleware from "./middlewares/AuthenticationMiddleware";
 import {RechazarReserva} from "../domain/reservas/casos-uso/RechazarReserva";
 import {IsNotEmpty, IsString} from "class-validator";
 import PublicacionConEstadoInvalidoError from "../domain/reservas/excepciones/PublicacionConEstadoInvalidoError";
+import { CancelarReserva } from "../domain/reservas/casos-uso/CancelarReserva";
 
 class IdReserva {
     @IsString() @IsNotEmpty()
@@ -40,6 +42,7 @@ export class ReservaController {
         private readonly verReserva: VerReserva,
         private readonly aprobarReserva: AprobarReserva,
         private readonly rechazarReserva: RechazarReserva,
+        private readonly cancelarReserva: CancelarReserva
     ) {
     }
 
@@ -78,6 +81,14 @@ export class ReservaController {
     @OpenAPI({summary: 'Rechaza una reserva'})
     async rechazar(@Params() {id}: IdReserva): Promise<ResultadoEvento> {
         await this.rechazarReserva.execute(id)
+        return ResultadoEvento.success()
+    }
+
+    @Put('/:id/cancelacion')
+    @ResponseSchema(ResultadoEvento)
+    @OpenAPI({summary: 'Cancela una reserva'})
+    async cancelar(@Params() {id}: IdReserva): Promise<ResultadoEvento> {
+        await this.cancelarReserva.execute(id)
         return ResultadoEvento.success()
     }
 }

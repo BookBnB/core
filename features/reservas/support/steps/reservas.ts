@@ -30,6 +30,13 @@ export async function reservarConUsuario(this: any, email: string, tituloDePubli
     }, email)
 }
 
+async function cancelarReserva(this: any, emailHuesped: string) {
+    const reserva = this.reservas[emailHuesped]
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Reservas.cancelar(this, reserva.id)
+    }, emailHuesped)
+}
+
 Given('que realicé una publicación con:', async function (dataTable) {
     await crearPublicacion.bind(this)(dataTable)
     await Eventos.publicacionCreada(this, this.last_response.body.id)
@@ -69,6 +76,7 @@ Given('que realicé una reserva en la publicación con título {string}', async 
     }
 
     await Reservas.crear(this, reserva);
+    this.reservas[this.sesiones.usuarioActual().email] = this.last_reserva.body
 });
 
 Given('que el anfitrión con email {string} aprobó mi reserva', async function (anfitrionEmail) {
@@ -174,6 +182,15 @@ When(/^(?:que )?el anfitrión con email "(.*)" rechaza la reserva del usuario "(
     }, anfitrionEmail)
 });
 
+When(/^(?:que )?el huésped con email "(.*)" cancela su reserva$/, async function (huespedEmail) {
+    await cancelarReserva.bind(this)(huespedEmail)
+});
+
+When('cancelo mi reserva', async function() {
+    const email = this.sesiones.usuarioActual().email
+    await cancelarReserva.bind(this)(email)
+})
+
 When('ingreso a la reserva', async function () {
     await Reservas.obtener(this, this.last_reserva.body.id)
 });
@@ -221,6 +238,14 @@ When(/^listo mis reservas(:? "([^"]*)")?$/, async function (estado: string = '')
     await Reservas.listarMisReservas(this, this.sesiones.usuarioActual().id, estados.get(estado) || EstadoReserva.PENDIENTE_CREACION)
 });
 
+When(/^(?:notifico|se notifica) que falló la cancelación de dicha reserva$/, async function () {
+    await Eventos.cancelacionDeReservaFallida(this, this.last_reserva.body.id)
+});
+
+When(/^(?:notifico|se notifica) que se registró la cancelación de dicha reserva$/, async function () {
+    await Eventos.reservaCancelada(this, this.last_reserva.body.id)
+});
+
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json
@@ -262,6 +287,13 @@ Then('recibo un pedido de rechazo de reserva', function () {
 
 Then('recibo un pedido de registro de reserva', function () {
     expect(this.servicioPagos.crearReserva).to.have.been.calledWithMatch({
+        id: this.last_reserva.body.id
+    })
+});
+
+Then('recibo un pedido de cancelación de reserva', function () {
+    expect(this.last_response).to.have.status(200)
+    expect(this.servicioPagos.cancelarReserva).to.have.been.calledWithMatch({
         id: this.last_reserva.body.id
     })
 });

@@ -8,4 +8,5 @@ export default interface IServicioPagos {
     crearReserva(reserva: Reserva): Promise<void>;
     aprobarReserva(reserva: Reserva): Promise<void>
     rechazarReserva(reserva: Reserva): Promise<void>;
+    cancelarReserva(reserva: Reserva): Promise<void>;
 }

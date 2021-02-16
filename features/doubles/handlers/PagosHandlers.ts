@@ -30,5 +30,10 @@ export default function pagosCreationHandler() {
                 ctx.json({})
             )
         }),
+        rest.put(`${paymentsUrl}/v1/reservas/:reservaId/cancelacion`, (req, res, ctx) => {
+            return res(
+                ctx.json({})
+            )
+        }),
     ]
 }
