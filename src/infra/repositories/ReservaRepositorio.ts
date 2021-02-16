@@ -5,6 +5,7 @@ import {customAlphabet} from "nanoid";
 import {ConsultaDeReservasPorPublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
 import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import ReservaInexistenteError from "../../domain/reservas/excepciones/ReservaInexistenteError";
+import {ConsultaDeReservasPorHuesped} from "../../domain/reservas/casos-uso/ListarReservasDeHuesped";
 
 export default class ReservaRepositorio implements IReservaRepositorio {
     public constructor(
@@ -21,10 +22,10 @@ export default class ReservaRepositorio implements IReservaRepositorio {
     async obtener(id: string): Promise<Reserva> {
         const reserva = await this.repo.createQueryBuilder("reserva")
             .innerJoinAndSelect("reserva.publicacion", "publicacion")
-            .where("reserva.id = :id", { id })
+            .where("reserva.id = :id", {id})
             .getOne()
 
-        if(!reserva)
+        if (!reserva)
             throw new ReservaInexistenteError(`La reserva con id ${id} no existe.`)
         return reserva;
     }
@@ -33,10 +34,10 @@ export default class ReservaRepositorio implements IReservaRepositorio {
         const reserva = await this.repo.createQueryBuilder("reserva")
             .innerJoinAndSelect("reserva.publicacion", "publicacion")
             .innerJoinAndSelect("publicacion.reservas", "reservas")
-            .where("reserva.id = :id", { id })
+            .where("reserva.id = :id", {id})
             .getOne()
 
-        if(!reserva)
+        if (!reserva)
             throw new ReservaInexistenteError(`La reserva con id ${id} no existe.`)
         return reserva;
     }
@@ -65,9 +66,16 @@ export default class ReservaRepositorio implements IReservaRepositorio {
             .innerJoinAndSelect("reserva.publicacion", "publicacion")
             .where("publicacion.id = :publicacionId", {publicacionId: publicacionId})
             .andWhere(estado ? "reserva.estado = :estado" : "TRUE")
-            .setParameters({
-                estado
-            })
+            .setParameters({estado})
+            .getMany()
+    }
+
+    listarDeHuesped(huespedId: string, {estado}: ConsultaDeReservasPorHuesped): Promise<Reserva[]> {
+        return this.repo.createQueryBuilder("reserva")
+            .innerJoinAndSelect("reserva.publicacion", "publicacion")
+            .where("reserva.huesped.id = :huespedId", {huespedId})
+            .andWhere(estado ? "reserva.estado = :estado" : "TRUE")
+            .setParameters({estado})
             .getMany()
     }
 }

@@ -196,6 +196,10 @@ When(/^(?:notifico|se notifica) que dicha reserva se rechazó con éxito$/, asyn
     await Eventos.reservaRechazada(this, this.last_reserva.body.id)
 });
 
+When('listo mis reservas', async function () {
+    await Reservas.listarMisReservas(this, this.sesiones.usuarioActual().id)
+});
+
 Then('veo una nueva reserva con:', async function (dataTable: TableDefinition) {
     expect(this.last_response).to.have.status(201)
     expect(this.last_response).to.be.json

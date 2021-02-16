@@ -41,4 +41,11 @@ export default class Reservas extends Recurso {
             .query({estado: estado})
             .set('authorization', Reservas.tokenActual(context))
     }
+
+    static async listarMisReservas(context: World, usuarioId: string, estado: string | undefined = undefined) {
+        context.last_response = await chai.request(context.app)
+            .get(`/v1/usuarios/${usuarioId}/reservas`)
+            .query({estado: estado})
+            .set('authorization', Reservas.tokenActual(context))
+    }
 }

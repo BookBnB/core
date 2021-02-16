@@ -5,11 +5,11 @@ Característica:
   Para ver en qué alojamiento voy a hospedarme
 
   Antecedentes:
-    Y que el "anfitrión" con email "anfitrion@book.bnb" tiene una publicación "creada" con:
+    Dado que soy "anfitrión"
+    Y que realicé una publicación con:
       | titulo | Departamento en Palermo |
     Y que soy "huésped"
 
-  @wip
   Escenario: Listado sin reservas
     Cuando listo mis reservas
     Entonces no obtengo reservas

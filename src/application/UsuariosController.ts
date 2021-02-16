@@ -4,10 +4,10 @@ import {
     HttpCode,
     JsonController,
     Params,
-    Post,
+    Post, QueryParams,
     UseBefore
 } from 'routing-controllers';
-import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
+import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi';
 import UUID from '../domain/common/UUID';
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
@@ -16,16 +16,23 @@ import {
     ConsultaDePublicacionesPorAnfitrion,
     ListarPublicacionesPorAnfitrion
 } from "../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
-import OpenApiSpec from '../app/OpenApiSpec';
-import { CrearUsuario, CrearUsuarioDTO } from '../domain/usuarios/casos-uso/CrearUsuario';
+import {CrearUsuario, CrearUsuarioDTO} from '../domain/usuarios/casos-uso/CrearUsuario';
 import UsuarioDTO from '../domain/usuarios/dtos/UsuarioDTO';
+import {
+    ConsultaDeReservasPorHuesped,
+    ListarReservasDeHuesped
+} from "../domain/reservas/casos-uso/ListarReservasDeHuesped";
+import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
+import {ConsultaDeReservasPorPublicacion} from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
+
 
 @OpenAPI({security: [{token: []}]})
 @JsonController('/usuarios')
 export class UsuarioController {
     constructor(
         private readonly listarPublicaciones: ListarPublicacionesPorAnfitrion,
-        private readonly crearUsuario: CrearUsuario
+        private readonly listarReservas: ListarReservasDeHuesped,
+        private readonly crearUsuario: CrearUsuario,
     ) {
     }
 
@@ -38,14 +45,28 @@ export class UsuarioController {
 
     @Get('/:id/publicaciones')
     @Authorized("host")
-    @OpenAPI({ summary: 'Lista las publicaciones de un anfitrión' })
+    @OpenAPI({summary: 'Lista las publicaciones de un anfitrión'})
     @UseBefore(AuthenticationMiddleware)
     @ResponseSchema(PublicacionDTO)
-    async listar(@CurrentUser() usuario: Usuario, @Params() {id}: UUID): Promise<PublicacionDTO[]> {
-        if(usuario.id !== id) throw new ForbiddenError('Access is denied');
+    async listarPub(@CurrentUser() usuario: Usuario, @Params() {id}: UUID): Promise<PublicacionDTO[]> {
+        if (usuario.id !== id && !usuario.tieneRol("admin")) throw new ForbiddenError('Access is denied');
 
         let consulta = new ConsultaDePublicacionesPorAnfitrion(id);
 
         return await this.listarPublicaciones.execute(consulta);
+    }
+
+    @Get('/:id/reservas')
+    @Authorized(["guest", "admin"])
+    @OpenAPI({summary: 'Lista las reservas de un huésped'})
+    @UseBefore(AuthenticationMiddleware)
+    @ResponseSchema(ReservaDTO)
+    async listarRes(
+        @CurrentUser() usuario: Usuario,
+        @Params() {id}: UUID,
+        @QueryParams() consulta: ConsultaDeReservasPorHuesped): Promise<ReservaDTO[]> {
+        if (usuario.id !== id && !usuario.tieneRol("admin")) throw new ForbiddenError('Access is denied');
+
+        return await this.listarReservas.execute(id, consulta);
     }
 }
