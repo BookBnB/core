@@ -137,4 +137,11 @@ export default class Publicacion {
         this.calificaciones.push(nuevaCalificacion)
         return nuevaCalificacion
     }
+
+    calificacion(): number {
+        const calificaciones = this.calificaciones || []
+        return calificaciones
+            .map(calificacion => calificacion.puntos)
+            .reduce((p, c) => p + c, 0) / calificaciones.length
+    }
 }

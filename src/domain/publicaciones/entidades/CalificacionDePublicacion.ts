@@ -17,7 +17,7 @@ export default class CalificacionDePublicacion {
     @Column('int')
     public puntos!: number;
 
-    @Column('text')
+    @Column('text', {nullable: true})
     public detalle?: string;
 
     @Column(type => Usuario)

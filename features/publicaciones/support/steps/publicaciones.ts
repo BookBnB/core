@@ -146,12 +146,6 @@ Then('veo que está publicada a mí nombre', function () {
     expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)
 });
 
-Then('veo una publicación con:', function (dataTable: TableDefinition) {
-    expect(this.last_response).to.have.status(200)
-    expect(this.last_response).to.be.json
-    validarObjeto(this.last_response.body, dataTable)
-})
-
 Then('veo una nueva publicación con {string} nulo', function (campo: string) {
     expect(this.last_response.body).to.have.nested.property(campo).be.null
 });

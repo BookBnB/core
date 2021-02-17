@@ -54,3 +54,9 @@ Then('veo una nueva {string} con:', function (_: string, dataTable: TableDefinit
     expect(this.last_response).to.be.json
     validarObjeto(this.last_response.body, dataTable)
 })
+
+Then('veo una {string} con:', function (_: string, dataTable: TableDefinition) {
+    expect(this.last_response).to.have.status(200)
+    expect(this.last_response).to.be.json
+    validarObjeto(this.last_response.body, dataTable)
+})

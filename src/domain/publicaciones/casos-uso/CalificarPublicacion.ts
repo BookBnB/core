@@ -32,6 +32,10 @@ export class CalificarPublicacion implements UseCase {
     async execute(usuario: Usuario, publicacionId: string, calificacion: CalificarPublicacionDTO): Promise<CalificacionDePublicacionDTO> {
         const publicacion = await this.publicaciones.obtener(publicacionId)
 
-        return new CalificacionDePublicacionDTO(publicacion.calificar(usuario, calificacion))
+        const calificacionCreada = new CalificacionDePublicacionDTO(publicacion.calificar(usuario, calificacion))
+
+        await this.publicaciones.guardar(publicacion)
+
+        return calificacionCreada
     }
 }

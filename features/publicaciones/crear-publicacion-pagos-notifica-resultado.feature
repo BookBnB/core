@@ -22,7 +22,7 @@ Característica:
     Dado que soy "anfitrión"
     Cuando se notifica que la publicación con título "Departamento en Palermo" fue registrada con éxito
     E ingreso a la publicación con título "Departamento en Palermo"
-    Entonces veo una publicación con:
+    Entonces veo una "publicación" con:
       | titulo | Departamento en Palermo |
       | estado | Creada                  |
 
@@ -32,6 +32,6 @@ Característica:
       | titulo | Casa en Salta |
     Y se notifica que la publicación con título "Casa en Salta" no pudo registrarse
     E ingreso a la publicación con título "Casa en Salta"
-    Entonces veo una publicación con:
+    Entonces veo una "publicación" con:
       | titulo | Casa en Salta |
       | estado | Rechazada     |

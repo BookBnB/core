@@ -20,7 +20,7 @@ Característica:
       | cantidadDeHuespedes            | 2                                                      |
       | tipoDeAlojamiento              | Alojamiento entero                                      |
     Cuando ingreso a la publicación con título "Departamento con vista"
-    Entonces veo una publicación con:
+    Entonces veo una "publicación" con:
       | titulo                         | Departamento con vista                                 |
       | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
       | precioPorNoche                 | 10                                                     |
@@ -64,5 +64,5 @@ Característica:
       | titulo | Departamento en Palermo |
     Y se notifica que la publicación con título "Departamento en Palermo" no pudo registrarse
     Cuando ingreso a la publicación con título "Departamento en Palermo"
-    Entonces veo una publicación con:
+    Entonces veo una "publicación" con:
       | titulo | Departamento en Palermo |

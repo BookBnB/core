@@ -1,5 +1,5 @@
 import {JSONSchema} from "class-validator-jsonschema";
-import {IsEnum, IsInt, IsString, IsUrl, ValidateNested} from "class-validator";
+import {IsEnum, IsInt, IsNumber, IsString, IsUrl, ValidateNested} from "class-validator";
 import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Direccion from "../../lugares/entidades/Direccion";
@@ -36,9 +36,13 @@ class PublicacionDTO {
     @IsString()
     public estado!: string
 
+    @IsNumber()
+    public calificacion!: number
+
     constructor(publicacion: Publicacion) {
         Object.assign(this, publicacion)
         this.estado = publicacion.estado.toString()
+        this.calificacion = publicacion.calificacion()
     }
 }
 
