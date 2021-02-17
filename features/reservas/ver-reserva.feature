@@ -15,7 +15,7 @@ Característica:
 
   Escenario: Ver una reserva
     Cuando ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado         | pendiente de creación |
       | fechaInicio    | 2020-12-01            |
       | fechaFin       | 2020-12-07            |

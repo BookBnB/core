@@ -267,12 +267,6 @@ Then('veo las reservas:', function (dataTable: TableDefinition) {
     validarConjunto.bind(this)(dataTable)
 });
 
-Then('veo una reserva con:', function (dataTable: TableDefinition) {
-    expect(this.last_response).to.have.status(200)
-    expect(this.last_response).to.be.json
-    validarObjeto(this.last_response.body, dataTable)
-});
-
 Then('recibo un pedido de aprobación de reserva', function () {
     expect(this.servicioPagos.aprobarReserva).to.have.been.calledWithMatch({
         id: this.last_reserva.body.id

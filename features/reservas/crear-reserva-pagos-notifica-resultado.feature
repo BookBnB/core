@@ -25,7 +25,7 @@ Característica:
     Y que realicé una reserva en la publicación con título "Departamento en Palermo"
     Cuando se notifica que dicha reserva fue registrada con éxito
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | creada |
 
   Escenario: El estado de la reserva es "rechazada" si la reserva no se pudo crear en el servicio de pagos
@@ -33,5 +33,5 @@ Característica:
     Y que realicé una reserva en la publicación con título "Departamento en Palermo"
     Cuando se notifica que falló la creación de dicha reserva
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | rechazada |

@@ -1,7 +1,7 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
 import chaiSubset from "chai-subset"
-import {Given, TableDefinition, When} from "cucumber";
+import {Given, TableDefinition, Then, When} from "cucumber";
 import Calificaciones from "../Calificaciones";
 
 chai.use(chaiHttp);
@@ -32,3 +32,7 @@ When('califico el alojamiento con título {string} con {int} puntos y detalle {s
     await Calificaciones.calificarAlojamiento(this, this.last_publicacion.body.id, {puntos, detalle})
 });
 
+Then('veo una publicación con título {string} y sin calificación', function (titulo) {
+    expect(this.last_response.body.titulo).to.eql(titulo)
+    expect(this.last_response.body.calificacion).to.be.null
+});

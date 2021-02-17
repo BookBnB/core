@@ -41,7 +41,7 @@ Característica:
     Cuando cancelo mi reserva
     Y se notifica que falló la cancelación de dicha reserva
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | creada |
 
   Escenario: El estado de la reserva es "cancelada" si se logra registrar la cancelación de la reserva
@@ -51,5 +51,5 @@ Característica:
     Cuando cancelo mi reserva
     Y se notifica que se registró la cancelación de dicha reserva
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | cancelada |

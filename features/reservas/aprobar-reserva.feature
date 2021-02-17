@@ -41,7 +41,7 @@ Característica:
     Y que el anfitrión con email "anfitrion@book.bnb" aprobó mi reserva
     Cuando se notifica que falló la aprobación de dicha reserva
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | creada |
 
   Escenario: El estado de la reserva es "aprobada" si se logra registrar la aprobación de la reserva
@@ -51,7 +51,7 @@ Característica:
     Y que el anfitrión con email "anfitrion@book.bnb" aprobó mi reserva
     Cuando se notifica que se registró la aprobación de dicha reserva
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | aceptada |
 
   Escenario: Si se aprueba una reserva, otras en las mismas fechas se rechazan
@@ -69,5 +69,5 @@ Característica:
     Cuando se notifica que se registró la aprobación de dicha reserva
 
     E ingreso a mi reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | rechazada |

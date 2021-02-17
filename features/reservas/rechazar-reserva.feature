@@ -35,7 +35,7 @@ Característica:
     Y que el anfitrión con email "anfitrion@book.bnb" rechazó mi reserva
     Cuando se notifica que falló el rechazo de dicha reserva
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | creada |
 
   Escenario: El estado de la reserva es "rechazada" se rechazo de la reserva correctamente
@@ -45,5 +45,5 @@ Característica:
     Y que el anfitrión con email "anfitrion@book.bnb" rechazó mi reserva
     Cuando se notifica que dicha reserva se rechazó con éxito
     E ingreso a la reserva
-    Entonces veo una reserva con:
+    Entonces veo una "reserva" con:
       | estado | rechazada |
