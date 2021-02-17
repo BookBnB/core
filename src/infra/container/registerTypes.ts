@@ -62,6 +62,7 @@ import {ListarReservasDeHuesped} from "../../domain/reservas/casos-uso/ListarRes
 import {CancelarReserva} from "../../domain/reservas/casos-uso/CancelarReserva";
 import {ConfirmarCancelacionReserva} from "../../domain/reservas/casos-uso/ConfirmarCancelacionReserva";
 import {CalificarPublicacion} from "../../domain/publicaciones/casos-uso/CalificarPublicacion";
+import {ListarCalificacionesDePublicacion} from "../../domain/publicaciones/casos-uso/ListarCalificacionesDePublicacion";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -115,6 +116,8 @@ export default class Registry {
         container.registerTransient<ListarPreguntasDePublicacion>()
         container.registerTransient<ResponderEnPublicacion>()
         container.registerSingleton<ListarReservasDePublicacion>()
+        container.registerTransient<CalificarPublicacion>();
+        container.registerTransient<ListarCalificacionesDePublicacion>();
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)
@@ -166,7 +169,6 @@ export default class Registry {
         container.registerTransient<VerReserva>();
         container.registerTransient<ListarReservasDeHuesped>();
         container.registerTransient<CancelarReserva>();
-        container.registerTransient<CalificarPublicacion>();
 
         const reservasRepo: Repository<Reserva> = await container.get<Connection>().getRepository(Reserva);
         container.registerSingleton<Repository<Reserva>>(() => reservasRepo);

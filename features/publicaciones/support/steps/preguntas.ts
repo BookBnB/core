@@ -20,10 +20,6 @@ Then('veo las preguntas:', function (dataTable) {
     validarConjunto.bind(this)(dataTable)
 });
 
-Then('no veo preguntas', function () {
-    expect(this.last_response.body).to.eql([])
-});
-
 Given('que la publicacion con título {string} tiene las preguntas:', async function (titulo, preguntas: TableDefinition) {
     expect(this.last_publicacion.body.titulo).to.eq(titulo)
     this.preguntas = []

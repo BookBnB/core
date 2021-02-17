@@ -11,7 +11,7 @@ Característica:
 
   Escenario: No hay preguntas en una publicación nueva
     Cuando listo las preguntas de la publicación con título "Casa en Salta"
-    Entonces no veo preguntas
+    Entonces no veo "preguntas"
 
   Escenario: Realizar una pregunta
     Cuando pregunto "Hay aire acondicionado?" en la publicación con título "Casa en Salta"
@@ -40,4 +40,4 @@ Característica:
     Cuando pregunto "" en la publicación con título "Casa en Salta"
     Entonces veo un error indicado en el campo "descripcion"
     Cuando listo las preguntas de la publicación con título "Casa en Salta"
-    Entonces no veo preguntas
+    Entonces no veo "preguntas"

@@ -3,6 +3,7 @@ import chaiHttp from "chai-http"
 import chaiSubset from "chai-subset"
 import {Given, TableDefinition, Then, When} from "cucumber";
 import Calificaciones from "../Calificaciones";
+import {validarConjunto} from "../../../util/Validacion";
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
@@ -32,7 +33,19 @@ When('califico el alojamiento con título {string} con {int} puntos y detalle {s
     await Calificaciones.calificarAlojamiento(this, this.last_publicacion.body.id, {puntos, detalle})
 });
 
+When('listo las calificaciones de la publicación con título {string}', async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Calificaciones.listarDeAlojamiento(this, this.last_publicacion.body.id)
+});
+
 Then('veo una publicación con título {string} y sin calificación', function (titulo) {
     expect(this.last_response.body.titulo).to.eql(titulo)
     expect(this.last_response.body.calificacion).to.be.null
+});
+
+Then('veo las calificaciones:', function (dataTable) {
+    this.last_response.body.forEach((calificacion: any) =>
+        calificacion.puntos = calificacion.puntos.toString())
+    validarConjunto.bind(this)(dataTable)
 });

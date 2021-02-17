@@ -60,3 +60,7 @@ Then('veo una {string} con:', function (_: string, dataTable: TableDefinition) {
     expect(this.last_response).to.be.json
     validarObjeto(this.last_response.body, dataTable)
 })
+
+Then('no veo {string}', function (_) {
+    expect(this.last_response.body).to.eql([])
+});

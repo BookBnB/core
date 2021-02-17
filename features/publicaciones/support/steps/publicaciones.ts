@@ -3,7 +3,7 @@ import chai from "chai"
 import chaiHttp from "chai-http"
 import _ from "lodash"
 import Publicaciones from "../Publicaciones";
-import {validarConjunto, validarObjeto} from "../../../util/Validacion";
+import {validarConjunto} from "../../../util/Validacion";
 import chaiSubset from "chai-subset";
 import Usuarios from "../../../usuarios/support/Usuarios";
 import {v4 as uuidv4} from 'uuid';

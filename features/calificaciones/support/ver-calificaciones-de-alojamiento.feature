@@ -25,3 +25,28 @@ Característica:
     Entonces veo una "publicación" con:
       | titulo       | Departamento en Palermo |
       | calificacion | 3.25                    |
+
+  Escenario: Detalle de calificaciones
+    Dado que soy "huésped"
+    Y que existe una publicación con:
+      | titulo | Departamento en Palermo |
+    Y que la publicación con título "Departamento en Palermo" tiene las calificaciones:
+      | puntos | detalle                |
+      | 4      |                        |
+      | 2      | No me gustó el colchón |
+      | 3      | El desayuno está bueno |
+      | 4      |                        |
+    Cuando listo las calificaciones de la publicación con título "Departamento en Palermo"
+    Entonces veo las calificaciones:
+      | puntos | detalle                |
+      | 4      |                        |
+      | 2      | No me gustó el colchón |
+      | 3      | El desayuno está bueno |
+      | 4      |                        |
+
+  Escenario: Detalle de calificaciones sin calificaciones
+    Dado que soy "huésped"
+    Y que existe una publicación con:
+      | titulo | Departamento en Palermo |
+    Cuando listo las calificaciones de la publicación con título "Departamento en Palermo"
+    Entonces no veo "calificaciones"
