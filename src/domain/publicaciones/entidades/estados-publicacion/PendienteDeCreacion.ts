@@ -2,7 +2,7 @@ import EstadoDePublicacion from "./EstadoDePublicacion";
 import PublicacionConEstadoInvalidoError from "../../../reservas/excepciones/PublicacionConEstadoInvalidoError";
 import Usuario from "../../../usuarios/entidades/Usuario";
 import {CrearReservaDTO} from "../../../reservas/casos-uso/CrearReserva";
-import Publicacion from "../Publicacion";
+import Publicacion, {EstadoPublicacion} from "../Publicacion";
 import Reserva from "../../../reservas/entidades/Reserva";
 
 export default class PendienteDeCreacion extends EstadoDePublicacion {
@@ -15,6 +15,6 @@ export default class PendienteDeCreacion extends EstadoDePublicacion {
     }
 
     static get DISCRIMINANTE(): string {
-        return 'Pendiente de creación';
+        return EstadoPublicacion.PENDIENTE_DE_CREACION;
     }
 }

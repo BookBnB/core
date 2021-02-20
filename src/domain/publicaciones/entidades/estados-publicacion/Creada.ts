@@ -2,7 +2,7 @@ import EstadoDePublicacion from "./EstadoDePublicacion";
 import Usuario from "../../../usuarios/entidades/Usuario";
 import {CrearReservaDTO} from "../../../reservas/casos-uso/CrearReserva";
 import Reserva from "../../../reservas/entidades/Reserva";
-import Publicacion from "../Publicacion";
+import Publicacion, {EstadoPublicacion} from "../Publicacion";
 
 export default class Creada extends EstadoDePublicacion {
     public crearReserva(huesped: Usuario, body: CrearReservaDTO, publicacion: Publicacion): Reserva {
@@ -19,7 +19,7 @@ export default class Creada extends EstadoDePublicacion {
         return true;
     }
 
-    static get DISCRIMINANTE() {
-        return 'Creada'
+    static get DISCRIMINANTE(): string {
+        return EstadoPublicacion.CREADA
     }
 }

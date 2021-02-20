@@ -24,6 +24,12 @@ export interface PublicacionConstructor {
     imagenes: Imagen[]
 }
 
+export enum EstadoPublicacion {
+    PENDIENTE_DE_CREACION = 'Pendiente de creación',
+    CREADA = 'Creada',
+    RECHAZADA = 'Rechazada'
+}
+
 export enum TipoDeAlojamiento {
     alojamientoEntero = 'Alojamiento entero',
     habitacionPrivada = 'Habitación privada',
