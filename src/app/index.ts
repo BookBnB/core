@@ -8,6 +8,7 @@ import Api from "./Api";
 import OpenApiSpec from "./OpenApiSpec";
 import {IContainer} from "../infra/container/Container";
 import { IMetricMonitor } from "./metrics/MetricMonitor";
+import PaymentsServiceProxy from "./PaymentsServiceProxy";
 
 export default async (container: IContainer): Promise<Application> => {
     const app = express();
@@ -27,6 +28,7 @@ export default async (container: IContainer): Promise<Application> => {
         }
     })
     new UsersServiceProxy({app, logger})
+    new PaymentsServiceProxy({app, logger})
     new HTTPErrorHandlerLogger({app, logger})
 
     const monitor = container.get<IMetricMonitor>({ identifier: "IMetricMonitor" })
