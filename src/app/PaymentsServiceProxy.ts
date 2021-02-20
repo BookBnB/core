@@ -30,7 +30,8 @@ export default class PaymentsServiceProxy {
      */
     public static proxyEndpoints(): RegExp[] {
         return [
-            /\/v1\/reservas\/\w*\/transacciones/
+            /\/v1\/reservas\/\w*\/transacciones/,
+            /^(\/v1\/billeteras).*/
         ]
     }
 }
