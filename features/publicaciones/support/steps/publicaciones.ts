@@ -9,6 +9,7 @@ import Usuarios from "../../../usuarios/support/Usuarios";
 import {v4 as uuidv4} from 'uuid';
 import Eventos from "../../../common/Eventos";
 import Sesiones from "../../../sesiones/support/Sesiones";
+import {EstadoPublicacion} from "../../../../src/domain/publicaciones/entidades/Publicacion";
 
 
 chai.use(chaiHttp);
@@ -90,8 +91,14 @@ When('busco las primeras {int} publicaciones en un radio de {int} metros a {floa
     await Publicaciones.listar(this, {cantidad, latitud, longitud, radio})
 });
 
-When('busco las primeras {int} publicaciones', async function (cantidad: number) {
-    await Publicaciones.listar(this, {cantidad})
+When(/^busco las primeras (\d+) publicaciones(:? "([^"]*)")?$/, async function (cantidad, estado) {
+    const estadoCorrecto = new Map([
+        ['pendientes', EstadoPublicacion.PENDIENTE_DE_CREACION],
+        ['creadas', EstadoPublicacion.CREADA],
+        ['rechazadas', EstadoPublicacion.RECHAZADA],
+    ]).get(estado)
+
+    await Publicaciones.listar(this, {cantidad, estado: estadoCorrecto as undefined})
 });
 
 When('busco las primeras {int} publicaciones de tipo {string}', async function (cantidad, tipoDeAlojamiento) {

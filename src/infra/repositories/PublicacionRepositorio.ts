@@ -28,7 +28,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
 
     listar({
                offset, limit, radio, coordenadas, cantidadDeHuespedes, tipoDeAlojamiento,
-               precioPorNocheMinimo, precioPorNocheMaximo, fechaInicio, fechaFin
+               precioPorNocheMinimo, precioPorNocheMaximo, fechaInicio, fechaFin, estado
            }: ConsultaDePublicaciones): Promise<Publicacion[]> {
         return this.repo.createQueryBuilder("publicacion")
             .orderBy("publicacion.titulo")
@@ -37,7 +37,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
             .leftJoinAndSelect("publicacion.imagenes", "imagen")
             .leftJoin("publicacion.reservas", "reserva", "reserva.estado = 'aceptada'")
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
-            .andWhere("publicacion.estado = :estado")
+            .andWhere(estado ? "publicacion.estado = :estado" : "TRUE")
             .andWhere(tipoDeAlojamiento ? "publicacion.tipoDeAlojamiento = :tipoDeAlojamiento" : "TRUE")
             .andWhere(cantidadDeHuespedes ? "publicacion.cantidadDeHuespedes >= :cantidadDeHuespedes" : "TRUE")
             .andWhere(precioPorNocheMinimo ? "publicacion.precioPorNoche >= :precioPorNocheMinimo" : "TRUE")
@@ -48,7 +48,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
                 latitud: coordenadas.latitud,
                 longitud: coordenadas.longitud,
                 radio,
-                estado: Creada.DISCRIMINANTE,
+                estado,
                 tipoDeAlojamiento,
                 cantidadDeHuespedes,
                 precioPorNocheMinimo,

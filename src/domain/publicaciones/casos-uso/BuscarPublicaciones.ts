@@ -1,7 +1,7 @@
 import {UseCase} from "../../UseCase";
 import PublicacionDTO from "../dtos/PublicacionDTO";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
-import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
+import Publicacion, {EstadoPublicacion, TipoDeAlojamiento} from "../entidades/Publicacion";
 import ConsultaConPaginacion from "../../common/ConsultaConPaginacion";
 import {IsDate, IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
@@ -34,6 +34,9 @@ export class ConsultaDePublicaciones extends ConsultaConPaginacion {
 
     @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-21"}) @IsOptional()
     public fechaFin!: Date;
+
+    @IsEnum(EstadoPublicacion) @IsOptional()
+    public estado?: EstadoPublicacion = undefined
 }
 
 export class BuscarPublicaciones implements UseCase {
