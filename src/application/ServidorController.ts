@@ -32,7 +32,7 @@ export class Servidor {
     @IsString() @MinLength(1)
     public nombre!: string
 
-    @IsString() @JSONSchema({example: 'WJCGM6Q-GEM459K-JYS2Q93-3CT2H0J'})
+    @IsString() @JSONSchema({example: '53462d800dda97a2228c62c6204b89a67b77111253902420'})
     public token!: string
 
     constructor(params: ServidorConstructor) {

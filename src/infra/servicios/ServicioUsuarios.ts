@@ -45,7 +45,7 @@ export default class ServicioUsuarios extends ApiExterna implements IServicioUsu
     }
 
     async crearServidor(param: { nombre: string }): Promise<Servidor> {
-        const res = await this.post(`${this.serviceUrl}${this.RUTA_CREAR}`, param)
+        const res = await this.post(`${this.serviceUrl}${this.RUTA_SERVIDORES}`, param)
 
         return res.data
     }
