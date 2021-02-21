@@ -17,7 +17,7 @@ export default class PaymentsServiceProxy {
      * Tags cuyos endpoints actuarán como proxies.
      */
     public static proxyTags(): string[] {
-        return ['Servidor']
+        return ['']
     }
 
     public static filter(pathname: string, req: Request): boolean {

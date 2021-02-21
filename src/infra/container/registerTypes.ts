@@ -63,6 +63,7 @@ import {CancelarReserva} from "../../domain/reservas/casos-uso/CancelarReserva";
 import {ConfirmarCancelacionReserva} from "../../domain/reservas/casos-uso/ConfirmarCancelacionReserva";
 import {CalificarPublicacion} from "../../domain/publicaciones/casos-uso/CalificarPublicacion";
 import {ListarCalificacionesDePublicacion} from "../../domain/publicaciones/casos-uso/ListarCalificacionesDePublicacion";
+import {ServidorController} from "../../application/ServidorController";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -87,6 +88,7 @@ export default class Registry {
         await this.registrarEventos(container)
         await this.registrarServicioPagos(container)
         await this.registrarMetricas(container)
+        await this.registrarPagos(container)
         return container
     }
 
@@ -203,5 +205,9 @@ export default class Registry {
 
     protected async registrarMetricas(container: DIContainer) {
         container.registerSingleton<IMetricMonitor>(() => new PrometheusMonitor())
+    }
+
+    protected async registrarPagos(container: DIContainer) {
+        container.registerSingleton<ServidorController>()
     }
 }

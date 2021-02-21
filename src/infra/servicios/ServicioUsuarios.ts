@@ -6,11 +6,13 @@ import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios"
 import { CrearUsuarioDTO } from "../../domain/usuarios/casos-uso/CrearUsuario";
 import UsuarioDTO from "../../domain/usuarios/dtos/UsuarioDTO";
 import ApiExterna from "./ApiExterna";
+import {Servidor} from "../../application/ServidorController";
 
 export default class ServicioUsuarios extends ApiExterna implements IServicioUsuarios {
     private readonly RUTA_CREAR = '/v1/usuarios'
     private readonly RUTA_SESION = '/v1/sesiones';
     private readonly RUTA_SESION_GOOGLE = '/v1/sesiones/google';
+    private readonly RUTA_SERVIDORES = '/v1/servidores';
 
     constructor(private readonly serviceUrl: string) {
         super()
@@ -40,5 +42,17 @@ export default class ServicioUsuarios extends ApiExterna implements IServicioUsu
         const res = await this.post(`${this.serviceUrl}${this.RUTA_CREAR}`, body)
 
         return new UsuarioDTO(res.data)
+    }
+
+    async crearServidor(param: { nombre: string }): Promise<Servidor> {
+        const res = await this.post(`${this.serviceUrl}${this.RUTA_CREAR}`, param)
+
+        return res.data
+    }
+
+    async listarServidores(): Promise<Servidor[]> {
+        const res = await this.get(`${this.serviceUrl}${this.RUTA_SERVIDORES}`)
+
+        return res.data
     }
 }

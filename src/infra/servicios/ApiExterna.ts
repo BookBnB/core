@@ -2,6 +2,12 @@ import axios, { AxiosResponse } from "axios";
 import { HttpError } from "routing-controllers";
 
 export default class ApiExterna {
+    async get(ruta: string, params?: any) {
+        return ApiExterna.ejecutar(() => {
+            return axios.get(ruta, params)
+        })
+    }
+
     async post(ruta: string, params: any = {}) {
         return ApiExterna.ejecutar(() => {
             return axios.post(ruta, params)

@@ -3,8 +3,11 @@ import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import Reserva from '../../domain/reservas/entidades/Reserva';
 import Usuario from '../../domain/usuarios/entidades/Usuario';
 import ApiExterna from './ApiExterna';
+import {Servidor} from "../../application/ServidorController";
 
 export default class ServicioPagos extends ApiExterna implements IServicioPagos {
+    private readonly RUTA_SERVIDORES = '/v1/servidores';
+
     constructor(private readonly url: string) {
         super()
     }
@@ -62,5 +65,17 @@ export default class ServicioPagos extends ApiExterna implements IServicioPagos 
             fechaInicio: reserva.fechaInicio,
             fechaFin: reserva.fechaFin
         })
+    }
+
+    async crearServidor(param: { nombre: string }): Promise<Servidor> {
+        const res = await this.post(`${this.url}${this.RUTA_SERVIDORES}`, param)
+
+        return res.data
+    }
+
+    async listarServidores(): Promise<Servidor[]> {
+        const res = await this.get(`${this.url}${this.RUTA_SERVIDORES}`)
+
+        return res.data
     }
 }
