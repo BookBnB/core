@@ -42,7 +42,7 @@
     "log4js": "^6.3.0",
     "multer": "^1.4.2",
     "nanoid": "^3.1.20",
-    "openapi-merge": "^1.0.23",
+    "openapi-merge": "^1.0.29",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "prom-client": "^12.0.0",

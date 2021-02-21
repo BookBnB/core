@@ -1,5 +1,4 @@
 # language: es
-@only
 Característica:
   Como huésped
   Quiero poder ver las publicaciones disponibles

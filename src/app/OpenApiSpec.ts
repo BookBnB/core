@@ -10,6 +10,8 @@ import {isURL} from "class-validator";
 import {merge} from 'openapi-merge';
 import UsersServiceProxy from "./UsersServiceProxy";
 import Api from "./Api";
+import {SuccessfulMergeResult} from "openapi-merge/dist/data";
+import PaymentsServiceProxy from "./PaymentsServiceProxy";
 
 
 export interface ApiConstructor {
@@ -64,10 +66,12 @@ export default class OpenApiSpec {
             }
         )
 
-        const usersSpec = await OpenApiSpec.usersServiceApiDocs()
+        const usersSpec = await OpenApiSpec.serviceApiDocs(process.env['USERS_OPENAPI_SPEC_URL'] as string)
+        const paymentsSpec = await OpenApiSpec.serviceApiDocs(process.env['PAYMENTS_OPENAPI_SPEC_URL'] as string)
 
         // @ts-ignore
-        const spec = usersSpec ? OpenApiSpec.mergeApiDocs(coreSpec, usersSpec).output : coreSpec
+        let spec = usersSpec ? OpenApiSpec.mergeApiDocs(coreSpec, usersSpec, UsersServiceProxy.proxyTags()) : coreSpec
+        spec = paymentsSpec ? OpenApiSpec.mergeApiDocs(spec, paymentsSpec, PaymentsServiceProxy.proxyTags()) : spec
 
         const {routePrefix} = Api.options()
         this.serveApiSpec(spec, `${routePrefix}/api.json`)
@@ -107,10 +111,11 @@ export default class OpenApiSpec {
      * Junta las especificaciones OpenApi en una.
      * @param spec
      * @param userSpec
+     * @param tags
      * @private
      */
-    private static mergeApiDocs(spec: object, userSpec: object) {
-        return merge([
+    private static mergeApiDocs(spec: object, userSpec: object, tags: string[]) {
+        return (merge([
             {
                 // @ts-ignore
                 oas: spec
@@ -118,18 +123,17 @@ export default class OpenApiSpec {
                 // @ts-ignore
                 oas: userSpec,
                 operationSelection: {
-                    includeTags: UsersServiceProxy.proxyTags()
+                    includeTags: tags,
                 }
             }
-        ])
+        ]) as SuccessfulMergeResult).output
     }
 
     /**
-     * Devuelve el spec del servicio de usuarios.
+     * Devuelve el spec de una url.
      * @private
      */
-    private static async usersServiceApiDocs() {
-        const specUrl = process.env['USERS_OPENAPI_SPEC_URL']
+    private static async serviceApiDocs(specUrl: string) {
         if (!isURL(specUrl as string, {require_tld: false, allow_underscores: true}))
             return
 
