@@ -1,44 +1,61 @@
-import {DIContainer} from "@wessberg/di";
-import {Connection, EntityManager, Repository} from "typeorm";
-import {EventoController} from "../../application/EventoController";
-import {LugarController} from "../../application/LugarController";
+import { DIContainer } from "@wessberg/di";
+import { Connection, EntityManager, Repository } from "typeorm";
+import { IMetricMonitor } from "../../app/metrics/MetricMonitor";
+import { PrometheusMonitor } from "../../app/metrics/PrometheusMonitor";
+import { EventoController } from "../../application/EventoController";
+import { LugarController } from "../../application/LugarController";
 import AuthenticationMiddleware from "../../application/middlewares/AuthenticationMiddleware";
-import {PublicacionController} from "../../application/PublicacionController";
-import {ReservaController} from "../../application/ReservaController";
-import {SesionController} from "../../application/SesionController";
-import {UsuarioController} from "../../application/UsuariosController";
+import { PublicacionController } from "../../application/PublicacionController";
+import { ReportesController } from "../../application/ReportesController";
+import { ReservaController } from "../../application/ReservaController";
+import { ServidorController } from "../../application/ServidorController";
+import { SesionController } from "../../application/SesionController";
+import { UsuarioController } from "../../application/UsuariosController";
 import IReloj from "../../domain/common/servicios/Reloj";
 import IServicioPagos from "../../domain/common/servicios/ServicioPagos";
-import {ConfirmarPublicacionCreada} from "../../domain/publicaciones/casos-uso/ConfirmarPublicacionCreada";
-import {BuscarCiudades} from "../../domain/lugares/casos-uso/BuscarCiudades";
-import {BuscarDirecciones} from "../../domain/lugares/casos-uso/BuscarDirecciones";
+import { BuscarCiudades } from "../../domain/lugares/casos-uso/BuscarCiudades";
+import { BuscarDirecciones } from "../../domain/lugares/casos-uso/BuscarDirecciones";
 import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
-import {BuscarPublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
-import {CrearPublicacion} from "../../domain/publicaciones/casos-uso/CrearPublicacion";
-import {ListarPreguntasDePublicacion} from "../../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
-import {PreguntarEnPublicacion} from "../../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
-import {ResponderEnPublicacion} from "../../domain/publicaciones/casos-uso/ResponderEnPublicacion";
-import {VerPublicacion} from "../../domain/publicaciones/casos-uso/VerPublicacion";
+import { BuscarPublicaciones } from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
+import { CalificarPublicacion } from "../../domain/publicaciones/casos-uso/CalificarPublicacion";
+import { ConfirmarPublicacionCreada } from "../../domain/publicaciones/casos-uso/ConfirmarPublicacionCreada";
+import { ConfirmarRechazoPublicacion } from "../../domain/publicaciones/casos-uso/ConfirmarRechazoPublicacion";
+import { CrearPublicacion } from "../../domain/publicaciones/casos-uso/CrearPublicacion";
+import { ListarCalificacionesDePublicacion } from "../../domain/publicaciones/casos-uso/ListarCalificacionesDePublicacion";
+import { ListarPreguntasDePublicacion } from "../../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
+import { PreguntarEnPublicacion } from "../../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
+import { ResponderEnPublicacion } from "../../domain/publicaciones/casos-uso/ResponderEnPublicacion";
+import { VerPublicacion } from "../../domain/publicaciones/casos-uso/VerPublicacion";
 import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
 import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/PreguntaRepositorio";
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
-import {CrearReserva} from "../../domain/reservas/casos-uso/CrearReserva";
-import {ListarReservasDePublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
-import {VerReserva} from "../../domain/reservas/casos-uso/VerReserva";
+import { ReporteCantidadPublicaciones } from "../../domain/reportes/casos-uso/ReporteCantidadPublicaciones";
+import { AprobarReserva } from "../../domain/reservas/casos-uso/AprobarReserva";
+import { CancelarReserva } from "../../domain/reservas/casos-uso/CancelarReserva";
+import { ConfirmarAceptacionReserva } from "../../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
+import { ConfirmarCancelacionReserva } from "../../domain/reservas/casos-uso/ConfirmarCancelacionReserva";
+import { ConfirmarRechazoReserva } from "../../domain/reservas/casos-uso/ConfirmarRechazoReserva";
+import { ConfirmarReservaCreada } from "../../domain/reservas/casos-uso/ConfirmarReservaCreada";
+import { CrearReserva } from "../../domain/reservas/casos-uso/CrearReserva";
+import { ListarReservasDeHuesped } from "../../domain/reservas/casos-uso/ListarReservasDeHuesped";
+import { ListarReservasDePublicacion } from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
+import { RechazarReserva } from "../../domain/reservas/casos-uso/RechazarReserva";
+import { VerReserva } from "../../domain/reservas/casos-uso/VerReserva";
 import Reserva from "../../domain/reservas/entidades/Reserva";
 import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
-import {CrearSesion} from "../../domain/sesiones/casos-uso/CrearSesion";
-import {CrearSesionConGoogle} from "../../domain/sesiones/casos-uso/CrearSesionConGoogle";
+import { CrearSesion } from "../../domain/sesiones/casos-uso/CrearSesion";
+import { CrearSesionConGoogle } from "../../domain/sesiones/casos-uso/CrearSesionConGoogle";
 import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
 import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
 import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios";
-import {ListarPublicacionesPorAnfitrion} from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
+import { CrearUsuario } from "../../domain/usuarios/casos-uso/CrearUsuario";
+import { ListarPublicacionesPorAnfitrion } from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
 import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
-import {ErrorHandler} from "../ErrorHandler";
-import Log4JSLogger, {ILogger} from "../logging/Logger";
+import { ErrorHandler } from "../ErrorHandler";
+import Log4JSLogger, { ILogger } from "../logging/Logger";
 import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
-import {PublicacionRepositorio} from "../repositories/PublicacionRepositorio";
+import { PublicacionRepositorio } from "../repositories/PublicacionRepositorio";
 import ReservaRepositorio from "../repositories/ReservaRepositorio";
 import UsuarioRepositorio from "../repositories/UsuarioRepositorio";
 import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
@@ -48,22 +65,7 @@ import ServicioLugares from "../servicios/ServicioLugares";
 import ServicioPagos from "../servicios/ServicioPagos";
 import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
-import {IContainer} from "./Container";
-import {ConfirmarReservaCreada} from "../../domain/reservas/casos-uso/ConfirmarReservaCreada";
-import {ConfirmarAceptacionReserva} from "../../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
-import {AprobarReserva} from "../../domain/reservas/casos-uso/AprobarReserva";
-import {CrearUsuario} from "../../domain/usuarios/casos-uso/CrearUsuario";
-import {ConfirmarRechazoPublicacion} from "../../domain/publicaciones/casos-uso/ConfirmarRechazoPublicacion";
-import {ConfirmarRechazoReserva} from "../../domain/reservas/casos-uso/ConfirmarRechazoReserva";
-import {RechazarReserva} from "../../domain/reservas/casos-uso/RechazarReserva";
-import {IMetricMonitor} from "../../app/metrics/MetricMonitor";
-import {PrometheusMonitor} from "../../app/metrics/PrometheusMonitor";
-import {ListarReservasDeHuesped} from "../../domain/reservas/casos-uso/ListarReservasDeHuesped";
-import {CancelarReserva} from "../../domain/reservas/casos-uso/CancelarReserva";
-import {ConfirmarCancelacionReserva} from "../../domain/reservas/casos-uso/ConfirmarCancelacionReserva";
-import {CalificarPublicacion} from "../../domain/publicaciones/casos-uso/CalificarPublicacion";
-import {ListarCalificacionesDePublicacion} from "../../domain/publicaciones/casos-uso/ListarCalificacionesDePublicacion";
-import {ServidorController} from "../../application/ServidorController";
+import { IContainer } from "./Container";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -89,6 +91,7 @@ export default class Registry {
         await this.registrarServicioPagos(container)
         await this.registrarMetricas(container)
         await this.registrarPagos(container)
+        await this.registrarReportes(container)
         return container
     }
 
@@ -209,5 +212,10 @@ export default class Registry {
 
     protected async registrarPagos(container: DIContainer) {
         container.registerSingleton<ServidorController>()
+    }
+
+    protected async registrarReportes(container: DIContainer) {
+        container.registerTransient<ReporteCantidadPublicaciones>()
+        container.registerSingleton<ReportesController>()
     }
 }

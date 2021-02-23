@@ -1,4 +1,4 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import Usuario from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
@@ -83,6 +83,9 @@ export default class Publicacion {
         eager: true
     })
     public calificaciones!: CalificacionDePublicacion[];
+
+    @CreateDateColumn()
+    public fechaCreacion?: Date
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args)
