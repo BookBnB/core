@@ -1,27 +1,32 @@
-import {Given, When, Then, TableDefinition} from "cucumber"
-import chai from "chai"
-import chaiHttp from "chai-http"
-import _ from "lodash"
-import Publicaciones from "../Publicaciones";
-import {validarConjunto} from "../../../util/Validacion";
+import { DIContainer } from "@wessberg/di";
+import chai from "chai";
+import chaiHttp from "chai-http";
 import chaiSubset from "chai-subset";
-import Usuarios from "../../../usuarios/support/Usuarios";
-import {v4 as uuidv4} from 'uuid';
+import { Given, TableDefinition, Then, When } from "cucumber";
+import _ from "lodash";
+import { v4 as uuidv4 } from 'uuid';
+import { EstadoPublicacion } from "../../../../src/domain/publicaciones/entidades/Publicacion";
+import IPublicacionRepositorio from "../../../../src/domain/publicaciones/repositorios/PublicacionRepositorio";
 import Eventos from "../../../common/Eventos";
 import Sesiones from "../../../sesiones/support/Sesiones";
-import {EstadoPublicacion} from "../../../../src/domain/publicaciones/entidades/Publicacion";
+import Usuarios from "../../../usuarios/support/Usuarios";
+import { validarConjunto } from "../../../util/Validacion";
+import Publicaciones from "../Publicaciones";
 
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 const expect = chai.expect;
 
-
-export async function crearPublicacion(this: any, dataTable: TableDefinition) {
+export async function crearPublicacion(this: any, dataTable?: TableDefinition) {
     const publicacion: any = Publicaciones.ejemplo()
-    dataTable.raw().forEach(([clave, valor]) => {
-        _.set(publicacion, clave, valor)
-    })
+
+    if (dataTable) {
+        dataTable.raw().forEach(([clave, valor]) => {
+            _.set(publicacion, clave, valor)
+        })
+    }
+
     publicacion.precioPorNoche = parseFloat(publicacion.precioPorNoche)
     publicacion.cantidadDeHuespedes = parseFloat(publicacion.cantidadDeHuespedes)
     publicacion.direccion.coordenadas.latitud = parseFloat(publicacion.direccion.coordenadas.latitud)
@@ -30,7 +35,7 @@ export async function crearPublicacion(this: any, dataTable: TableDefinition) {
     await Publicaciones.crear(this, publicacion)
 }
 
-export async function crearPublicacionConEstado(this: any, estado: string, email: string, publicacion: TableDefinition) {
+export async function crearPublicacionConEstado(this: any, estado: string, email: string, publicacion?: TableDefinition) {
     await Usuarios.crear(this, {...Usuarios.ejemplo(), role: 'anfitrión', email})
     await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
 
@@ -42,6 +47,22 @@ export async function crearPublicacionConEstado(this: any, estado: string, email
 
 Given(/^que existe una publicación (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
     await crearPublicacionConEstado.bind(this)(estado || 'creada', 'anfitrion@bookbnb.com', publicacion)
+});
+
+Given('que el anfitrión {string} tiene una publicación creada el {string}', async function (emailAnfitrion: string, fecha: string) {
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await crearPublicacion.bind(this)()
+
+        const id = this.last_response.body.id
+        const repo = await (<DIContainer>this.container).get<IPublicacionRepositorio>()
+        let pub = await repo.obtener(id)
+        pub.fechaCreacion = new Date(fecha)
+        await repo.guardar(pub)
+    }, emailAnfitrion)
+});
+
+Given('que el anfitrión {string} tiene una publicación {string}', async function (email: string, estadoPublicacion: string) {
+    await crearPublicacionConEstado.bind(this)(estadoPublicacion, email)
 });
 
 Given('que el anfitrión con email {string} tiene una publicación {string} con:', async function (email: string, estadoPublicacion: string, publicacion: TableDefinition) {

@@ -11,6 +11,8 @@ import {validarConjunto, validarObjeto} from "../../../util/Validacion";
 import Reservas from "../Reservas";
 import Sesiones from "../../../sesiones/support/Sesiones";
 import {EstadoReserva} from "../../../../src/domain/reservas/entidades/Reserva";
+import { DIContainer } from "@wessberg/di";
+import IReservaRepositorio from "../../../../src/domain/reservas/repositorios/ReservaRepositorio";
 
 
 chai.use(chaiHttp);
@@ -89,6 +91,19 @@ Given('que el anfitrión con email {string} rechazó mi reserva', async function
     await this.sesiones.ejecutarBajoSesion(async () => {
         await Reservas.rechazar(this, this.last_reserva.id)
     }, anfitrionEmail)
+});
+
+Given('que el huesped {string} tiene una reserva del {string} al {string} creada el {string}', async function (huespedEmail, fechaInicio, fechaFin, fechaCreacion) {
+    await reservarConUsuario.bind(this)(
+        huespedEmail,
+        this.last_publicacion.body.titulo,
+        { fechaInicio, fechaFin }
+    )
+
+    const repo = await (<DIContainer>this.container).get<IReservaRepositorio>()
+    let res = await repo.obtener(this.last_response.body.id)
+    res.fechaCreacion = new Date(fechaCreacion)
+    await repo.guardar(res)
 });
 
 When('el huésped con email {string} realiza una reserva en la publicación con título {string} con:', async function (email: string, titulo: string, dataTable: TableDefinition) {

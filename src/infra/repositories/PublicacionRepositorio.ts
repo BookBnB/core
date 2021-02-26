@@ -5,6 +5,7 @@ import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/
 import {ConsultaDePublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
 import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
 import Creada from "../../domain/publicaciones/entidades/estados-publicacion/Creada";
+import { ParametrosReporte } from "../../domain/reportes/entidades/ParametrosReporte";
 
 export class PublicacionRepositorio implements IPublicacionRepositorio {
     public constructor(private readonly repo: Repository<Publicacion>,
@@ -56,5 +57,15 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
                 fechaInicio,
                 fechaFin
             }).getMany()
+    }
+
+    async publicacionesCreadasPorDia(fechaInicio: Date, fechaFin: Date) {
+        return this.repo.createQueryBuilder('publicacion')
+            .where(fechaInicio ? ':fechaInicio <= publicacion.fechaCreacion' : 'TRUE')
+            .andWhere(fechaFin ? 'publicacion.fechaCreacion <= :fechaFin' : 'TRUE')
+            .groupBy('publicacion.fechaCreacion')
+            .select(['publicacion.fechaCreacion AS "fechaCreacion"', 'COUNT(publicacion.id) AS "cantidad"'])
+            .setParameters({ fechaInicio, fechaFin })
+            .getRawMany()
     }
 }

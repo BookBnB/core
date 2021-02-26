@@ -1,6 +1,7 @@
 import Publicacion from "../entidades/Publicacion";
 import {ConsultaDePublicaciones} from "../casos-uso/BuscarPublicaciones";
 import Pregunta from "../entidades/Pregunta";
+import { ParametrosReporte } from "../../reportes/entidades/ParametrosReporte";
 
 export default interface IPublicacionRepositorio {
     guardar(publicacion: Publicacion): Promise<Publicacion>;
@@ -10,4 +11,6 @@ export default interface IPublicacionRepositorio {
     obtener(id: string): Promise<Publicacion>;
 
     listar(consulta: ConsultaDePublicaciones): Promise<Publicacion[]>;
+
+    publicacionesCreadasPorDia(fechaInicio: Date, fechaFin: Date): Promise<any[]>
 }

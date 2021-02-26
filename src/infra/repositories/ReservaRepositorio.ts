@@ -78,4 +78,14 @@ export default class ReservaRepositorio implements IReservaRepositorio {
             .setParameters({estado})
             .getMany()
     }
+
+    async reservasCreadasPorDia(fechaInicio: Date, fechaFin: Date): Promise<any[]> {
+        return this.repo.createQueryBuilder('reserva')
+            .where(fechaInicio ? ':fechaInicio <= reserva.fechaCreacion' : 'TRUE')
+            .andWhere(fechaFin ? 'reserva.fechaCreacion <= :fechaFin' : 'TRUE')
+            .groupBy('reserva.fechaCreacion')
+            .select(['reserva.fechaCreacion AS "fechaCreacion"', 'COUNT(reserva.id) AS "cantidad"'])
+            .setParameters({ fechaInicio, fechaFin })
+            .getRawMany()
+    }
 }
