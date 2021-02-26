@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn} from "typeorm";
 import Publicacion from "../../publicaciones/entidades/Publicacion";
 import Usuario from "../../usuarios/entidades/Usuario";
 import FechasInvertidasError from "../excepciones/FechasInvertidasError";
@@ -43,6 +43,9 @@ export default class Reserva {
 
     @Column('float')
     public precioPorNoche!: number;
+
+    @CreateDateColumn()
+    public fechaCreacion?: Date
 
     public constructor(args: ReservaConstructor) {
         Object.assign(this, args);

@@ -35,7 +35,7 @@ export async function crearPublicacion(this: any, dataTable?: TableDefinition) {
     await Publicaciones.crear(this, publicacion)
 }
 
-export async function crearPublicacionConEstado(this: any, estado: string, email: string, publicacion: TableDefinition) {
+export async function crearPublicacionConEstado(this: any, estado: string, email: string, publicacion?: TableDefinition) {
     await Usuarios.crear(this, {...Usuarios.ejemplo(), role: 'anfitrión', email})
     await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
 
@@ -59,6 +59,10 @@ Given('que el anfitrión {string} tiene una publicación creada el {string}', as
         pub.fechaCreacion = new Date(fecha)
         await repo.guardar(pub)
     }, emailAnfitrion)
+});
+
+Given('que el anfitrión {string} tiene una publicación {string}', async function (email: string, estadoPublicacion: string) {
+    await crearPublicacionConEstado.bind(this)(estadoPublicacion, email)
 });
 
 Given('que el anfitrión con email {string} tiene una publicación {string} con:', async function (email: string, estadoPublicacion: string, publicacion: TableDefinition) {

@@ -12,4 +12,6 @@ export default interface IReservaRepositorio {
     obtener(id: string): Promise<Reserva>
 
     obtenerConReservasAnidadas(id: string): Promise<Reserva>
+
+    reservasCreadasPorDia(fechaInicio: Date, fechaFin: Date): Promise<any[]>
 }

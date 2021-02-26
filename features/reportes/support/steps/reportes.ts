@@ -11,6 +11,10 @@ When('consulto las publicaciones creadas por día entre {string} y {string}', as
     await Reportes.publicaciones(this, fechaInicio, fechaFin)
 });
 
+When('consulto las reservas creadas por día entre {string} y {string}', async function (fechaInicio: string, fechaFin: string) {
+    await Reportes.reservas(this, fechaInicio, fechaFin)
+});
+
 type ComparerFn<T> = (a: T, b: T) => boolean
 
 function validarReporte(reporte: Reporte<any>, dataTable: TableDefinition, keyComparer?: ComparerFn<string>, valueComparer?: ComparerFn<any>) {

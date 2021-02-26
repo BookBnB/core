@@ -18,6 +18,7 @@ import MonitorFake from './doubles/MonitorFake';
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
+const HOOK_TIMEOUT = 60 * 1000
 const mockServer = setupServer(...buildHandlers());
 
 /**
@@ -46,7 +47,7 @@ BeforeAll(() => {
 /**
  * Setup api and mocks
  */
-Before(async function () {
+Before({ timeout: HOOK_TIMEOUT }, async function () {
     this.reservas = {}
 
     this.reloj = new RelojFake()
@@ -63,6 +64,7 @@ Before(async function () {
         this.monitor
     ).registrar(this.container)
     this.app = await app(this.container)
+    this.sesiones = new GestorDeSesiones();
 });
 
 After(async function () {
@@ -70,10 +72,3 @@ After(async function () {
     await container.get<Connection>().close()
     sinon.restore()
 });
-
-/**
- * Setup sesiones
- */
-Before(function () {
-    this.sesiones = new GestorDeSesiones();
-})
