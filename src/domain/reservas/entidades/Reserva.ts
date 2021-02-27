@@ -2,6 +2,8 @@ import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn} from "typeor
 import Publicacion from "../../publicaciones/entidades/Publicacion";
 import Usuario from "../../usuarios/entidades/Usuario";
 import FechasInvertidasError from "../excepciones/FechasInvertidasError";
+import IServicioNotificaciones from "../../common/servicios/ServicioNotificaciones";
+import Mensaje from "../../usuarios/entidades/Mensaje";
 
 export interface ReservaConstructor {
     fechaInicio: Date;
@@ -56,8 +58,9 @@ export default class Reserva {
         }
     }
 
-    confirmarCreacion() {
+    async confirmarCreacion(notificaciones: IServicioNotificaciones) {
         this.estado = EstadoReserva.CREADA
+        await notificaciones.enviar(this.publicacion.anfitrion, Mensaje.reservaRecibida())
     }
 
     aceptar() {

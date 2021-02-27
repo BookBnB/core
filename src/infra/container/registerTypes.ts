@@ -68,6 +68,12 @@ import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import { IContainer } from "./Container";
 import {CrearUsuarioConGoogle} from "../../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
+import {GuardarDispositivo} from "../../domain/usuarios/casos-uso/GuardarDispositivo";
+import Dispositivo from "../../domain/usuarios/entidades/Dispositivo";
+import IDispositivoRepositorio from "../../domain/usuarios/repositorios/DispositivoRepositorio";
+import DispositivoRepositorio from "../repositories/DispositivoRepositorio";
+import IServicioNotificaciones from "../../domain/common/servicios/ServicioNotificaciones";
+import ServicioNotificaciones from "../servicios/ServicioNotificaciones";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -94,6 +100,7 @@ export default class Registry {
         await this.registrarMetricas(container)
         await this.registrarPagos(container)
         await this.registrarReportes(container)
+        await this.registrarDispositivos(container)
         return container
     }
 
@@ -185,8 +192,8 @@ export default class Registry {
     }
 
     protected async registrarUsuarios(container: DIContainer) {
-        container.registerTransient<ListarPublicacionesPorAnfitrion>();
         container.registerSingleton<UsuarioController>();
+        container.registerTransient<ListarPublicacionesPorAnfitrion>();
 
         const manager: EntityManager = await container.get<Connection>().manager;
         container.registerSingleton<EntityManager>(() => manager);
@@ -221,5 +228,15 @@ export default class Registry {
         container.registerTransient<ReporteCantidadPublicaciones>()
         container.registerTransient<ReporteCantidadReservas>()
         container.registerSingleton<ReportesController>()
+    }
+
+    protected async registrarDispositivos(container: DIContainer) {
+        container.registerTransient<GuardarDispositivo>();
+        container.registerSingleton<IServicioNotificaciones>(() => new ServicioNotificaciones());
+
+        const dispositivosRepo: Repository<Dispositivo> = await container.get<Connection>().getRepository(Dispositivo);
+        container.registerSingleton<Repository<Dispositivo>>(() => dispositivosRepo);
+        container.registerSingleton<IDispositivoRepositorio>(() =>
+            new DispositivoRepositorio(container.get<Repository<Dispositivo>>()));
     }
 }

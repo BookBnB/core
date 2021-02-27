@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsEmail, IsOptional, IsString} from "class-validator";
 import IServicioPagos from "../../common/servicios/ServicioPagos";
 import IServicioUsuarios from "../../sesiones/servicios/ServicioUsuarios";
 import { UseCase } from "../../UseCase";

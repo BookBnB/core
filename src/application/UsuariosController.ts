@@ -4,7 +4,7 @@ import {
     HttpCode,
     JsonController,
     Params,
-    Post, QueryParams,
+    Post, Put, QueryParams,
     UseBefore
 } from 'routing-controllers';
 import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi';
@@ -23,8 +23,9 @@ import {
     ListarReservasDeHuesped
 } from "../domain/reservas/casos-uso/ListarReservasDeHuesped";
 import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
-import {ConsultaDeReservasPorPublicacion} from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
 import {CrearUsuarioConGoogle, CrearUsuarioConGoogleDTO} from "../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
+import DispositivoDTO from "../domain/usuarios/dtos/DispositivoDTO";
+import {GuardarDispositivo} from "../domain/usuarios/casos-uso/GuardarDispositivo";
 
 
 @OpenAPI({security: [{token: []}]})
@@ -35,6 +36,7 @@ export class UsuarioController {
         private readonly listarReservas: ListarReservasDeHuesped,
         private readonly crearUsuario: CrearUsuario,
         private readonly crearUsuarioConGoogle: CrearUsuarioConGoogle,
+        private readonly guardarDispositivo: GuardarDispositivo,
     ) {
     }
 
@@ -77,5 +79,18 @@ export class UsuarioController {
         if (usuario.id !== id && !usuario.tieneRol("admin")) throw new ForbiddenError('Access is denied');
 
         return await this.listarReservas.execute(id, consulta);
+    }
+
+    @Put('/:id/dispositivos')
+    @OpenAPI({summary: 'Cambia el dispositivo del usuario'})
+    @UseBefore(AuthenticationMiddleware)
+    @ResponseSchema(DispositivoDTO)
+    async guardarDispositivo_(
+        @CurrentUser() usuario: Usuario,
+        @Params() {id}: UUID,
+        @Body() body: DispositivoDTO): Promise<DispositivoDTO> {
+        if (usuario.id !== id) throw new ForbiddenError('Access is denied');
+
+        return await this.guardarDispositivo.execute(usuario, body);
     }
 }

@@ -71,4 +71,8 @@ export default class Usuarios extends Recurso {
     public static async listarPublicaciones(context: any, anfitrionId: string) {
         await this.get(context, `/${anfitrionId}/publicaciones`)
     }
+
+    public static async guardarDispositivo(context: any, usuarioId: string, token: string) {
+        await this.put(context, `/${usuarioId}/dispositivos`, {token})
+    }
 }

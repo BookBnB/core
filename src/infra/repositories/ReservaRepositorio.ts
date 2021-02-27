@@ -3,7 +3,6 @@ import Reserva from "../../domain/reservas/entidades/Reserva";
 import IReservaRepositorio from "../../domain/reservas/repositorios/ReservaRepositorio";
 import {customAlphabet} from "nanoid";
 import {ConsultaDeReservasPorPublicacion} from "../../domain/reservas/casos-uso/ListarReservasDePublicacion";
-import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import ReservaInexistenteError from "../../domain/reservas/excepciones/ReservaInexistenteError";
 import {ConsultaDeReservasPorHuesped} from "../../domain/reservas/casos-uso/ListarReservasDeHuesped";
 
