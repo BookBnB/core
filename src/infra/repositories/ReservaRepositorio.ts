@@ -79,12 +79,26 @@ export default class ReservaRepositorio implements IReservaRepositorio {
             .getMany()
     }
 
-    async reservasCreadasPorDia(fechaInicio: Date, fechaFin: Date): Promise<any[]> {
+    reservasCreadasPorDia(fechaInicio: Date, fechaFin: Date): Promise<any[]> {
         return this.repo.createQueryBuilder('reserva')
             .where(fechaInicio ? ':fechaInicio <= reserva.fechaCreacion' : 'TRUE')
             .andWhere(fechaFin ? 'reserva.fechaCreacion <= :fechaFin' : 'TRUE')
             .groupBy('reserva.fechaCreacion')
             .select(['reserva.fechaCreacion AS "fechaCreacion"', 'COUNT(reserva.id) AS "cantidad"'])
+            .setParameters({ fechaInicio, fechaFin })
+            .getRawMany()
+    }
+
+    async reservasActivas(fechaInicio: Date, fechaFin: Date): Promise<any[]> {
+        return this.repo.createQueryBuilder('reserva')
+            .where('reserva.estado = \'aceptada\'')
+            .innerJoin(`(
+                SELECT DATE(generate_series) AS fecha
+                FROM generate_series(:fechaInicio::timestamp, :fechaFin, '1 day')
+            )`, 'f', 'reserva."fechaInicio" <= f."fecha" AND f."fecha" < reserva."fechaFin"')
+            .groupBy('f.fecha')
+            .select(['f."fecha"', 'COUNT(*) AS "cantidad"'])
+            .orderBy('f.fecha')
             .setParameters({ fechaInicio, fechaFin })
             .getRawMany()
     }

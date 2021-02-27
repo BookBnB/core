@@ -4,7 +4,6 @@ Característica:
   Quiero poder ver la cantidad de publicaciones creadas por día
   Para medir el uso de la plataforma
 
-  @only
   Escenario: Publicaciones por día - Completo
     Dado que existe el "anfitrión" con email "anfitrion@book.bnb"
     Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-01'
@@ -22,7 +21,6 @@ Característica:
     | 2020-02-03 | 3     |
     | 2020-02-05 | 1     |
 
-  @only
   Escenario: Publicaciones por día - Parcial
     Dado que existe el "anfitrión" con email "anfitrion@book.bnb"
     Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-01'

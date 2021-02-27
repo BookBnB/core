@@ -21,4 +21,11 @@ export default class Reportes extends Recurso {
             fechaFin
         })
     }
+
+    public static async reservasActivas(context: World, fechaInicio: string, fechaFin: string) {
+        await this.get(context, `/reservasActivas`, {
+            fechaInicio,
+            fechaFin
+        })
+    }
 }
