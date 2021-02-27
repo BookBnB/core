@@ -32,6 +32,7 @@ import IPreguntaRepositorio from "../../domain/publicaciones/repositorios/Pregun
 import IPublicacionRepositorio from "../../domain/publicaciones/repositorios/PublicacionRepositorio";
 import { ReporteCantidadPublicaciones } from "../../domain/reportes/casos-uso/ReporteCantidadPublicaciones";
 import { ReporteCantidadReservas } from "../../domain/reportes/casos-uso/ReporteCantidadReservas";
+import { ReporteReservasActivas } from "../../domain/reportes/casos-uso/ReporteReservasActivas";
 import { AprobarReserva } from "../../domain/reservas/casos-uso/AprobarReserva";
 import { CancelarReserva } from "../../domain/reservas/casos-uso/CancelarReserva";
 import { ConfirmarAceptacionReserva } from "../../domain/reservas/casos-uso/ConfirmarAceptacionReserva";
@@ -227,6 +228,7 @@ export default class Registry {
     protected async registrarReportes(container: DIContainer) {
         container.registerTransient<ReporteCantidadPublicaciones>()
         container.registerTransient<ReporteCantidadReservas>()
+        container.registerTransient<ReporteReservasActivas>()
         container.registerSingleton<ReportesController>()
     }
 

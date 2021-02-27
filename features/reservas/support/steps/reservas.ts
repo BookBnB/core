@@ -93,7 +93,7 @@ Given('que el anfitrión con email {string} rechazó mi reserva', async function
     }, anfitrionEmail)
 });
 
-Given('que el huesped {string} tiene una reserva del {string} al {string} creada el {string}', async function (huespedEmail, fechaInicio, fechaFin, fechaCreacion) {
+async function crearReservaConFecha(this: any, huespedEmail: string, fechaInicio: string, fechaFin: string, fechaCreacion: string) {
     await reservarConUsuario.bind(this)(
         huespedEmail,
         this.last_publicacion.body.titulo,
@@ -104,6 +104,19 @@ Given('que el huesped {string} tiene una reserva del {string} al {string} creada
     let res = await repo.obtener(this.last_response.body.id)
     res.fechaCreacion = new Date(fechaCreacion)
     await repo.guardar(res)
+
+    await Eventos.reservaCreada(this, res.id || '')
+
+    return res
+}
+
+Given('que el huesped {string} tiene una reserva del {string} al {string} creada el {string}', async function (huespedEmail, fechaInicio, fechaFin, fechaCreacion) {
+    await crearReservaConFecha.bind(this)(huespedEmail, fechaInicio, fechaFin, fechaCreacion)
+});
+
+Given('que el huesped {string} tiene una reserva aceptada del {string} al {string} creada el {string}', async function (huespedEmail, fechaInicio, fechaFin, fechaCreacion) {
+    const reserva = await crearReservaConFecha.bind(this)(huespedEmail, fechaInicio, fechaFin, fechaCreacion)
+    await Eventos.reservaAceptada(this, reserva.id || '')
 });
 
 When('el huésped con email {string} realiza una reserva en la publicación con título {string} con:', async function (email: string, titulo: string, dataTable: TableDefinition) {
