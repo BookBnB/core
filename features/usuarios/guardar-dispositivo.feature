@@ -6,6 +6,11 @@ Característica:
 
   Escenario: Guardar dispositivo
     Dado que soy "anfitrión"
-    Cuando guardo mi dispositivo
-    Entonces recibo una confirmación con mi dispositivo creado
+    Cuando guardo mi dispositivo con token "un_token"
+    Entonces recibo una confirmación con mi dispositivo creado con token "un_token"
 
+  Escenario: Guardar dispositivo reemplaza el anterior
+    Dado que soy "anfitrión"
+    Cuando guardo mi dispositivo con token "un_token"
+    Y guardo mi dispositivo con token "otro_token"
+    Entonces recibo una confirmación con mi dispositivo creado con token "otro_token"
