@@ -45,7 +45,7 @@ export class UsuarioController {
         return await this.crearUsuario.execute(body)
     }
 
-    @Post('/google')
+    @Post('/google/')
     @HttpCode(201)
     @ResponseSchema(UsuarioDTO)
     async crearGoogle(@Body() body: CrearUsuarioConGoogleDTO) {

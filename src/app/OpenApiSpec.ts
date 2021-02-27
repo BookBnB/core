@@ -12,20 +12,24 @@ import UsersServiceProxy from "./UsersServiceProxy";
 import Api from "./Api";
 import {SuccessfulMergeResult} from "openapi-merge/dist/data";
 import PaymentsServiceProxy from "./PaymentsServiceProxy";
+import {ILogger} from "../infra/logging/Logger";
 
 
 export interface ApiConstructor {
     app: Application,
-    openApiInfo?: Partial<OpenAPIObject>
+    openApiInfo?: Partial<OpenAPIObject>,
+    logger: ILogger
 }
 
 export default class OpenApiSpec {
     private readonly app: Application;
     private readonly openApiInfo: Partial<OpenAPIObject>;
+    private readonly logger: ILogger;
 
-    private constructor({app, openApiInfo = {}}: ApiConstructor) {
+    private constructor({app, openApiInfo = {}, logger}: ApiConstructor) {
         this.app = app
         this.openApiInfo = openApiInfo
+        this.logger = logger
     }
 
     public static async crear(args: ApiConstructor) {
@@ -66,8 +70,8 @@ export default class OpenApiSpec {
             }
         )
 
-        const usersSpec = await OpenApiSpec.serviceApiDocs(process.env['USERS_OPENAPI_SPEC_URL'] as string)
-        const paymentsSpec = await OpenApiSpec.serviceApiDocs(process.env['PAYMENTS_OPENAPI_SPEC_URL'] as string)
+        const usersSpec = await this.serviceApiDocs(process.env['USERS_OPENAPI_SPEC_URL'] as string)
+        const paymentsSpec = await this.serviceApiDocs(process.env['PAYMENTS_OPENAPI_SPEC_URL'] as string)
 
         // @ts-ignore
         let spec = usersSpec ? OpenApiSpec.mergeApiDocs(coreSpec, usersSpec, UsersServiceProxy.proxyTags()) : coreSpec
@@ -110,18 +114,18 @@ export default class OpenApiSpec {
     /**
      * Junta las especificaciones OpenApi en una.
      * @param spec
-     * @param userSpec
+     * @param otherSpec
      * @param tags
      * @private
      */
-    private static mergeApiDocs(spec: object, userSpec: object, tags: string[]) {
+    private static mergeApiDocs(spec: object, otherSpec: object, tags: string[]) {
         return (merge([
             {
                 // @ts-ignore
                 oas: spec
             }, {
                 // @ts-ignore
-                oas: userSpec,
+                oas: otherSpec,
                 operationSelection: {
                     includeTags: tags,
                 }
@@ -133,12 +137,16 @@ export default class OpenApiSpec {
      * Devuelve el spec de una url.
      * @private
      */
-    private static async serviceApiDocs(specUrl: string) {
+    private async serviceApiDocs(specUrl: string) {
+        this.logger.info(`Buscando api docs en ${specUrl}.`)
+
         if (!isURL(specUrl as string, {require_tld: false, allow_underscores: true}))
             return
 
         try {
-            return (await axios.get(specUrl as string)).data
+            const resultado = (await axios.get(specUrl as string)).data
+            this.logger.debug(`Resultado de apidocs en ${specUrl}: ${JSON.stringify(resultado)}.`)
+            return resultado
         } catch (e) {
             return
         }

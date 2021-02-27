@@ -25,7 +25,8 @@ export default async (container: IContainer): Promise<Application> => {
                 title: 'BookBnB: Core',
                 version: '1.0.0'
             }
-        }
+        },
+        logger
     })
     new UsersServiceProxy({app, logger})
     new PaymentsServiceProxy({app, logger})

@@ -24,6 +24,10 @@ export default class UsersServiceProxy {
             return false;
         }
 
+        if (pathname === '/v1/usuarios/google' && req.method === 'POST') {
+            return false;
+        }
+
         const endpoints = UsersServiceProxy.proxyEndpoints()
         return endpoints.find(e => pathname.match(`^${e}`)) != undefined
     }
