@@ -10,9 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - name: Cache docker layers
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true # Ignore the failure of a step and avoid terminating the job.
       - name: Cache node dependencies
         uses: actions/cache@v2
         with:
@@ -41,9 +38,6 @@ jobs:
       refs/heads/develop
       ', github.ref)
     steps:
-      - name: Cache docker layers
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true # Ignore the failure of a step and avoid terminating the job.
       - name: Checkout code
         uses: actions/checkout@v1
       - name: Build image

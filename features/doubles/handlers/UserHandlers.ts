@@ -40,6 +40,17 @@ export default function userHandlers() {
                 ctx.status(200),
                 ctx.json(usuario)
             );
+        }),
+        rest.post(`${process.env['USERS_SERVICE_URL']}/v1/usuarios/google`, (req, res, ctx) => {
+
+            const usuario: Usuario = <Usuario>req.body;
+
+            usuario.id = uuidv4()
+
+            return res(
+                ctx.status(200),
+                ctx.json(usuario)
+            );
         })
     ]
 }

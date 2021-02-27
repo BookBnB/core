@@ -50,6 +50,17 @@ export default class Usuarios extends Recurso {
         return usuario
     }
 
+    public static async crearConGoogle(context: any, rol: string, token: string) {
+        const role = this.roles().get(rol) || rol
+
+        context.last_response = await chai.request(context.app)
+            .post('/v1/usuarios/google')
+            .type('json')
+            .send({role, token});
+
+        context.last_usuario = context.last_response
+    }
+
     public static async crearActual(context: World, rol: string, email: string = 'john@doe.com') {
         const usuario = await this.crear(context, {...this.ejemplo(), role: rol, email})
         context.sesiones.registrarActual(usuario);

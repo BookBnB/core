@@ -67,6 +67,7 @@ import ServicioPagos from "../servicios/ServicioPagos";
 import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import { IContainer } from "./Container";
+import {CrearUsuarioConGoogle} from "../../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -149,6 +150,7 @@ export default class Registry {
         container.registerTransient<CrearSesion>();
         container.registerTransient<CrearSesionConGoogle>();
         container.registerTransient<CrearUsuario>();
+        container.registerTransient<CrearUsuarioConGoogle>();
 
         container.registerSingleton<AuthenticationMiddleware>(() =>
             new AuthenticationMiddleware(

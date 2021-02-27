@@ -7,9 +7,11 @@ import { CrearUsuarioDTO } from "../../domain/usuarios/casos-uso/CrearUsuario";
 import UsuarioDTO from "../../domain/usuarios/dtos/UsuarioDTO";
 import ApiExterna from "./ApiExterna";
 import {Servidor} from "../../application/ServidorController";
+import {CrearUsuarioConGoogleDTO} from "../../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
 
 export default class ServicioUsuarios extends ApiExterna implements IServicioUsuarios {
     private readonly RUTA_CREAR = '/v1/usuarios'
+    private readonly RUTA_CREAR_GOOGLE = '/v1/usuarios/google'
     private readonly RUTA_SESION = '/v1/sesiones';
     private readonly RUTA_SESION_GOOGLE = '/v1/sesiones/google';
     private readonly RUTA_SERVIDORES = '/v1/servidores';
@@ -40,6 +42,12 @@ export default class ServicioUsuarios extends ApiExterna implements IServicioUsu
 
     async crearUsuario(body: CrearUsuarioDTO): Promise<UsuarioDTO> {
         const res = await this.post(`${this.serviceUrl}${this.RUTA_CREAR}`, body)
+
+        return new UsuarioDTO(res.data)
+    }
+
+    async crearUsuarioConGoogle(body: CrearUsuarioConGoogleDTO): Promise<UsuarioDTO> {
+        const res = await this.post(`${this.serviceUrl}${this.RUTA_CREAR_GOOGLE}`, body)
 
         return new UsuarioDTO(res.data)
     }

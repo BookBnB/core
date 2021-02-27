@@ -24,6 +24,7 @@ import {
 } from "../domain/reservas/casos-uso/ListarReservasDeHuesped";
 import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
 import {ConsultaDeReservasPorPublicacion} from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
+import {CrearUsuarioConGoogle, CrearUsuarioConGoogleDTO} from "../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
 
 
 @OpenAPI({security: [{token: []}]})
@@ -33,6 +34,7 @@ export class UsuarioController {
         private readonly listarPublicaciones: ListarPublicacionesPorAnfitrion,
         private readonly listarReservas: ListarReservasDeHuesped,
         private readonly crearUsuario: CrearUsuario,
+        private readonly crearUsuarioConGoogle: CrearUsuarioConGoogle,
     ) {
     }
 
@@ -41,6 +43,13 @@ export class UsuarioController {
     @ResponseSchema(UsuarioDTO)
     async crear(@Body() body: CrearUsuarioDTO) {
         return await this.crearUsuario.execute(body)
+    }
+
+    @Post('/google')
+    @HttpCode(201)
+    @ResponseSchema(UsuarioDTO)
+    async crearGoogle(@Body() body: CrearUsuarioConGoogleDTO) {
+        return await this.crearUsuarioConGoogle.execute(body)
     }
 
     @Get('/:id/publicaciones')
