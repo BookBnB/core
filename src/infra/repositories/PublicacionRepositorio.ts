@@ -63,8 +63,8 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
         return this.repo.createQueryBuilder('publicacion')
             .where(fechaInicio ? ':fechaInicio <= publicacion.fechaCreacion' : 'TRUE')
             .andWhere(fechaFin ? 'publicacion.fechaCreacion <= :fechaFin' : 'TRUE')
-            .groupBy('publicacion.fechaCreacion')
-            .select(['publicacion.fechaCreacion AS "fechaCreacion"', 'COUNT(publicacion.id) AS "cantidad"'])
+            .groupBy('DATE(publicacion.fechaCreacion)')
+            .select(['DATE(publicacion.fechaCreacion) AS "fechaCreacion"', 'COUNT(publicacion.id) AS "cantidad"'])
             .setParameters({ fechaInicio, fechaFin })
             .getRawMany()
     }

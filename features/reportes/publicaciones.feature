@@ -8,7 +8,7 @@ Característica:
     Dado que existe el "anfitrión" con email "anfitrion@book.bnb"
     Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-01'
     Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-01'
-    Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-02'
+    Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-02T12:00:00.000Z'
     Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-03'
     Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-03'
     Y que el anfitrión 'anfitrion@book.bnb' tiene una publicación creada el '2020-02-03'

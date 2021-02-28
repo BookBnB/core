@@ -82,8 +82,8 @@ export default class ReservaRepositorio implements IReservaRepositorio {
         return this.repo.createQueryBuilder('reserva')
             .where(fechaInicio ? ':fechaInicio <= reserva.fechaCreacion' : 'TRUE')
             .andWhere(fechaFin ? 'reserva.fechaCreacion <= :fechaFin' : 'TRUE')
-            .groupBy('reserva.fechaCreacion')
-            .select(['reserva.fechaCreacion AS "fechaCreacion"', 'COUNT(reserva.id) AS "cantidad"'])
+            .groupBy('DATE(reserva.fechaCreacion)')
+            .select(['DATE(reserva.fechaCreacion) AS "fechaCreacion"', 'COUNT(reserva.id) AS "cantidad"'])
             .setParameters({ fechaInicio, fechaFin })
             .getRawMany()
     }
