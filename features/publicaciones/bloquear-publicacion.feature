@@ -95,3 +95,13 @@ Característica:
     Cuando desbloqueo la publicación
     Y ingreso a la publicación con título "Casa en Salta"
     Entonces veo que la publicación no está bloqueada
+
+  Escenario: Anfitrión intenta bloquear publicación
+    Dado que soy el usuario "anfitrion@book.bnb"
+    Cuando bloqueo la publicación
+    Entonces obtengo un error 403 con mensaje "Access is denied"
+
+  Escenario: Anfitrión intenta bloquear publicación
+    Dado que soy "huesped"
+    Cuando bloqueo la publicación
+    Entonces obtengo un error 403 con mensaje "Access is denied"

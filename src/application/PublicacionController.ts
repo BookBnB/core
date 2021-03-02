@@ -169,9 +169,10 @@ export class PublicacionController {
 
     @Put('/:id/bloqueo')
     @HttpCode(200)
+    @Authorized(RolUsuario.ADMIN)
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Bloquea una publicación'})
-    async bloquear(@Params() {id: publicacionId}: UUID, @Body() body: BloquearPublicacionDTO ): Promise<PublicacionDTO> {
+    async bloquear(@Params() {id: publicacionId}: UUID, @Body() body: BloquearPublicacionDTO): Promise<PublicacionDTO> {
         const publicacion = await this.bloquearPublicacion.execute(publicacionId, body) 
 
         return new PublicacionDTO(publicacion)
