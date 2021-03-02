@@ -34,7 +34,7 @@ import {
     ListarReservasDePublicacion
 } from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
 import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
-import Usuario from '../domain/usuarios/entidades/Usuario';
+import Usuario, { RolUsuario } from '../domain/usuarios/entidades/Usuario';
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 
 
@@ -101,7 +101,7 @@ export class PublicacionController {
 
     @Post('/')
     @HttpCode(201)
-    @Authorized("host")
+    @Authorized(RolUsuario.ANFITRION)
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Crea una publicación'})
     crear(@CurrentUser() usuario: Usuario, @Body() body: CrearPublicacionDTO): Promise<PublicacionDTO> {
@@ -109,7 +109,7 @@ export class PublicacionController {
     }
 
     @Put('/:id')
-    @Authorized("host")
+    @Authorized(RolUsuario.ANFITRION)
     @ResponseSchema(PublicacionDTO)
     @OpenAPI({summary: 'Editar una publicación'})
     editar(@Body() body: CrearPublicacionDTO) {

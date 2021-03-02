@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import Usuario from "../../usuarios/entidades/Usuario";
+import Usuario, { RolUsuario } from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
 import Reserva from "../../reservas/entidades/Reserva";
@@ -167,6 +167,6 @@ export default class Publicacion {
     }
 
     bloqueadaPara(usuario: Usuario) {
-        return this.bloqueada && !usuario.tieneRol('admin')
+        return this.bloqueada && !usuario.tieneRol(RolUsuario.ADMIN)
     }
 }

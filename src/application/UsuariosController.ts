@@ -11,7 +11,7 @@ import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi';
 import UUID from '../domain/common/UUID';
 import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
 import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
-import Usuario from "../domain/usuarios/entidades/Usuario";
+import Usuario, { RolUsuario } from "../domain/usuarios/entidades/Usuario";
 import {
     ConsultaDePublicacionesPorAnfitrion,
     ListarPublicacionesPorAnfitrion
@@ -55,12 +55,12 @@ export class UsuarioController {
     }
 
     @Get('/:id/publicaciones')
-    @Authorized("host")
+    @Authorized(RolUsuario.ANFITRION)
     @OpenAPI({summary: 'Lista las publicaciones de un anfitrión'})
     @UseBefore(AuthenticationMiddleware)
     @ResponseSchema(PublicacionDTO)
     async listarPub(@CurrentUser() usuario: Usuario, @Params() {id}: UUID): Promise<PublicacionDTO[]> {
-        if (usuario.id !== id && !usuario.tieneRol("admin")) throw new ForbiddenError('Access is denied');
+        if (usuario.id !== id && !usuario.tieneRol(RolUsuario.ADMIN)) throw new ForbiddenError('Access is denied');
 
         let consulta = new ConsultaDePublicacionesPorAnfitrion(id);
 
@@ -68,7 +68,7 @@ export class UsuarioController {
     }
 
     @Get('/:id/reservas')
-    @Authorized(["guest", "admin"])
+    @Authorized([RolUsuario.HUESPED, RolUsuario.ADMIN])
     @OpenAPI({summary: 'Lista las reservas de un huésped'})
     @UseBefore(AuthenticationMiddleware)
     @ResponseSchema(ReservaDTO)
@@ -76,7 +76,7 @@ export class UsuarioController {
         @CurrentUser() usuario: Usuario,
         @Params() {id}: UUID,
         @QueryParams() consulta: ConsultaDeReservasPorHuesped): Promise<ReservaDTO[]> {
-        if (usuario.id !== id && !usuario.tieneRol("admin")) throw new ForbiddenError('Access is denied');
+        if (usuario.id !== id && !usuario.tieneRol(RolUsuario.ADMIN)) throw new ForbiddenError('Access is denied');
 
         return await this.listarReservas.execute(id, consulta);
     }

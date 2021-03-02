@@ -1,4 +1,5 @@
 import { IsEmail, IsOptional, IsString, IsUUID } from "class-validator"
+import { RolUsuario } from "../entidades/Usuario"
 
 export default class UsuarioDTO {
     @IsUUID(4)
@@ -8,7 +9,7 @@ export default class UsuarioDTO {
     public email!: string
 
     @IsString()
-    public role!: string
+    public role!: RolUsuario
 
     @IsString()
     public name!: string

@@ -2,6 +2,7 @@ import Recurso from "../../util/Recurso";
 import chai from "chai";
 import {World} from "cucumber";
 import Sesiones from "../../sesiones/support/Sesiones";
+import { RolUsuario } from "../../../src/domain/usuarios/entidades/Usuario";
 
 export interface Usuario {
     id: string,
@@ -30,9 +31,9 @@ export default class Usuarios extends Recurso {
 
     public static roles(): Map<string, string> {
         return new Map([
-            ["anfitrión", "host"],
-            ["huésped", "guest"],
-            ["administrador", "admin"]
+            ["anfitrión", RolUsuario.ANFITRION],
+            ["huésped", RolUsuario.HUESPED],
+            ["administrador", RolUsuario.ADMIN]
         ])
     }
 

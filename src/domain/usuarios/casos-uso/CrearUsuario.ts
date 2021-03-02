@@ -3,13 +3,13 @@ import IServicioPagos from "../../common/servicios/ServicioPagos";
 import IServicioUsuarios from "../../sesiones/servicios/ServicioUsuarios";
 import { UseCase } from "../../UseCase";
 import UsuarioDTO from "../dtos/UsuarioDTO";
-import Usuario from "../entidades/Usuario";
+import Usuario, { RolUsuario } from "../entidades/Usuario";
 
 export class CrearUsuarioDTO {
     @IsString() @IsEmail()
     public email!: string
     @IsString()
-    public role!: string
+    public role!: RolUsuario
     @IsString()
     public name!: string
     @IsString()

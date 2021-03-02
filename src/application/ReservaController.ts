@@ -17,7 +17,7 @@ import {AprobarReserva} from "../domain/reservas/casos-uso/AprobarReserva";
 import {CrearReserva, CrearReservaDTO} from "../domain/reservas/casos-uso/CrearReserva";
 import {VerReserva} from "../domain/reservas/casos-uso/VerReserva";
 import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
-import Usuario from "../domain/usuarios/entidades/Usuario";
+import Usuario, { RolUsuario } from "../domain/usuarios/entidades/Usuario";
 import ResultadoEvento from "./common/ResultadoEvento";
 import AuthenticationMiddleware from "./middlewares/AuthenticationMiddleware";
 import {RechazarReserva} from "../domain/reservas/casos-uso/RechazarReserva";
@@ -50,7 +50,7 @@ export class ReservaController {
 
     @Post('/')
     @HttpCode(201)
-    @Authorized("guest")
+    @Authorized(RolUsuario.HUESPED)
     @ResponseSchema(ReservaDTO)
     @OpenAPI({summary: 'Crea una reserva para una publicación'})
     async crear(@CurrentUser() usuario: Usuario, @Body() body: CrearReservaDTO): Promise<ReservaDTO> {
