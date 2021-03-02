@@ -5,11 +5,12 @@ import chaiSubset from "chai-subset";
 import { Given, TableDefinition, Then, When } from "cucumber";
 import _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
-import { EstadoPublicacion } from "../../../../src/domain/publicaciones/entidades/Publicacion";
+import Publicacion, { EstadoPublicacion } from "../../../../src/domain/publicaciones/entidades/Publicacion";
 import IPublicacionRepositorio from "../../../../src/domain/publicaciones/repositorios/PublicacionRepositorio";
 import Eventos from "../../../common/Eventos";
 import Sesiones from "../../../sesiones/support/Sesiones";
 import Usuarios from "../../../usuarios/support/Usuarios";
+import GestorDeSesiones from "../../../util/GestorDeSesiones";
 import { validarConjunto } from "../../../util/Validacion";
 import Publicaciones from "../Publicaciones";
 
@@ -122,6 +123,20 @@ When(/^busco las primeras (\d+) publicaciones(:? "([^"]*)")?$/, async function (
     await Publicaciones.listar(this, {cantidad, estado: estadoCorrecto as undefined})
 });
 
+When(/^busco las primeras (\d+) publicaciones(:? "([^"]*)"), incluyendo bloqueadas?$/, async function (cantidad, estado) {
+    const estadoCorrecto = new Map([
+        ['pendientes', EstadoPublicacion.PENDIENTE_DE_CREACION],
+        ['creadas', EstadoPublicacion.CREADA],
+        ['rechazadas', EstadoPublicacion.RECHAZADA],
+    ]).get(estado)
+
+    await Publicaciones.listar(this, {
+        cantidad,
+        estado: estadoCorrecto as undefined,
+        incluirBloqueadas: true
+    })
+});
+
 When('busco las primeras {int} publicaciones de tipo {string}', async function (cantidad, tipoDeAlojamiento) {
     await Publicaciones.listar(this, {cantidad, tipoDeAlojamiento})
 });
@@ -169,6 +184,32 @@ When('listo las publicaciones del anfitrion {string}', async function (email) {
 When('listo las publicaciones del anfitrion de id {string}', async function (id) {
     await Usuarios.listarPublicaciones(this, id);
 });
+
+When('bloqueo la publicación', async function () {
+    await Publicaciones.bloquear(this, this.last_publicacion.body.id)
+});
+
+When('desbloqueo la publicación', async function () {
+    await Publicaciones.desbloquear(this, this.last_publicacion.body.id)
+});
+
+When('que {string} bloquea la publicación', async function (email) {
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Publicaciones.bloquear(this, this.last_publicacion.body.id)
+    }, email)
+});
+
+When('bloqueo la publicación de id {string}', async function (id) {
+    await Publicaciones.bloquear(this, id)
+});
+
+Then('veo que la publicación está bloqueada', function () {
+    expect(this.last_response.body.bloqueada).to.be.true
+})
+
+Then('veo que la publicación no está bloqueada', function () {
+    expect(this.last_response.body.bloqueada).to.be.false
+})
 
 Then('veo que está publicada a mí nombre', function () {
     expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)

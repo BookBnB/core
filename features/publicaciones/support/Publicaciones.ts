@@ -29,7 +29,8 @@ export default class Publicaciones extends Recurso {
             },
             cantidadDeHuespedes: 2,
             tipoDeAlojamiento: 'Alojamiento entero',
-            imagenes: []
+            imagenes: [],
+            bloqueada: false
         }
     }
 
@@ -55,7 +56,8 @@ export default class Publicaciones extends Recurso {
             precioPorNocheMaximo = undefined,
             fechaInicio = undefined,
             fechaFin = undefined,
-            estado = undefined
+            estado = undefined,
+            incluirBloqueadas = false
         } = {}) {
 
         await this.get(context, '/', {
@@ -72,7 +74,8 @@ export default class Publicaciones extends Recurso {
             precioPorNocheMaximo,
             fechaInicio,
             fechaFin,
-            estado
+            estado,
+            incluirBloqueadas
         })
     }
 
@@ -86,5 +89,13 @@ export default class Publicaciones extends Recurso {
 
     static async responder(context: any, publicacionId: string, preguntaId: string, respuesta: string) {
         await this.post(context, `/${publicacionId}/preguntas/${preguntaId}/respuesta`, {descripcion: respuesta})
+    }
+
+    static async bloquear(context: any, publicacionId: string) {
+        await this.put(context, `/${publicacionId}/bloqueo`, {bloqueada: true})
+    }
+
+    static async desbloquear(context: any, publicacionId: string) {
+        await this.put(context, `/${publicacionId}/bloqueo`, {bloqueada: false})
     }
 }

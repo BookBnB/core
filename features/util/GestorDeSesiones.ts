@@ -32,9 +32,14 @@ export default class GestorDeSesiones {
         if (entrada) entrada.token = token;
     }
 
-    async ejecutarBajoSesion(callback: any, email: string) {
+    obtenerEntrada(email: string) {
         const entrada = this.entradas.get(GestorDeSesiones.getClave(email));
         if (!entrada) throw Error(`Sesion para usuario con email ${email} no encontrada`)
+        return entrada
+    }
+
+    async ejecutarBajoSesion(callback: any, email: string) {
+        const entrada = this.obtenerEntrada(email)        
 
         const usuarioPrevio = this._usuarioActual;
         const tokenPrevio = this._tokenActual;
@@ -63,5 +68,15 @@ export default class GestorDeSesiones {
 
     setTokenActual(token: string) {
         this._tokenActual = token
+    }
+
+    usarSesionDe(email: string) {
+        const entrada = this.obtenerEntrada(email)
+
+        if (!entrada.token)
+            throw new Error('Token de sesión inexistente')
+
+        this._usuarioActual = entrada.usuario
+        this._tokenActual = entrada.token
     }
 }

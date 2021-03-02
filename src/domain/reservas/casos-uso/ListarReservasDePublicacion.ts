@@ -3,7 +3,7 @@ import ReservaDTO from "../dtos/ReservaDTO";
 import Reserva, {EstadoReserva} from "../entidades/Reserva";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
 import IPublicacionRepositorio from "../../publicaciones/repositorios/PublicacionRepositorio";
-import Usuario from "../../usuarios/entidades/Usuario";
+import Usuario, { RolUsuario } from "../../usuarios/entidades/Usuario";
 import UsuarioNoAutorizadoError from "../../common/excepciones/UsuarioNoAutorizadoError";
 
 export class ConsultaDeReservasPorPublicacion {
@@ -20,7 +20,7 @@ export class ListarReservasDePublicacion {
 
     async execute(usuario: Usuario, publicacionId: string, consulta: ConsultaDeReservasPorPublicacion): Promise<ReservaDTO[]> {
         const publicacion = await this.publicaciones.obtener(publicacionId)
-        if(!publicacion.anfitrion.esIgualA(usuario) && !usuario.tieneRol("admin"))
+        if(!publicacion.anfitrion.esIgualA(usuario) && !usuario.tieneRol(RolUsuario.ADMIN))
             throw new UsuarioNoAutorizadoError('El usuario no es el anfitrión de la publicación')
 
         return (await this.reservas.listar(publicacionId, consulta))

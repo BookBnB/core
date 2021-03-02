@@ -3,7 +3,7 @@ import PublicacionDTO from "../dtos/PublicacionDTO";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 import Publicacion, {EstadoPublicacion, TipoDeAlojamiento} from "../entidades/Publicacion";
 import ConsultaConPaginacion from "../../common/ConsultaConPaginacion";
-import {IsDate, IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, ValidateNested} from "class-validator";
+import {IsBoolean, IsDate, IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
 import {Coordenadas} from "../../lugares/entidades/Lugar";
 import {JSONSchema} from "class-validator-jsonschema";
@@ -37,6 +37,9 @@ export class ConsultaDePublicaciones extends ConsultaConPaginacion {
 
     @IsEnum(EstadoPublicacion) @IsOptional()
     public estado?: EstadoPublicacion = undefined
+
+    @IsBoolean() @IsOptional()
+    public incluirBloqueadas?: boolean = false
 }
 
 export class BuscarPublicaciones implements UseCase {

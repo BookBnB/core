@@ -21,6 +21,10 @@ Given('que soy {string}', async function (rol: string) {
 Given('que soy el {string}', function (servicio: string) {
 });
 
+Given('que soy el usuario {string}', function (email) {
+    this.sesiones.usarSesionDe(email)
+});
+
 Then('obtengo un mensaje de error {string}', function (error: string) {
     expect(this.last_response).to.be.json
     expect(this.last_response).to.have.status(400)

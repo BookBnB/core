@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import Usuario from "../../usuarios/entidades/Usuario";
+import Usuario, { RolUsuario } from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
 import Reserva from "../../reservas/entidades/Reserva";
@@ -22,6 +22,7 @@ export interface PublicacionConstructor {
     cantidadDeHuespedes: number
     anfitrion: Usuario,
     imagenes: Imagen[]
+    bloqueada?: boolean
 }
 
 export enum EstadoPublicacion {
@@ -86,6 +87,9 @@ export default class Publicacion {
 
     @CreateDateColumn()
     public fechaCreacion?: Date
+
+    @Column('bool', { default: false })
+    public bloqueada: boolean = false;
 
     constructor(args: PublicacionConstructor) {
         Object.assign(this, args)
@@ -152,5 +156,17 @@ export default class Publicacion {
         return calificaciones
             .map(calificacion => calificacion.puntos)
             .reduce((p, c) => p + c, 0) / calificaciones.length
+    }
+
+    bloquear() {
+        this.bloqueada = true
+    }
+
+    desbloquear() {
+        this.bloqueada = false
+    }
+
+    bloqueadaPara(usuario: Usuario) {
+        return this.bloqueada && !usuario.tieneRol(RolUsuario.ADMIN)
     }
 }
