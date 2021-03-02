@@ -12,10 +12,12 @@ import { ServidorController } from "../../application/ServidorController";
 import { SesionController } from "../../application/SesionController";
 import { UsuarioController } from "../../application/UsuariosController";
 import IReloj from "../../domain/common/servicios/Reloj";
+import IServicioNotificaciones from "../../domain/common/servicios/ServicioNotificaciones";
 import IServicioPagos from "../../domain/common/servicios/ServicioPagos";
 import { BuscarCiudades } from "../../domain/lugares/casos-uso/BuscarCiudades";
 import { BuscarDirecciones } from "../../domain/lugares/casos-uso/BuscarDirecciones";
 import IServicioLugares from "../../domain/lugares/servicios/ServicioLugares";
+import { BloquearPublicacion } from "../../domain/publicaciones/casos-uso/BloquearPublicacion";
 import { BuscarPublicaciones } from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
 import { CalificarPublicacion } from "../../domain/publicaciones/casos-uso/CalificarPublicacion";
 import { ConfirmarPublicacionCreada } from "../../domain/publicaciones/casos-uso/ConfirmarPublicacionCreada";
@@ -52,10 +54,15 @@ import IJWTTokenBuilder from "../../domain/sesiones/servicios/JWTTokenBuilder";
 import IJWTTokenVerifier from "../../domain/sesiones/servicios/JWTTokenVerifier";
 import IServicioUsuarios from "../../domain/sesiones/servicios/ServicioUsuarios";
 import { CrearUsuario } from "../../domain/usuarios/casos-uso/CrearUsuario";
+import { CrearUsuarioConGoogle } from "../../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
+import { GuardarDispositivo } from "../../domain/usuarios/casos-uso/GuardarDispositivo";
 import { ListarPublicacionesPorAnfitrion } from "../../domain/usuarios/casos-uso/ListarPublicacionesPorAnfitrion";
+import Dispositivo from "../../domain/usuarios/entidades/Dispositivo";
+import IDispositivoRepositorio from "../../domain/usuarios/repositorios/DispositivoRepositorio";
 import IUsuarioRepositorio from "../../domain/usuarios/repositorios/UsuarioRepositorio";
 import { ErrorHandler } from "../ErrorHandler";
 import Log4JSLogger, { ILogger } from "../logging/Logger";
+import DispositivoRepositorio from "../repositories/DispositivoRepositorio";
 import PreguntaRepositorio from "../repositories/PreguntaRepositorio";
 import { PublicacionRepositorio } from "../repositories/PublicacionRepositorio";
 import ReservaRepositorio from "../repositories/ReservaRepositorio";
@@ -64,17 +71,11 @@ import JWTTokenBuilder from "../servicios/JWTTokenBuilder";
 import JWTTokenVerifier from "../servicios/JWTTokenVerifier";
 import Reloj from "../servicios/Reloj";
 import ServicioLugares from "../servicios/ServicioLugares";
+import ServicioNotificaciones from "../servicios/ServicioNotificaciones";
 import ServicioPagos from "../servicios/ServicioPagos";
 import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import { IContainer } from "./Container";
-import {CrearUsuarioConGoogle} from "../../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
-import {GuardarDispositivo} from "../../domain/usuarios/casos-uso/GuardarDispositivo";
-import Dispositivo from "../../domain/usuarios/entidades/Dispositivo";
-import IDispositivoRepositorio from "../../domain/usuarios/repositorios/DispositivoRepositorio";
-import DispositivoRepositorio from "../repositories/DispositivoRepositorio";
-import IServicioNotificaciones from "../../domain/common/servicios/ServicioNotificaciones";
-import ServicioNotificaciones from "../servicios/ServicioNotificaciones";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -133,6 +134,7 @@ export default class Registry {
         container.registerSingleton<ListarReservasDePublicacion>()
         container.registerTransient<CalificarPublicacion>();
         container.registerTransient<ListarCalificacionesDePublicacion>();
+        container.registerTransient<BloquearPublicacion>();
 
         const publicacion_repo = await container.get<Connection>().getRepository(Publicacion);
         container.registerSingleton<Repository<Publicacion>>(() => publicacion_repo)

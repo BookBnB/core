@@ -1,5 +1,5 @@
 import {JSONSchema} from "class-validator-jsonschema";
-import {IsEnum, IsInt, IsNumber, IsString, IsUrl, ValidateNested} from "class-validator";
+import {IsBoolean, IsEnum, IsInt, IsNumber, IsString, IsUrl, ValidateNested} from "class-validator";
 import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Direccion from "../../lugares/entidades/Direccion";
@@ -38,6 +38,9 @@ class PublicacionDTO {
 
     @IsNumber()
     public calificacion!: number
+
+    @IsBoolean()
+    public bloqueada!: boolean
 
     constructor(publicacion: Publicacion) {
         Object.assign(this, publicacion)

@@ -29,7 +29,8 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
 
     listar({
                offset, limit, radio, coordenadas, cantidadDeHuespedes, tipoDeAlojamiento,
-               precioPorNocheMinimo, precioPorNocheMaximo, fechaInicio, fechaFin, estado
+               precioPorNocheMinimo, precioPorNocheMaximo, fechaInicio, fechaFin, estado,
+               incluirBloqueadas
            }: ConsultaDePublicaciones): Promise<Publicacion[]> {
         return this.repo.createQueryBuilder("publicacion")
             .orderBy("publicacion.titulo")
@@ -45,6 +46,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
             .andWhere(precioPorNocheMaximo ? "publicacion.precioPorNoche <= :precioPorNocheMaximo" : "TRUE")
             .andWhere(precioPorNocheMaximo ? "publicacion.precioPorNoche <= :precioPorNocheMaximo" : "TRUE")
             .andWhere(fechaInicio && fechaFin ? "(reserva IS NULL) OR NOT (reserva.fechaInicio < :fechaFin AND :fechaInicio < reserva.fechaFin)" : "TRUE")
+            .andWhere(incluirBloqueadas ? "TRUE" : "publicacion.bloqueada = FALSE")
             .setParameters({
                 latitud: coordenadas.latitud,
                 longitud: coordenadas.longitud,

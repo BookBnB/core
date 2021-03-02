@@ -1,6 +1,8 @@
+import { IsNotEmpty, IsString, IsUUID } from "class-validator";
 import {
     Authorized, Body,
     CurrentUser,
+    ForbiddenError,
     Get,
     HttpCode,
     JsonController, NotFoundError,
@@ -10,29 +12,30 @@ import {
     QueryParams,
     UseBefore
 } from 'routing-controllers';
-import {OpenAPI, ResponseSchema} from 'routing-controllers-openapi';
-import UUID from '../domain/common/UUID';
-import {CrearPublicacion, CrearPublicacionDTO} from "../domain/publicaciones/casos-uso/CrearPublicacion";
-import {ConsultaDePublicaciones, BuscarPublicaciones} from "../domain/publicaciones/casos-uso/BuscarPublicaciones";
-import {VerPublicacion} from "../domain/publicaciones/casos-uso/VerPublicacion";
-import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
-import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
-import Usuario from '../domain/usuarios/entidades/Usuario';
-import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
-import {PreguntarEnPublicacion} from "../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
-import PreguntaDTO from "../domain/publicaciones/dtos/PreguntaDTO";
-import {IsNotEmpty, IsString, IsUUID} from "class-validator";
-import {ListarPreguntasDePublicacion} from "../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
-import {ResponderEnPublicacion} from "../domain/publicaciones/casos-uso/ResponderEnPublicacion";
+import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import ConsultaConPaginacion from "../domain/common/ConsultaConPaginacion";
-import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
+import UUID from '../domain/common/UUID';
+import { BloquearPublicacion, BloquearPublicacionDTO } from '../domain/publicaciones/casos-uso/BloquearPublicacion';
+import { BuscarPublicaciones, ConsultaDePublicaciones } from "../domain/publicaciones/casos-uso/BuscarPublicaciones";
+import { CalificarPublicacion, CalificarPublicacionDTO } from "../domain/publicaciones/casos-uso/CalificarPublicacion";
+import { CrearPublicacion, CrearPublicacionDTO } from "../domain/publicaciones/casos-uso/CrearPublicacion";
+import { ListarCalificacionesDePublicacion } from "../domain/publicaciones/casos-uso/ListarCalificacionesDePublicacion";
+import { ListarPreguntasDePublicacion } from "../domain/publicaciones/casos-uso/ListarPreguntasDePublicacion";
+import { PreguntarEnPublicacion } from "../domain/publicaciones/casos-uso/PreguntarEnPublicacion";
+import { ResponderEnPublicacion } from "../domain/publicaciones/casos-uso/ResponderEnPublicacion";
+import { VerPublicacion } from "../domain/publicaciones/casos-uso/VerPublicacion";
+import CalificacionDePublicacionDTO from "../domain/publicaciones/dtos/CalificacionDePublicacionDTO";
+import PreguntaDTO from "../domain/publicaciones/dtos/PreguntaDTO";
+import PublicacionDTO from "../domain/publicaciones/dtos/PublicacionDTO";
+import PublicacionBloqueadaError from "../domain/publicaciones/excepciones/PublicacionBloqueadaError";
+import PublicacionInexistenteError from "../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import {
     ConsultaDeReservasPorPublicacion,
     ListarReservasDePublicacion
 } from "../domain/reservas/casos-uso/ListarReservasDePublicacion";
-import {CalificarPublicacion, CalificarPublicacionDTO} from "../domain/publicaciones/casos-uso/CalificarPublicacion";
-import CalificacionDePublicacionDTO from "../domain/publicaciones/dtos/CalificacionDePublicacionDTO";
-import {ListarCalificacionesDePublicacion} from "../domain/publicaciones/casos-uso/ListarCalificacionesDePublicacion";
+import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
+import Usuario from '../domain/usuarios/entidades/Usuario';
+import AuthenticationMiddleware from './middlewares/AuthenticationMiddleware';
 
 
 class ResponderPreguntaParams {
@@ -62,6 +65,7 @@ export class PublicacionController {
         private readonly listarReservasDePublicacion: ListarReservasDePublicacion,
         private readonly calificarPublicacion: CalificarPublicacion,
         private readonly listarCalificacionesDePublicacion: ListarCalificacionesDePublicacion,
+        private readonly bloquearPublicacion: BloquearPublicacion,
     ) {
     }
 
@@ -81,6 +85,11 @@ export class PublicacionController {
     async mostrarUno(@CurrentUser() usuario: Usuario, @Params() {id}: UUID): Promise<PublicacionDTO> {
         try {
             const publicacion = await this.verPublicacion.execute(id)
+
+            if (publicacion.bloqueadaPara(usuario)) {
+                throw new ForbiddenError('Publicación bloqueada')
+            }
+    
             if(publicacion.esValida() || publicacion.perteneceA(usuario))
                 return new PublicacionDTO(publicacion)
         } catch (e) {
@@ -156,5 +165,15 @@ export class PublicacionController {
     @OpenAPI({summary: 'Muestra una lista de calificaciones asociadas a una publicación'})
     async listarcalificaciones(@Params() {id: publicacionId}: UUID): Promise<CalificacionDePublicacionDTO[]> {
         return this.listarCalificacionesDePublicacion.execute(publicacionId)
+    }
+
+    @Put('/:id/bloqueo')
+    @HttpCode(200)
+    @ResponseSchema(PublicacionDTO)
+    @OpenAPI({summary: 'Bloquea una publicación'})
+    async bloquear(@Params() {id: publicacionId}: UUID, @Body() body: BloquearPublicacionDTO ): Promise<PublicacionDTO> {
+        const publicacion = await this.bloquearPublicacion.execute(publicacionId, body) 
+
+        return new PublicacionDTO(publicacion)
     }
 }

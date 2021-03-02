@@ -3,6 +3,7 @@ import {
     Body,
     CurrentUser,
     Delete,
+    ForbiddenError,
     Get,
     HttpCode, InternalServerError,
     JsonController,
@@ -23,6 +24,7 @@ import {RechazarReserva} from "../domain/reservas/casos-uso/RechazarReserva";
 import {IsNotEmpty, IsString} from "class-validator";
 import PublicacionConEstadoInvalidoError from "../domain/reservas/excepciones/PublicacionConEstadoInvalidoError";
 import { CancelarReserva } from "../domain/reservas/casos-uso/CancelarReserva";
+import PublicacionBloqueadaError from "../domain/publicaciones/excepciones/PublicacionBloqueadaError";
 
 class IdReserva {
     @IsString() @IsNotEmpty()
@@ -57,6 +59,8 @@ export class ReservaController {
         } catch (e) {
             if (e instanceof PublicacionConEstadoInvalidoError)
                 throw new BadRequestError(e.message)
+            if (e instanceof PublicacionBloqueadaError) 
+                throw new ForbiddenError(e.message)
             throw e
         }
     }
@@ -71,16 +75,30 @@ export class ReservaController {
     @Put('/:id/aprobacion')
     @ResponseSchema(ResultadoEvento)
     @OpenAPI({summary: 'Aprueba una reserva'})
-    async aprobar(@Params() {id}: IdReserva): Promise<ResultadoEvento> {
-        await this.aprobarReserva.execute(id)
+    async aprobar(@CurrentUser() usuario: Usuario, @Params() {id}: IdReserva): Promise<ResultadoEvento> {
+        try {
+            await this.aprobarReserva.execute(id, usuario)
+        } catch (e) {
+            if (e instanceof PublicacionBloqueadaError) 
+                throw new ForbiddenError(e.message)
+            throw e
+        }
+
         return ResultadoEvento.success()
     }
 
     @Put('/:id/rechazo')
     @ResponseSchema(ResultadoEvento)
     @OpenAPI({summary: 'Rechaza una reserva'})
-    async rechazar(@Params() {id}: IdReserva): Promise<ResultadoEvento> {
-        await this.rechazarReserva.execute(id)
+    async rechazar(@CurrentUser() usuario: Usuario, @Params() {id}: IdReserva): Promise<ResultadoEvento> {
+        try {
+            await this.rechazarReserva.execute(id, usuario)
+        } catch (e) {
+            if (e instanceof PublicacionBloqueadaError) 
+                throw new ForbiddenError(e.message)
+            throw e
+        }
+
         return ResultadoEvento.success()
     }
 

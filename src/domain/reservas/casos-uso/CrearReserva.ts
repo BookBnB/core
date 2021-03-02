@@ -8,6 +8,7 @@ import Reserva from "../entidades/Reserva";
 import IReservaRepositorio from "../repositorios/ReservaRepositorio";
 import {JSONSchema} from "class-validator-jsonschema";
 import IServicioPagos from "../../common/servicios/ServicioPagos";
+import PublicacionBloqueadaError from "../../publicaciones/excepciones/PublicacionBloqueadaError";
 
 export class CrearReservaDTO {
     @IsUUID()
@@ -30,6 +31,11 @@ export class CrearReserva {
 
     async execute(huesped: Usuario, body: CrearReservaDTO): Promise<ReservaDTO> {
         const publicacion: Publicacion = await this.publicaciones.obtener(body.publicacionId);
+
+        if (publicacion.bloqueadaPara(huesped)) {
+            throw new PublicacionBloqueadaError()
+        }
+
         const reserva: Reserva = publicacion.crearReserva(huesped, body)
 
         await this.reservas.guardar(reserva)
