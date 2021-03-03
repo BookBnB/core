@@ -240,12 +240,14 @@ export default class Registry {
         const logger = container.get<ILogger>()
         container.registerSingleton<IServicioNotificaciones>(() => {
             try {
-                return new ServicioNotificaciones(
+                const servicio = new ServicioNotificaciones(
                     process.env.FIREBASE_SERVICE_ACCOUNT as string,
                     process.env.FIREBASE_DATABASE_URL as string,
                     container.get<IDispositivoRepositorio>(),
                     logger
                 )
+                logger.info('Servicio de Notificaciones inicializado correctamente')
+                return servicio
             } catch (e) {
                 logger.error(e)
                 return new NotificacionesFake()

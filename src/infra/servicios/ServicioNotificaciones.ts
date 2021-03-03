@@ -16,8 +16,15 @@ export default class ServicioNotificaciones implements IServicioNotificaciones {
         private readonly dispositivos: IDispositivoRepositorio,
         private readonly logger: ILogger
     ) {
+        let credential
+        try{
+            credential = JSON.parse(this.serviceAccount)
+        } catch (e) {
+            credential = admin.credential.cert(this.serviceAccount)
+        }
+
         this.admin = admin.initializeApp({
-            credential: admin.credential.cert(this.serviceAccount),
+            credential: admin.credential.cert(credential),
             databaseURL: this.databaseURL
         });
     }
