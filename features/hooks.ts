@@ -15,6 +15,7 @@ import {buildHandlers} from "./doubles/handlers";
 import ServicioPagos from "../src/infra/servicios/ServicioPagos";
 import sinon from 'sinon';
 import MonitorFake from './doubles/MonitorFake';
+import NotificacionesFake from "./doubles/NotificacionesFake";
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 
@@ -57,11 +58,15 @@ Before({ timeout: HOOK_TIMEOUT }, async function () {
     this.servicioPagos = new ServicioPagos(<string>process.env.PAYMENTS_SERVICE_URL);
     sinon.spy(this.servicioPagos)
 
+    this.servicioNotificaciones = new NotificacionesFake();
+    sinon.spy(this.servicioNotificaciones)
+
     this.container = new DIContainer()
     await new TestRegistry(
         this.reloj,
         this.servicioPagos,
-        this.monitor
+        this.monitor,
+        this.servicioNotificaciones
     ).registrar(this.container)
     this.app = await app(this.container)
     this.sesiones = new GestorDeSesiones();

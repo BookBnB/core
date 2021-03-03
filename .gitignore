@@ -6,3 +6,4 @@ build/
 coverage/
 migration/*.js
 tsconfig.tsbuildinfo
+bookbnb-taller2-firebase-adminsdk.json

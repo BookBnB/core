@@ -1,4 +1,4 @@
-import { UseCase } from "../../UseCase";
+import {UseCase} from "../../UseCase";
 import Usuario from "../entidades/Usuario";
 import IDispositivoRepositorio from "../repositorios/DispositivoRepositorio";
 import Dispositivo from "../entidades/Dispositivo";
@@ -16,7 +16,7 @@ export class GuardarDispositivo implements UseCase {
         try {
             dispositivo = await this.dispositivos.obtener(usuario)
         } catch (error) {
-            if(error instanceof DispositivoInexistenteError)
+            if (error instanceof DispositivoInexistenteError)
                 dispositivo = new Dispositivo(usuario, dto.token)
             else
                 throw error

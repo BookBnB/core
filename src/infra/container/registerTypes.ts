@@ -102,6 +102,7 @@ export default class Registry {
         await this.registrarMetricas(container)
         await this.registrarPagos(container)
         await this.registrarReportes(container)
+        await this.registrarServicioNotificaciones(container)
         await this.registrarDispositivos(container)
         return container
     }
@@ -234,9 +235,16 @@ export default class Registry {
         container.registerSingleton<ReportesController>()
     }
 
+    protected async registrarServicioNotificaciones(container: DIContainer) {
+        container.registerSingleton<IServicioNotificaciones>(() =>
+            new ServicioNotificaciones(
+                process.env.FIREBASE_DATABASE_URL as string,
+                process.env.FIREBASE_SERVICE_ACCOUNT as string
+            ));
+    }
+
     protected async registrarDispositivos(container: DIContainer) {
         container.registerTransient<GuardarDispositivo>();
-        container.registerSingleton<IServicioNotificaciones>(() => new ServicioNotificaciones());
 
         const dispositivosRepo: Repository<Dispositivo> = await container.get<Connection>().getRepository(Dispositivo);
         container.registerSingleton<Repository<Dispositivo>>(() => dispositivosRepo);
