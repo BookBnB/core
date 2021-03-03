@@ -73,15 +73,16 @@ export default class Reserva {
                 // crea dos objetos para la reserva actual
                 // (queda pendiente investigar si esto se puede mejorar).
                 reserva.estado = EstadoReserva.ACEPTADA
-                await notificaciones.enviar(reserva.huesped, Mensaje.reservaAceptada())
+                await notificaciones.enviar(this.huesped, Mensaje.reservaAceptada())
             } else if (reserva.solapada(this)) {
-                reserva.rechazar()
+                await reserva.rechazar(notificaciones)
             }
         }))
     }
 
-    rechazar() {
+    async rechazar(notificaciones: IServicioNotificaciones) {
         this.estado = EstadoReserva.REACHAZADA
+        await notificaciones.enviar(this.huesped, Mensaje.reservaRechazada())
     }
 
     cancelar() {
