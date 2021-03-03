@@ -15,10 +15,16 @@ export default class DispositivoRepositorio implements IDispositivoRepositorio {
     }
 
     async obtener(usuario: Usuario): Promise<Dispositivo> {
-        const dispositivo = await this.repo.findOne(usuario.id);
+        const dispositivo = await this.repo.findOne({
+            where: {
+                usuario: {
+                    id: usuario.id
+                }
+            }
+        });
 
         if(!dispositivo)
-            throw new DispositivoInexistenteError(`El dispositivo del usuario con ${usuario.id} no existe.`)
+            throw new DispositivoInexistenteError(`El dispositivo del usuario con id ${usuario.id} no existe.`)
         return dispositivo;
     }
 }

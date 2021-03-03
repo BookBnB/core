@@ -15,12 +15,14 @@ export class GuardarDispositivo implements UseCase {
         let dispositivo
         try {
             dispositivo = await this.dispositivos.obtener(usuario)
+            dispositivo.token = dto.token
         } catch (error) {
             if (error instanceof DispositivoInexistenteError)
                 dispositivo = new Dispositivo(usuario, dto.token)
             else
                 throw error
         }
+
         await this.dispositivos.guardar(dispositivo)
         return dto
     }
