@@ -8,3 +8,4 @@ data:
   NODE_ENV: "development"
   PAYMENTS_SERVICE_URL: "http://bookbnb-payments-service"
   USERS_SERVICE_URL: "http://bookbnb-users-service"
+  FIREBASE_DATABASE_URL: "https://bookbnb-taller2.firebaseio.com"

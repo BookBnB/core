@@ -239,7 +239,8 @@ export default class Registry {
         container.registerSingleton<IServicioNotificaciones>(() =>
             new ServicioNotificaciones(
                 process.env.FIREBASE_DATABASE_URL as string,
-                process.env.FIREBASE_SERVICE_ACCOUNT as string
+                process.env.FIREBASE_SERVICE_ACCOUNT as string,
+                container.get<IDispositivoRepositorio>()
             ));
     }
 
