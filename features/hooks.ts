@@ -15,7 +15,7 @@ import {buildHandlers} from "./doubles/handlers";
 import ServicioPagos from "../src/infra/servicios/ServicioPagos";
 import sinon from 'sinon';
 import MonitorFake from './doubles/MonitorFake';
-import NotificacionesFake from "./doubles/NotificacionesFake";
+import NotificacionesFake from "../src/infra/servicios/NotificacionesFake";
 
 dotenvExpand(dotenv.config({path: 'features/.env'}))
 

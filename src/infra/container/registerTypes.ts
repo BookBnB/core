@@ -76,7 +76,7 @@ import ServicioPagos from "../servicios/ServicioPagos";
 import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import {IContainer} from "./Container";
-import NotificacionesFake from "../../../features/doubles/NotificacionesFake";
+import NotificacionesFake from "../../infra/servicios/NotificacionesFake";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
