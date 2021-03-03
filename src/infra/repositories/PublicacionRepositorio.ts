@@ -4,8 +4,6 @@ import Publicacion from "../../domain/publicaciones/entidades/Publicacion";
 import PublicacionInexistenteError from "../../domain/publicaciones/excepciones/PublicacionInexistenteError";
 import {ConsultaDePublicaciones} from "../../domain/publicaciones/casos-uso/BuscarPublicaciones";
 import Pregunta from "../../domain/publicaciones/entidades/Pregunta";
-import Creada from "../../domain/publicaciones/entidades/estados-publicacion/Creada";
-import { ParametrosReporte } from "../../domain/reportes/entidades/ParametrosReporte";
 
 export class PublicacionRepositorio implements IPublicacionRepositorio {
     public constructor(private readonly repo: Repository<Publicacion>,
@@ -37,8 +35,8 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
             .skip(offset)
             .take(limit)
             .leftJoinAndSelect("publicacion.imagenes", "imagen")
+            .leftJoinAndSelect("publicacion.calificaciones", "calificacion")
             .leftJoin("publicacion.reservas", "reserva", "reserva.estado = 'aceptada'")
-            .leftJoin("publicacion.calificaciones", "calificacion")
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
             .andWhere(estado ? "publicacion.estado = :estado" : "TRUE")
             .andWhere(tipoDeAlojamiento ? "publicacion.tipoDeAlojamiento = :tipoDeAlojamiento" : "TRUE")

@@ -12,7 +12,11 @@ export function validarObjeto(objeto: any, dataTable: TableDefinition) {
 }
 
 function parseValor(valor: string) {
-    return valor === 'null' ? null : valor
+    try {
+        return JSON.parse(valor as string)
+    } catch (e) {
+        return valor
+    }
 }
 
 export function validarConjunto(this: any, dataTable: TableDefinition) {

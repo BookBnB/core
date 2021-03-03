@@ -45,7 +45,5 @@ Then('veo una publicación con título {string} y sin calificación', function (
 });
 
 Then('veo las calificaciones:', function (dataTable) {
-    this.last_response.body.forEach((calificacion: any) =>
-        calificacion.puntos = calificacion.puntos.toString())
     validarConjunto.bind(this)(dataTable)
 });
