@@ -13,6 +13,7 @@ Característica:
     Y que existe una reserva "pendiente" en la publicación con título "Departamento en Palermo"
     Cuando notifico que dicha reserva fue registrada con éxito
     Entonces veo un mensaje de confirmación
+    Y veo que se envió una notificación al usuario con título "Reserva recibida" y descripción "Ha recibido una nueva reserva!"
 
   Escenario: Pagos notifica que la creación de la reserva fue rechazada
     Dado que soy "el servicio de pagos"

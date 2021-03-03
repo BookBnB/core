@@ -68,3 +68,10 @@ Then('veo una {string} con:', function (_: string, dataTable: TableDefinition) {
 Then('no veo {string}', function (_) {
     expect(this.last_response.body).to.eql([])
 });
+
+Then('veo que se envió una notificación al usuario con título {string} y descripción {string}', function (titulo, descripcion) {
+    expect(this.servicioNotificaciones.enviar).to.have.been.calledWithMatch({}, {
+        titulo,
+        descripcion
+    })
+});

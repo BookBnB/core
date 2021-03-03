@@ -9,6 +9,6 @@ export default class Mensaje {
     }
 
     static reservaRecibida(): Mensaje {
-        return new Mensaje("Rerseva recibida", "Ha recibido una nueva reserva!")
+        return new Mensaje("Reserva recibida", "Ha recibido una nueva reserva!")
     }
 }
