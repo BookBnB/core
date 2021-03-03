@@ -11,12 +11,16 @@ export function validarObjeto(objeto: any, dataTable: TableDefinition) {
     })
 }
 
+function parseValor(valor: string) {
+    return valor === 'null' ? null : valor
+}
+
 export function validarConjunto(this: any, dataTable: TableDefinition) {
     let objetos: any = dataTable.hashes()
     objetos = objetos.map((publicacion: any) => {
         const objetoParseado: any = {}
         Object.entries(publicacion).forEach(([clave, valor]) => {
-            _.set(objetoParseado, clave, valor)
+            _.set(objetoParseado, clave, parseValor(valor as string))
         })
         return {...objetoParseado}
     })

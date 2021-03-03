@@ -37,7 +37,7 @@ class PublicacionDTO {
     public estado!: string
 
     @IsNumber()
-    public calificacion!: number
+    public calificacion: number | null
 
     @IsBoolean()
     public bloqueada!: boolean

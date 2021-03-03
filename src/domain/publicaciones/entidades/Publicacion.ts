@@ -151,11 +151,11 @@ export default class Publicacion {
         return nuevaCalificacion
     }
 
-    calificacion(): number {
+    calificacion(): number|null {
         const calificaciones = this.calificaciones || []
-        return calificaciones
+        return (calificaciones
             .map(calificacion => calificacion.puntos)
-            .reduce((p, c) => p + c, 0) / calificaciones.length
+            .reduce((p, c) => p + c, 0) / calificaciones.length) || null
     }
 
     bloquear() {

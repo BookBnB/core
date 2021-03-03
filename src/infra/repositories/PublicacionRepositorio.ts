@@ -38,6 +38,7 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
             .take(limit)
             .leftJoinAndSelect("publicacion.imagenes", "imagen")
             .leftJoin("publicacion.reservas", "reserva", "reserva.estado = 'aceptada'")
+            .leftJoin("publicacion.calificaciones", "calificacion")
             .where("ST_DWithin(Geography(\"direccionCoordenadas\"), ST_SetSRID(ST_MakePoint(:latitud, :longitud), 4326), :radio)")
             .andWhere(estado ? "publicacion.estado = :estado" : "TRUE")
             .andWhere(tipoDeAlojamiento ? "publicacion.tipoDeAlojamiento = :tipoDeAlojamiento" : "TRUE")
