@@ -4,6 +4,7 @@ import Mensaje from "../../domain/usuarios/entidades/Mensaje";
 import admin from "firebase-admin";
 import IDispositivoRepositorio from "../../domain/usuarios/repositorios/DispositivoRepositorio";
 import {app} from "firebase-admin/lib/firebase-namespace-api";
+import {ILogger} from "../logging/Logger";
 
 
 export default class ServicioNotificaciones implements IServicioNotificaciones {
@@ -12,7 +13,8 @@ export default class ServicioNotificaciones implements IServicioNotificaciones {
     constructor(
         private readonly serviceAccount: string,
         private readonly databaseURL: string,
-        private readonly dispositivos: IDispositivoRepositorio
+        private readonly dispositivos: IDispositivoRepositorio,
+        private readonly logger: ILogger
     ) {
         this.admin = admin.initializeApp({
             credential: admin.credential.cert(this.serviceAccount),
@@ -34,7 +36,9 @@ export default class ServicioNotificaciones implements IServicioNotificaciones {
                     priority: "high",
                     timeToLive: 60 * 60 * 24
                 })
+            this.logger.info(`Notificacion enviada a usuario ${usuario.id}`)
         } catch (e) {
+            this.logger.error(e)
         }
         return Promise.resolve(undefined);
     }
