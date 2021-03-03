@@ -11,4 +11,8 @@ export default class Mensaje {
     static reservaRecibida(): Mensaje {
         return new Mensaje("Reserva recibida", "Ha recibido una nueva reserva!")
     }
+
+    static reservaAceptada(): Mensaje {
+        return new Mensaje("Reserva aceptada", "Su reserva ha sido aceptada!")
+    }
 }

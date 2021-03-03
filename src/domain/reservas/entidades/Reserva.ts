@@ -63,20 +63,21 @@ export default class Reserva {
         await notificaciones.enviar(this.publicacion.anfitrion, Mensaje.reservaRecibida())
     }
 
-    aceptar() {
+    async aceptar(notificaciones: IServicioNotificaciones) {
         this.estado = EstadoReserva.ACEPTADA
         const reservas = this.publicacion.getReservas();
-        reservas.forEach(reserva => {
+        await Promise.all(reservas.map(async reserva => {
             if (reserva.igualA(this)) {
                 // Actualizo la reserva anidada por consistencia,
                 // dado que al cargar las entidades a memoria TypeOrm
                 // crea dos objetos para la reserva actual
                 // (queda pendiente investigar si esto se puede mejorar).
                 reserva.estado = EstadoReserva.ACEPTADA
+                await notificaciones.enviar(reserva.huesped, Mensaje.reservaAceptada())
             } else if (reserva.solapada(this)) {
                 reserva.rechazar()
             }
-        })
+        }))
     }
 
     rechazar() {
