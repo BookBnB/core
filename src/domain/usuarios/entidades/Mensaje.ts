@@ -3,13 +3,20 @@ export default class Mensaje {
 
     public descripcion: string;
 
-    private constructor(titulo: string, descripcion: string) {
+    public deeplink?: string;
+
+    private constructor(titulo: string, descripcion: string, deeplink?: string) {
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.deeplink = deeplink;
     }
 
-    static reservaRecibida(): Mensaje {
-        return new Mensaje("Reserva recibida", "Ha recibido una nueva reserva!")
+    static reservaRecibida(publicacionId?: string): Mensaje {
+        return new Mensaje(
+            "Reserva recibida",
+            "Ha recibido una nueva reserva!",
+            publicacionId ? `https://www.bookbnb.com/anfitrion/publicacion/${publicacionId}/reservas` : undefined
+        )
     }
 
     static reservaAceptada(): Mensaje {

@@ -17,7 +17,7 @@ export default class ServicioNotificaciones implements IServicioNotificaciones {
         private readonly logger: ILogger
     ) {
         let credential
-        try{
+        try {
             credential = JSON.parse(this.serviceAccount)
         } catch (e) {
             credential = admin.credential.cert(this.serviceAccount)
@@ -32,17 +32,20 @@ export default class ServicioNotificaciones implements IServicioNotificaciones {
     async enviar(usuario: Usuario, mensaje: Mensaje): Promise<void> {
         try {
             const dispositivo = await this.dispositivos.obtener(usuario)
-            await admin.messaging().sendToDevice(
-                dispositivo.token,
-                {
-                    notification: {
-                        title: mensaje.titulo,
-                        body: mensaje.descripcion
-                    }
-                }, {
+            await admin.messaging().send({
+                token: dispositivo.token,
+                notification: {
+                    title: mensaje.titulo,
+                    body: mensaje.descripcion
+                },
+                android: {
                     priority: "high",
-                    timeToLive: 60 * 60 * 24
-                })
+                    ttl: 60 * 60 * 24 * 1000
+                },
+                data: {
+                    deeplink: mensaje.deeplink || ''
+                }
+            })
             this.logger.info(`Notificacion enviada a usuario ${usuario.id}`)
         } catch (e) {
             this.logger.error(e)

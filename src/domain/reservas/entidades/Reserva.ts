@@ -60,7 +60,7 @@ export default class Reserva {
 
     async confirmarCreacion(notificaciones: IServicioNotificaciones) {
         this.estado = EstadoReserva.CREADA
-        await notificaciones.enviar(this.publicacion.anfitrion, Mensaje.reservaRecibida())
+        await notificaciones.enviar(this.publicacion.anfitrion, Mensaje.reservaRecibida(this.publicacion.id))
     }
 
     async aceptar(notificaciones: IServicioNotificaciones) {
