@@ -105,6 +105,7 @@ export default class Registry {
         await this.registrarMetricas(container)
         await this.registrarPagos(container)
         await this.registrarReportes(container)
+        await this.registrarGoogleAdmin(container)
         await this.registrarServicioNotificaciones(container)
         await this.registrarDispositivos(container)
         return container
@@ -238,7 +239,8 @@ export default class Registry {
         container.registerSingleton<ReportesController>()
     }
 
-    private googleAdmin(logger: ILogger): app.App {
+    protected async registrarGoogleAdmin(container: DIContainer) {
+        const logger = container.get<ILogger>()
         const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT as string
         const databaseURL = process.env.FIREBASE_DATABASE_URL as string
 
@@ -255,7 +257,8 @@ export default class Registry {
                 databaseURL: databaseURL
             });
             logger.info('Admin de google inicializado correctamente')
-            return adminG
+
+            container.registerSingleton<app.App>(() => adminG)
         } catch (e) {
             logger.error(e)
             throw e
@@ -267,7 +270,7 @@ export default class Registry {
 
         container.registerSingleton<IServicioNotificaciones>(() => {
             try {
-                const googleAdmin = this.googleAdmin(logger)
+                const googleAdmin = container.get<app.App>()
                 return new ServicioNotificaciones(
                     googleAdmin,
                     container.get<IDispositivoRepositorio>(),

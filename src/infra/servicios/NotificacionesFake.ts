@@ -3,7 +3,7 @@ import Usuario from "../../domain/usuarios/entidades/Usuario";
 import Mensaje from "../../domain/usuarios/entidades/Mensaje";
 
 export default class NotificacionesFake implements IServicioNotificaciones {
-    enviar(usuario: Usuario, mensaje: Mensaje): Promise<void> {
+    enviar(usuario: Usuario | string, mensaje: Mensaje): Promise<void> {
         return Promise.resolve(undefined);
     }
 }

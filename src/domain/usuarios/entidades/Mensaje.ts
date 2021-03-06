@@ -26,4 +26,8 @@ export default class Mensaje {
     static reservaRechazada(): Mensaje {
         return new Mensaje("Reserva rechazada", "Su reserva ha sido rechazada!")
     }
+
+    static chatRecibido(nombreRemitente: string, mensaje: string) {
+        return new Mensaje(nombreRemitente, mensaje)
+    }
 }

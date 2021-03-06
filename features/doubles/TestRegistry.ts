@@ -30,5 +30,9 @@ export default class TestRegistry extends Registry {
     protected async registrarMetricas(container: DIContainer) {
         container.registerSingleton<IMetricMonitor>(() => this.mockMonitor)
     }
+
+    protected async registrarGoogleAdmin(container: DIContainer) {
+        // No es necesaria para los tests
+    }
 }
 
