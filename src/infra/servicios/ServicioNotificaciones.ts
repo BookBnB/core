@@ -8,25 +8,11 @@ import {ILogger} from "../logging/Logger";
 
 
 export default class ServicioNotificaciones implements IServicioNotificaciones {
-    private admin: app.App;
-
     constructor(
-        private readonly serviceAccount: string,
-        private readonly databaseURL: string,
+        private readonly admin: app.App,
         private readonly dispositivos: IDispositivoRepositorio,
         private readonly logger: ILogger
     ) {
-        let credential
-        try {
-            credential = JSON.parse(this.serviceAccount)
-        } catch (e) {
-            credential = admin.credential.cert(this.serviceAccount)
-        }
-
-        this.admin = admin.initializeApp({
-            credential: admin.credential.cert(credential),
-            databaseURL: this.databaseURL
-        });
     }
 
     async enviar(usuario: Usuario, mensaje: Mensaje): Promise<void> {

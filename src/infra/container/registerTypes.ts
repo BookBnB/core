@@ -77,6 +77,8 @@ import ServicioUsuarios from "../servicios/ServicioUsuarios";
 import typeOrmConnection from "../typeOrmConnection";
 import {IContainer} from "./Container";
 import NotificacionesFake from "../../infra/servicios/NotificacionesFake";
+import admin from "firebase-admin";
+import {app} from "firebase-admin/lib/firebase-namespace-api";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -236,20 +238,42 @@ export default class Registry {
         container.registerSingleton<ReportesController>()
     }
 
+    private googleAdmin(logger: ILogger): app.App {
+        const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT as string
+        const databaseURL = process.env.FIREBASE_DATABASE_URL as string
+
+        let credential
+        try {
+            credential = JSON.parse(serviceAccount)
+        } catch (e) {
+            credential = admin.credential.cert(serviceAccount)
+        }
+
+        try {
+            const adminG = admin.initializeApp({
+                credential: admin.credential.cert(credential),
+                databaseURL: databaseURL
+            });
+            logger.info('Admin de google inicializado correctamente')
+            return adminG
+        } catch (e) {
+            logger.error(e)
+            throw e
+        }
+    }
+
     protected async registrarServicioNotificaciones(container: DIContainer) {
         const logger = container.get<ILogger>()
+
         container.registerSingleton<IServicioNotificaciones>(() => {
             try {
-                const servicio = new ServicioNotificaciones(
-                    process.env.FIREBASE_SERVICE_ACCOUNT as string,
-                    process.env.FIREBASE_DATABASE_URL as string,
+                const googleAdmin = this.googleAdmin(logger)
+                return new ServicioNotificaciones(
+                    googleAdmin,
                     container.get<IDispositivoRepositorio>(),
                     logger
                 )
-                logger.info('Servicio de Notificaciones inicializado correctamente')
-                return servicio
             } catch (e) {
-                logger.error(e)
                 return new NotificacionesFake()
             }
         })
