@@ -69,4 +69,12 @@ export class PublicacionRepositorio implements IPublicacionRepositorio {
             .setParameters({ fechaInicio, fechaFin })
             .getRawMany()
     }
+
+    async mejorCalificadas(cantidad: number): Promise<Publicacion[]> {
+        return this.repo.createQueryBuilder('publicacion')
+            .take(cantidad)
+            .leftJoinAndSelect("publicacion.imagenes", "imagen")
+            .leftJoinAndSelect("publicacion.calificaciones", "calificacion")
+            .getMany()
+    }
 }

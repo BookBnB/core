@@ -13,4 +13,6 @@ export default interface IPublicacionRepositorio {
     listar(consulta: ConsultaDePublicaciones): Promise<Publicacion[]>;
 
     publicacionesCreadasPorDia(fechaInicio: Date, fechaFin: Date): Promise<any[]>
+
+    mejorCalificadas(cantidad: number): Promise<Publicacion[]>;
 }

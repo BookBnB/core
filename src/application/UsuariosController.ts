@@ -26,6 +26,7 @@ import ReservaDTO from "../domain/reservas/dtos/ReservaDTO";
 import {CrearUsuarioConGoogle, CrearUsuarioConGoogleDTO} from "../domain/usuarios/casos-uso/CrearUsuarioConGoogle";
 import DispositivoDTO from "../domain/usuarios/dtos/DispositivoDTO";
 import {GuardarDispositivo} from "../domain/usuarios/casos-uso/GuardarDispositivo";
+import {PublicacionesRecomendadas} from "../domain/publicaciones/casos-uso/PublicacionesRecomendadas";
 
 
 @OpenAPI({security: [{token: []}]})
@@ -37,6 +38,7 @@ export class UsuarioController {
         private readonly crearUsuario: CrearUsuario,
         private readonly crearUsuarioConGoogle: CrearUsuarioConGoogle,
         private readonly guardarDispositivo: GuardarDispositivo,
+        private readonly publicacionesRecomendadas: PublicacionesRecomendadas,
     ) {
     }
 
@@ -92,5 +94,17 @@ export class UsuarioController {
         if (usuario.id !== id) throw new ForbiddenError('Access is denied');
 
         return await this.guardarDispositivo.execute(usuario, body);
+    }
+
+    @Get('/:id/recomendaciones')
+    @OpenAPI({summary: 'Muestra las recomendaciones para un usuario'})
+    @UseBefore(AuthenticationMiddleware)
+    @ResponseSchema(PublicacionDTO, {isArray: true})
+    async recomendaciones(
+        @CurrentUser() usuario: Usuario,
+        @Params() {id}: UUID): Promise<PublicacionDTO[]> {
+        if (usuario.id !== id) throw new ForbiddenError('Access is denied');
+
+        return await this.publicacionesRecomendadas.execute(usuario);
     }
 }

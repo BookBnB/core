@@ -79,6 +79,7 @@ import {IContainer} from "./Container";
 import NotificacionesFake from "../../infra/servicios/NotificacionesFake";
 import admin from "firebase-admin";
 import {app} from "firebase-admin/lib/firebase-namespace-api";
+import {PublicacionesRecomendadas} from "../../domain/publicaciones/casos-uso/PublicacionesRecomendadas";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -202,6 +203,7 @@ export default class Registry {
     protected async registrarUsuarios(container: DIContainer) {
         container.registerSingleton<UsuarioController>();
         container.registerTransient<ListarPublicacionesPorAnfitrion>();
+        container.registerTransient<PublicacionesRecomendadas>();
 
         const manager: EntityManager = await container.get<Connection>().manager;
         container.registerSingleton<EntityManager>(() => manager);
