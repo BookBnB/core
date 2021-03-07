@@ -1,3 +1,5 @@
+import Reserva from "../../reservas/entidades/Reserva";
+
 export default class Mensaje {
     public titulo: string;
 
@@ -11,23 +13,43 @@ export default class Mensaje {
         this.deeplink = deeplink;
     }
 
-    static reservaRecibida(publicacionId?: string): Mensaje {
+    static reservaRecibida(reserva: Reserva): Mensaje {
         return new Mensaje(
             "Reserva recibida",
             "Ha recibido una nueva reserva!",
-            publicacionId ? `https://www.bookbnb.com/anfitrion/publicacion/${publicacionId}/reservas` : undefined
+            `https://www.bookbnb.com/anfitrion/publicacion/${reserva.publicacion.id}/reservas`
         )
     }
 
-    static reservaAceptada(): Mensaje {
-        return new Mensaje("Reserva aceptada", "Su reserva ha sido aceptada!")
+    static reservaAceptada(reserva: Reserva): Mensaje {
+        return new Mensaje(
+            "Reserva aceptada",
+            `Su reserva en ${reserva.publicacion.titulo} ha sido aceptada!`,
+            "https://www.bookbnb.com/huesped/reservas"
+        )
     }
 
-    static reservaRechazada(): Mensaje {
-        return new Mensaje("Reserva rechazada", "Su reserva ha sido rechazada!")
+    static reservaRechazada(reserva: Reserva): Mensaje {
+        return new Mensaje(
+            "Reserva rechazada",
+            `Su reserva en ${reserva.publicacion.titulo} ha sido rechazada!`,
+            "https://www.bookbnb.com/huesped/reservas"
+        )
     }
 
-    static chatRecibido(nombreRemitente: string, mensaje: string) {
-        return new Mensaje(nombreRemitente, mensaje)
+    static reservaCancelada(reserva: Reserva): Mensaje {
+        return new Mensaje(
+            "Reserva cancelada",
+            `El huéped ha cancelado su reserva en ${reserva.publicacion.titulo}!`,
+            `https://www.bookbnb.com/anfitrion/publicacion/${reserva.publicacion.id}/reservas`
+        )
+    }
+
+    static chatRecibido(nombreRemitente: string, mensaje: string, chatId: string) {
+        return new Mensaje(
+            nombreRemitente,
+            mensaje,
+            `https://www.bookbnb.com/chat/${chatId}`
+        )
     }
 }

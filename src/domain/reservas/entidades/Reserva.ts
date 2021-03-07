@@ -60,7 +60,7 @@ export default class Reserva {
 
     async confirmarCreacion(notificaciones: IServicioNotificaciones) {
         this.estado = EstadoReserva.CREADA
-        await notificaciones.enviar(this.publicacion.anfitrion, Mensaje.reservaRecibida(this.publicacion.id))
+        await notificaciones.enviar(this.publicacion.anfitrion, Mensaje.reservaRecibida(this))
     }
 
     async aceptar(notificaciones: IServicioNotificaciones) {
@@ -73,7 +73,7 @@ export default class Reserva {
                 // crea dos objetos para la reserva actual
                 // (queda pendiente investigar si esto se puede mejorar).
                 reserva.estado = EstadoReserva.ACEPTADA
-                await notificaciones.enviar(this.huesped, Mensaje.reservaAceptada())
+                await notificaciones.enviar(this.huesped, Mensaje.reservaAceptada(this))
             } else if (reserva.solapada(this)) {
                 await reserva.rechazar(notificaciones)
             }
@@ -82,11 +82,12 @@ export default class Reserva {
 
     async rechazar(notificaciones: IServicioNotificaciones) {
         this.estado = EstadoReserva.REACHAZADA
-        await notificaciones.enviar(this.huesped, Mensaje.reservaRechazada())
+        await notificaciones.enviar(this.huesped, Mensaje.reservaRechazada(this))
     }
 
-    cancelar() {
+    async cancelar(notificaciones: IServicioNotificaciones) {
         this.estado = EstadoReserva.CANCELADA
+        await notificaciones.enviar(this.publicacion.anfitrion, Mensaje.reservaCancelada(this))
     }
 
     solapada(otra: Reserva): boolean {

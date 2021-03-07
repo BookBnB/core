@@ -21,7 +21,7 @@ Característica:
     Y que el anfitrión con email "anfitrion@book.bnb" rechaza la reserva del usuario "huesped@book.bnb"
     Cuando notifico que dicha reserva se rechazó con éxito
     Entonces veo un mensaje de confirmación
-    Y veo que se envió una notificación al usuario con título "Reserva rechazada" y descripción "Su reserva ha sido rechazada!"
+    Y veo que se envió una notificación al usuario con título "Reserva rechazada" y descripción "Su reserva en Departamento en Palermo ha sido rechazada!"
 
   Escenario: El servicio de pagos notifica que la reserva no pudo ser rechazada
     Dado que soy el "servicio de pagos"

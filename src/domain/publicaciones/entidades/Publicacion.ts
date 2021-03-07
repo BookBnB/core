@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import Usuario, { RolUsuario } from "../../usuarios/entidades/Usuario";
+import Usuario, {RolUsuario} from "../../usuarios/entidades/Usuario";
 import Direccion, {DireccionConstructor} from "../../lugares/entidades/Direccion";
 import Imagen from "./Imagen";
 import Reserva from "../../reservas/entidades/Reserva";
@@ -88,7 +88,7 @@ export default class Publicacion {
     @CreateDateColumn()
     public fechaCreacion?: Date
 
-    @Column('bool', { default: false })
+    @Column('bool', {default: false})
     public bloqueada: boolean = false;
 
     constructor(args: PublicacionConstructor) {
@@ -137,6 +137,7 @@ export default class Publicacion {
     }
 
     getReservas(): Reserva[] {
+        this.reservas.forEach((reserva: Reserva) => reserva.publicacion = this)
         return this.reservas
     }
 
@@ -151,7 +152,7 @@ export default class Publicacion {
         return nuevaCalificacion
     }
 
-    calificacion(): number|null {
+    calificacion(): number | null {
         const calificaciones = this.calificaciones || []
         return (calificaciones
             .map(calificacion => calificacion.puntos)

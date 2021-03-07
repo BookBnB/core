@@ -23,17 +23,18 @@ export default class ChatNotifications {
             await this.sendNewMessageNotification(
                 request.receiverId,
                 request.senderName,
-                request.message
+                request.message,
+                request.chatId
             );
         }, (error) => {
             this.logger.error(error);
         });
     }
 
-    private async sendNewMessageNotification(receptorId: string, nombreRemitente: string, mensaje: string) {
+    private async sendNewMessageNotification(receptorId: string, nombreRemitente: string, mensaje: string, chatId: string) {
         await this.notificaciones.enviar(
             new Usuario(receptorId, RolUsuario.HUESPED),
-            Mensaje.chatRecibido(nombreRemitente, mensaje)
+            Mensaje.chatRecibido(nombreRemitente, mensaje, chatId)
         )
     }
 }

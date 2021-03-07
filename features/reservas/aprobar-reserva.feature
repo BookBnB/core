@@ -33,7 +33,7 @@ Característica:
     Y que el anfitrión con email "anfitrion@book.bnb" aprobó la reserva del usuario "huesped@book.bnb"
     Cuando notifico que se registró la aprobación de dicha reserva
     Entonces veo un mensaje de confirmación
-    Y veo que se envió una notificación al usuario con título "Reserva aceptada" y descripción "Su reserva ha sido aceptada!"
+    Y veo que se envió una notificación al usuario con título "Reserva aceptada" y descripción "Su reserva en Departamento en Palermo ha sido aceptada!"
 
   Escenario: El estado de la reserva es "creada" si falla la aprobación de la reserva
     Dado que soy "huésped"
