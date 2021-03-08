@@ -16,7 +16,7 @@ export default class Mensaje {
     static reservaRecibida(reserva: Reserva): Mensaje {
         return new Mensaje(
             "Reserva recibida",
-            "Ha recibido una nueva reserva!",
+            `Ha recibido una nueva reserva en ${reserva.publicacion.titulo}!`,
             `https://www.bookbnb.com/anfitrion/publicacion/${reserva.publicacion.id}/reservas`
         )
     }
