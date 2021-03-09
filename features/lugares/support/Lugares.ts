@@ -1,8 +1,8 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import {mockServer} from "../../doubles/server";
 import {rest} from "msw";
 import Recurso from "../../util/Recurso";
+import {World} from "cucumber";
 
 chai.use(chaiHttp);
 
@@ -21,16 +21,16 @@ export default class Lugares extends Recurso {
         await this.post(context, '/ciudades/consulta', {consulta: consulta})
     }
 
-    public static mockLugarInexistente() {
-        mockServer.use(rest.post('*/1/places/query', (req, res, context) => {
+    public static mockLugarInexistente(context: World) {
+        context.mockServer.use(rest.post('*/1/places/query', (req, res, context) => {
             return res(context.json({
                 hits: []
             }))
         }))
     }
 
-    public static mockPaseoColon() {
-        mockServer.use(rest.post(`*/1/places/query`, (req, res, ctx) => {
+    public static mockPaseoColon(context: World) {
+        context.mockServer.use(rest.post(`*/1/places/query`, (req, res, ctx) => {
             return res(
                 ctx.json({
                     hits: [{
@@ -45,8 +45,8 @@ export default class Lugares extends Recurso {
         }))
     }
 
-    public static mockPotrerillos() {
-        mockServer.use(rest.post('*/1/places/query', (req, res, context) => {
+    public static mockPotrerillos(context: World) {
+        context.mockServer.use(rest.post('*/1/places/query', (req, res, context) => {
             return res(context.json({
                 hits: [{
                     country: "Argentina",

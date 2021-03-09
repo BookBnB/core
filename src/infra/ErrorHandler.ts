@@ -6,7 +6,7 @@ export class ErrorHandler implements ExpressErrorMiddlewareInterface {
     error(error: any, request: any, response: any, next: (err?: any) => any): void {
         response.status(error.httpCode ?? error.statusCode ?? 500);
         response.json(this.processJsonError(error))
-        next()
+        next(this.processJsonError(error))
     }
 
     private processJsonError(error: any) {

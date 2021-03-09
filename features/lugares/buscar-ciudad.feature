@@ -1,11 +1,11 @@
 # language: es
 Característica:
-  Como huesped
+  Como huésped
   Quiero poder buscar una ciudad
   Para poder ver las publicaciones asociadas a esta
 
   Escenario: Buscar ciudad existente
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando busco una ciudad por "potrerillos"
     Entonces veo una ciudad con:
       | pais                 | Argentina   |

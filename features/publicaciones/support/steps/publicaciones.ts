@@ -1,37 +1,33 @@
-import {Given, When, Then, TableDefinition} from "cucumber"
-import chai from "chai"
-import chaiHttp from "chai-http"
-import {crearUsuario, iniciarSesion} from "../../../sesiones/support/steps/sesiones";
-import _ from "lodash"
-import Publicaciones from "../Publicaciones";
-import { validarObjeto } from "../../../util/Validacion";
+import { DIContainer } from "@wessberg/di";
+import chai from "chai";
+import chaiHttp from "chai-http";
 import chaiSubset from "chai-subset";
-import Usuarios from "../../../usuarios/support/Usuarios";
+import { Given, TableDefinition, Then, When } from "cucumber";
+import _ from "lodash";
 import { v4 as uuidv4 } from 'uuid';
+import Publicacion, { EstadoPublicacion } from "../../../../src/domain/publicaciones/entidades/Publicacion";
+import IPublicacionRepositorio from "../../../../src/domain/publicaciones/repositorios/PublicacionRepositorio";
+import Eventos from "../../../common/Eventos";
+import Sesiones from "../../../sesiones/support/Sesiones";
+import Usuarios from "../../../usuarios/support/Usuarios";
+import GestorDeSesiones from "../../../util/GestorDeSesiones";
+import { validarConjunto } from "../../../util/Validacion";
+import Publicaciones from "../Publicaciones";
+
 
 chai.use(chaiHttp);
 chai.use(chaiSubset);
 const expect = chai.expect;
 
-async function crearUsuarioConRol(this: any, rol: string, email: string = 'john@doe.com') {
-    await crearUsuario.bind(this)({
-        nombre: 'John Doe',
-        email: email,
-        password: 'password',
-        role: rol
-    })
-    await iniciarSesion.bind(this)(email, 'password')
-}
-
-Given('que soy {string}', async function (rol: string) { 
-    await crearUsuarioConRol.bind(this)(rol);
-});
-
-const crearPublicacion = async function (this: any, dataTable: TableDefinition) {
+export async function crearPublicacion(this: any, dataTable?: TableDefinition) {
     const publicacion: any = Publicaciones.ejemplo()
-    dataTable.raw().forEach(([clave, valor]) => {
-        _.set(publicacion, clave, valor)
-    })
+
+    if (dataTable) {
+        dataTable.raw().forEach(([clave, valor]) => {
+            _.set(publicacion, clave, valor)
+        })
+    }
+
     publicacion.precioPorNoche = parseFloat(publicacion.precioPorNoche)
     publicacion.cantidadDeHuespedes = parseFloat(publicacion.cantidadDeHuespedes)
     publicacion.direccion.coordenadas.latitud = parseFloat(publicacion.direccion.coordenadas.latitud)
@@ -40,41 +36,61 @@ const crearPublicacion = async function (this: any, dataTable: TableDefinition) 
     await Publicaciones.crear(this, publicacion)
 }
 
-Then('veo que está publicada a mí nombre', function () {
-    expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.usuarioActual.id)
+export async function crearPublicacionConEstado(this: any, estado: string, email: string, publicacion?: TableDefinition) {
+    await Usuarios.crear(this, {...Usuarios.ejemplo(), role: 'anfitrión', email})
+    await Sesiones.crear(this, this.last_response.body.email, this.last_response.body.password)
+
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await crearPublicacion.bind(this)(publicacion)
+    }, email);
+    await Eventos.registarEstadoPublicacion(this, estado, this.last_response.body.id)
+}
+
+Given(/^que existe una publicación (:?"([^"]*)" )?con:$/, async function (estado: string, publicacion: TableDefinition) {
+    await crearPublicacionConEstado.bind(this)(estado || 'creada', 'anfitrion@bookbnb.com', publicacion)
+});
+
+Given('que el anfitrión {string} tiene una publicación creada el {string}', async function (emailAnfitrion: string, fecha: string) {
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await crearPublicacion.bind(this)()
+
+        const id = this.last_response.body.id
+        const repo = await (<DIContainer>this.container).get<IPublicacionRepositorio>()
+        let pub = await repo.obtener(id)
+        pub.fechaCreacion = new Date(fecha)
+        await repo.guardar(pub)
+    }, emailAnfitrion)
+});
+
+Given('que el anfitrión {string} tiene una publicación {string}', async function (email: string, estadoPublicacion: string) {
+    await crearPublicacionConEstado.bind(this)(estadoPublicacion, email)
+});
+
+Given('que el anfitrión con email {string} tiene una publicación {string} con:', async function (email: string, estadoPublicacion: string, publicacion: TableDefinition) {
+    await crearPublicacionConEstado.bind(this)(estadoPublicacion, email, publicacion)
+});
+
+When('el anfitrión con email {string} realiza una publicación con:', async function (email, publicacion) {
+    await crearPublicacionConEstado.bind(this)("pendiente", email, publicacion)
+});
+
+When(/^(?:notifico|se notifica) que la publicación con título "([^"]*)" fue registrada con éxito$/, async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Eventos.publicacionCreada(this, this.last_publicacion.body.id)
+});
+
+When(/^(?:notifico|se notifica|que se notifica) que la publicación con título "([^"]*)" no pudo registrarse$/, async function (titulo) {
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+
+    await Eventos.publicacionCreacionFallida(this, this.last_publicacion.body.id)
 });
 
 When('creo una publicación con:', crearPublicacion)
 
-Given('que existe una publicacion', async function() {
-    const publicacion = Publicaciones.ejemplo()
-    await Publicaciones.crear(this, publicacion)
-});
-
-Then('veo una nueva publicación con:', function (dataTable: TableDefinition) {
-    expect(this.last_response).to.have.status(201)
-    expect(this.last_response).to.be.json
-    validarObjeto.bind(this)(dataTable)
-})
-
-Given('que existe una publicacion con:', async function (publicacion: TableDefinition) {
-    await crearUsuarioConRol.bind(this)("anfitrión")
-    await crearPublicacion.bind(this)(publicacion)
-});
-
 When('ingreso a la publicación con título {string}', async function (titulo: string) {
-    if (this.last_response.body.titulo != titulo) throw new Error('No existe la publicación')
-    await Publicaciones.obtener(this, this.last_response.body.id)
-});
-
-Then('veo una publicación con:', function (dataTable: TableDefinition) {
-    expect(this.last_response).to.have.status(200)
-    expect(this.last_response).to.be.json
-    validarObjeto.bind(this)(dataTable)
-})
-
-Then('veo una nueva publicación con {string} nulo', function (campo: string) {
-    expect(this.last_response.body).to.have.nested.property(campo).be.null
+    expect(this.last_publicacion.body.titulo).to.eql(titulo)
+    await Publicaciones.obtener(this, this.last_publicacion.body.id)
 });
 
 When('creo una publicación sin {string}', async function (campo: string) {
@@ -89,15 +105,6 @@ When('creo una publicación con el {string} vacío', async function (campo: stri
     await Publicaciones.crear(this, publicacion)
 });
 
-Then('veo que no hay publicaciones', async function () {
-    await Publicaciones.listar(this)
-    expect(this.last_response.body).to.eql([])
-});
-
-Then('no obtengo publicaciones', async function () {
-    expect(this.last_response.body).to.eql([])
-});
-
 When('listo las publicaciones', async function () {
     await Publicaciones.listar(this)
 });
@@ -106,8 +113,28 @@ When('busco las primeras {int} publicaciones en un radio de {int} metros a {floa
     await Publicaciones.listar(this, {cantidad, latitud, longitud, radio})
 });
 
-When('busco las primeras {int} publicaciones', async function (cantidad: number) {
-    await Publicaciones.listar(this, {cantidad})
+When(/^busco las primeras (\d+) publicaciones(:? "([^"]*)")?$/, async function (cantidad, estado) {
+    const estadoCorrecto = new Map([
+        ['pendientes', EstadoPublicacion.PENDIENTE_DE_CREACION],
+        ['creadas', EstadoPublicacion.CREADA],
+        ['rechazadas', EstadoPublicacion.RECHAZADA],
+    ]).get(estado)
+
+    await Publicaciones.listar(this, {cantidad, estado: estadoCorrecto as undefined})
+});
+
+When(/^busco las primeras (\d+) publicaciones(:? "([^"]*)"), incluyendo bloqueadas?$/, async function (cantidad, estado) {
+    const estadoCorrecto = new Map([
+        ['pendientes', EstadoPublicacion.PENDIENTE_DE_CREACION],
+        ['creadas', EstadoPublicacion.CREADA],
+        ['rechazadas', EstadoPublicacion.RECHAZADA],
+    ]).get(estado)
+
+    await Publicaciones.listar(this, {
+        cantidad,
+        estado: estadoCorrecto as undefined,
+        incluirBloqueadas: true
+    })
 });
 
 When('busco las primeras {int} publicaciones de tipo {string}', async function (cantidad, tipoDeAlojamiento) {
@@ -130,17 +157,12 @@ When('busco las primeras {int} publicaciones con precio entre {float} y {float}'
     await Publicaciones.listar(this, {cantidad, precioPorNocheMinimo, precioPorNocheMaximo})
 });
 
+When('busco las primeras {int} publicaciones entre el {string} y el {string}', async function (cantidad, fechaInicio, fechaFin) {
+    await Publicaciones.listar(this, {cantidad, fechaInicio, fechaFin})
+});
+
 Then('veo las publicaciones:', function (dataTable: TableDefinition) {
-    let publicaciones: any = dataTable.hashes()
-    publicaciones = publicaciones.map((publicacion: any) => {
-        const publicacionParseada: any = {}
-        Object.entries(publicacion).forEach(([clave, valor]) => {
-            _.set(publicacionParseada, clave, valor)
-        })
-        return {...publicacionParseada}
-    })
-    expect(this.last_response.body).to.lengthOf(publicaciones.length)
-    expect(this.last_response.body).to.containSubset(publicaciones)
+    validarConjunto.bind(this)(dataTable)
 });
 
 When('ingreso a la publicación con id {string}', async function (id: string) {
@@ -148,14 +170,14 @@ When('ingreso a la publicación con id {string}', async function (id: string) {
 });
 
 When('listo mis publicaciones', async function () {
-    await Usuarios.listarPublicaciones(this, this.usuarioActual.id);
+    await Usuarios.listarPublicaciones(this, this.sesiones.usuarioActual().id);
 });
 
 When('listo las publicaciones del anfitrion {string}', async function (email) {
-    const usuario = this.gestorDeSesiones.obtenerUsuario(email)
+    const usuario = this.sesiones.obtenerUsuario(email)
 
     const id = usuario ? usuario.id : uuidv4()
-    
+
     await Usuarios.listarPublicaciones(this, id)
 });
 
@@ -163,12 +185,55 @@ When('listo las publicaciones del anfitrion de id {string}', async function (id)
     await Usuarios.listarPublicaciones(this, id);
 });
 
-Given('que existe un anfitrión {string}', async function (email) {
-    await crearUsuarioConRol.bind(this)('anfitrión', email)
+When('bloqueo la publicación', async function () {
+    await Publicaciones.bloquear(this, this.last_publicacion.body.id)
 });
 
-Given('que el anfitrión {string} tiene una publicación con:', async function (email, dataTable) {
-    await this.gestorDeSesiones.ejecutarBajoSesion(this, async () => {
-        await crearPublicacion.bind(this)(dataTable)
-    }, email);
+When('desbloqueo la publicación', async function () {
+    await Publicaciones.desbloquear(this, this.last_publicacion.body.id)
+});
+
+When('que {string} bloquea la publicación', async function (email) {
+    await this.sesiones.ejecutarBajoSesion(async () => {
+        await Publicaciones.bloquear(this, this.last_publicacion.body.id)
+    }, email)
+});
+
+When('bloqueo la publicación de id {string}', async function (id) {
+    await Publicaciones.bloquear(this, id)
+});
+
+Then('veo que la publicación está bloqueada', function () {
+    expect(this.last_response.body.bloqueada).to.be.true
+})
+
+Then('veo que la publicación no está bloqueada', function () {
+    expect(this.last_response.body.bloqueada).to.be.false
+})
+
+Then('veo que está publicada a mí nombre', function () {
+    expect(this.last_response.body).to.have.nested.property('anfitrion.id', this.sesiones.usuarioActual().id)
+});
+
+Then('veo una nueva publicación con {string} nulo', function (campo: string) {
+    expect(this.last_response.body).to.have.nested.property(campo).be.null
+});
+
+Then('veo que no hay publicaciones', async function () {
+    await Publicaciones.listar(this)
+    expect(this.last_response.body).to.eql([])
+});
+
+Then('no obtengo publicaciones', async function () {
+    expect(this.last_response.body).to.eql([])
+});
+
+Then('recibo un pedido de registro de publicación', function () {
+    expect(this.servicioPagos.crearPublicacion).to.have.been.calledWithMatch({
+        id: this.last_publicacion.body.id
+    })
+});
+
+Then('no recibo un pedido de registro de publicación', function () {
+    expect(this.servicioPagos.crearPublicacion).not.to.have.been.called
 });

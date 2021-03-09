@@ -1,5 +1,5 @@
 import {JSONSchema} from "class-validator-jsonschema";
-import {IsEnum, IsInt, IsString, IsUrl, ValidateNested} from "class-validator";
+import {IsBoolean, IsEnum, IsInt, IsNumber, IsString, IsUrl, ValidateNested} from "class-validator";
 import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
 import {Type} from "class-transformer";
 import Direccion from "../../lugares/entidades/Direccion";
@@ -15,7 +15,7 @@ class PublicacionDTO {
     @IsString()
     public descripcion!: string
 
-    @JSONSchema({example: 2})  @IsInt()
+    @JSONSchema({example: 2}) @IsInt()
     public precioPorNoche!: number
 
     @ValidateNested() @Type(() => Direccion)
@@ -33,8 +33,19 @@ class PublicacionDTO {
     @ValidateNested({each: true}) @Type(() => Imagen)
     public imagenes: Imagen[] = []
 
+    @IsString()
+    public estado!: string
+
+    @IsNumber()
+    public calificacion: number | null
+
+    @IsBoolean()
+    public bloqueada!: boolean
+
     constructor(publicacion: Publicacion) {
         Object.assign(this, publicacion)
+        this.estado = publicacion.estado.toString()
+        this.calificacion = publicacion.calificacion()
     }
 }
 

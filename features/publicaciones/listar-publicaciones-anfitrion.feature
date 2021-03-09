@@ -5,10 +5,9 @@ Característica:
   Para administrarlas
 
   Antecedentes:
-    Dado que existe un anfitrión "unanfitrion@test.test"
-    Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
+    Y que el anfitrión con email "unanfitrion@test.test" tiene una publicación "creada" con:
       | titulo | Casa en Salta |
-    Y que el anfitrión "unanfitrion@test.test" tiene una publicación con:
+    Y que el anfitrión con email "unanfitrion@test.test" tiene una publicación "creada" con:
       | titulo | Departamento en Palermo |
 
   Escenario: Listado de mis publicaciones
@@ -32,10 +31,11 @@ Característica:
     Entonces obtengo un error 403 con mensaje "Access is denied"
 
   Escenario: Ver publicaciones de un id inválido
+    Dado que soy "anfitrión"
     Cuando listo las publicaciones del anfitrion de id "uuidinvalido"
     Entonces veo un error indicado en el campo "id"
 
   Escenario: No puede ver publicaciones si no soy anfitrión
-    Dado que soy "huesped"
+    Dado que soy "huésped"
     Cuando listo mis publicaciones
     Entonces obtengo un error 403 con mensaje "Access is denied"

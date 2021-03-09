@@ -1,6 +1,7 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
 import Recurso from "../../util/Recurso";
+import {World} from "cucumber";
 
 chai.use(chaiHttp);
 
@@ -9,43 +10,6 @@ export default class Publicaciones extends Recurso {
 
     protected static baseUlr(): string {
         return this.BASE_URL;
-    }
-
-    public static async crear(context: any, publicacion: any) {
-        await this.post(context, '/', publicacion)
-        context.last_publicacion = context.last_response
-    }
-
-    public static async obtener(context: any, idPublicacion: string) {
-        await this.get(context, `/${idPublicacion}`)
-    }
-
-    public static async listar(
-        context: any,
-        {
-            cantidad = 100,
-            latitud = 0,
-            longitud = 0,
-            radio = 300000000,
-            tipoDeAlojamiento = undefined,
-            cantidadDeHuespedes = undefined,
-            precioPorNocheMinimo = undefined,
-            precioPorNocheMaximo = undefined
-        } = {}) {
-
-        await this.get(context, '/', {
-            offset: 0,
-            limit: cantidad,
-            coordenadas: {
-                latitud,
-                longitud
-            },
-            radio,
-            tipoDeAlojamiento,
-            cantidadDeHuespedes,
-            precioPorNocheMinimo,
-            precioPorNocheMaximo
-        })
     }
 
     public static ejemplo() {
@@ -65,7 +29,73 @@ export default class Publicaciones extends Recurso {
             },
             cantidadDeHuespedes: 2,
             tipoDeAlojamiento: 'Alojamiento entero',
-            imagenes: []
+            imagenes: [],
+            bloqueada: false
         }
+    }
+
+    public static async crear(context: World, publicacion: any) {
+        await this.post(context, '/', publicacion)
+        context.last_publicacion = context.last_response
+    }
+
+    public static async obtener(context: World, idPublicacion: string) {
+        await this.get(context, `/${idPublicacion}`)
+    }
+
+    public static async listar(
+        context: any,
+        {
+            cantidad = 100,
+            latitud = 0,
+            longitud = 0,
+            radio = 300000000,
+            tipoDeAlojamiento = undefined,
+            cantidadDeHuespedes = undefined,
+            precioPorNocheMinimo = undefined,
+            precioPorNocheMaximo = undefined,
+            fechaInicio = undefined,
+            fechaFin = undefined,
+            estado = undefined,
+            incluirBloqueadas = false
+        } = {}) {
+
+        await this.get(context, '/', {
+            offset: 0,
+            limit: cantidad,
+            coordenadas: {
+                latitud,
+                longitud
+            },
+            radio,
+            tipoDeAlojamiento,
+            cantidadDeHuespedes,
+            precioPorNocheMinimo,
+            precioPorNocheMaximo,
+            fechaInicio,
+            fechaFin,
+            estado,
+            incluirBloqueadas
+        })
+    }
+
+    public static async listarPreguntas(context: any, idPublicacion: string) {
+        await this.get(context, `/${idPublicacion}/preguntas`)
+    }
+
+    public static async preguntar(context: any, idPublicacion: string, descripcion: string) {
+        await this.post(context, `/${idPublicacion}/preguntas`, {descripcion})
+    }
+
+    static async responder(context: any, publicacionId: string, preguntaId: string, respuesta: string) {
+        await this.post(context, `/${publicacionId}/preguntas/${preguntaId}/respuesta`, {descripcion: respuesta})
+    }
+
+    static async bloquear(context: any, publicacionId: string) {
+        await this.put(context, `/${publicacionId}/bloqueo`, {bloqueada: true})
+    }
+
+    static async desbloquear(context: any, publicacionId: string) {
+        await this.put(context, `/${publicacionId}/bloqueo`, {bloqueada: false})
     }
 }

@@ -1,13 +1,13 @@
-import {UseCase} from "../../UseCase";
-import PublicacionDTO from "../dtos/PublicacionDTO";
+import { UseCase } from "../../UseCase";
+import Usuario from "../../usuarios/entidades/Usuario";
+import Publicacion from "../entidades/Publicacion";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
 
 export class VerPublicacion implements UseCase {
     constructor(private readonly publicaciones: IPublicacionRepositorio) {
     }
 
-    async execute(id: string): Promise<PublicacionDTO> {
-        const publicacion = await this.publicaciones.obtener(id)
-        return new PublicacionDTO(publicacion)
+    execute(id: string): Promise<Publicacion> {
+        return this.publicaciones.obtener(id)
     }
 }

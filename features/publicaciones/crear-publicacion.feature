@@ -22,7 +22,7 @@ Característica:
       | cantidadDeHuespedes            | 2                                                      |
       | tipoDeAlojamiento              | Alojamiento entero                                     |
       | imagenes[0].url                | google.com                                             |
-    Entonces veo una nueva publicación con:
+    Entonces veo una nueva "publicación" con:
       | titulo                         | Departamento con vista                                 |
       | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |
       | precioPorNoche                 | 10                                                     |
@@ -36,6 +36,7 @@ Característica:
       | cantidadDeHuespedes            | 2                                                      |
       | tipoDeAlojamiento              | Alojamiento entero                                     |
       | imagenes[0].url                | google.com                                             |
+      | estado                         | Pendiente de creación                                  |
     Y veo que está publicada a mí nombre
 
   Escenario: Municipio opcional
@@ -44,7 +45,7 @@ Característica:
 
   Escenario: Imagenes opcionales
     Cuando creo una publicación sin "imagenes"
-    Entonces veo una nueva publicación con:
+    Entonces veo una nueva "publicación" con:
       | imagenes |  |
 
   Esquema del escenario: Campos faltantes
@@ -86,8 +87,8 @@ Característica:
       | cantidadDeHuespedes            | cantidadDeHuespedes |
       | tipoDeAlojamiento              | tipoDeAlojamiento   |
 
-  Escenario: Un huesped no puede crear publicaciones
-    Dado que soy "huesped"
+  Escenario: Un huésped no puede crear publicaciones
+    Dado que soy "huésped"
     Cuando creo una publicación con:
       | titulo                         | Departamento con vista                                 |
       | descripcion                    | Hermoso departamento con vista al mar en Mar del Plata |

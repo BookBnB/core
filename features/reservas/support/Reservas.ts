@@ -1,9 +1,15 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
+import Recurso from "../../util/Recurso";
+import {World} from "cucumber";
 
 chai.use(chaiHttp);
 
-export default class Reservas {
+export default class Reservas extends Recurso {
+    protected static baseUlr(): string {
+        return '/v1/reservas';
+    }
+
     public static ejemplo(publicacionId: string) {
         return {
             publicacionId: publicacionId,
@@ -12,11 +18,38 @@ export default class Reservas {
         }
     }
 
-    public static async crear(context: any, reserva: any) {
+    public static async crear(context: World, reserva: any) {
+        await this.post(context, '', reserva)
+        context.last_reserva = context.last_response
+    }
+
+    public static async obtener(context: World, idReserva: any) {
+        await this.get(context, `/${idReserva}`)
+    }
+
+    public static async aprobar(context: World, id: any) {
+        await this.put(context, `/${id}/aprobacion`, { reservaId: id })
+    }
+
+    public static async rechazar(context: World, id: any) {
+        await this.put(context, `/${id}/rechazo`, { reservaId: id })
+    }
+
+    public static async cancelar(context: World, id: any) {
+        await this.put(context, `/${id}/cancelacion`)
+    }
+
+    static async listarPorPublicacion(context: World, publicacionId: string, estado: string | undefined = undefined) {
         context.last_response = await chai.request(context.app)
-            .post('/v1/reservas')
-            .set('authorization', context.tokenSesion)
-            .type('json')
-            .send(reserva)
+            .get(`/v1/publicaciones/${publicacionId}/reservas`)
+            .query({estado: estado})
+            .set('authorization', Reservas.tokenActual(context))
+    }
+
+    static async listarMisReservas(context: World, usuarioId: string, estado: string | undefined = undefined) {
+        context.last_response = await chai.request(context.app)
+            .get(`/v1/usuarios/${usuarioId}/reservas`)
+            .query({estado: estado})
+            .set('authorization', Reservas.tokenActual(context))
     }
 }

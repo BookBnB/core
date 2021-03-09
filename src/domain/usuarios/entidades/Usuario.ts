@@ -1,23 +1,29 @@
 import {IsString, IsUUID} from "class-validator";
 import {Column} from "typeorm";
-import Publicacion from "../../publicaciones/entidades/Publicacion";
-import Reserva from "../../reservas/entidades/Reserva";
+
+export enum RolUsuario {
+    HUESPED = 'guest',
+    ANFITRION = 'host',
+    ADMIN = 'admin'
+}
 
 export default class Usuario {
-    @IsUUID() @Column("uuid") public id!: string;
+    @IsUUID() @Column("uuid")
+    public id!: string;
 
-    @IsString() public rol!: string;
+    @IsString()
+    public rol!: RolUsuario;
 
-    public publicaciones!: Publicacion[];
-
-    public reservas!: Reserva[];
-
-    constructor(id: string, rol: string) {
+    constructor(id: string, rol: RolUsuario) {
         this.id = id;
         this.rol = rol;
     }
 
-    public tieneRol(rol: string): boolean {
+    public tieneRol(rol: RolUsuario): boolean {
         return this.rol === rol
+    }
+
+    esIgualA(otro: Usuario): boolean {
+        return this.id === otro.id;
     }
 }

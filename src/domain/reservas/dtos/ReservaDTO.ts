@@ -12,10 +12,10 @@ export default class ReservaDTO {
     @IsString()
     public huespedId!: string;
 
-    @IsDate()
+    @IsDate() @JSONSchema({example: "2020-11-19"})
     public fechaInicio!: Date;
 
-    @IsDate()
+    @IsDate() @JSONSchema({example: "2020-11-21"})
     public fechaFin!: Date;
 
     @IsEnum(EstadoReserva)

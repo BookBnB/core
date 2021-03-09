@@ -21,9 +21,9 @@ const validarLugar = function (this: any, dataTable: TableDefinition) {
 
 When('busco una dirección por {string}', async function (consulta: string) {
     if(consulta === 'paseo colon 850')
-        Lugares.mockPaseoColon()
+        Lugares.mockPaseoColon(this)
     if(consulta === 'una dirección inexistente')
-        Lugares.mockLugarInexistente()
+        Lugares.mockLugarInexistente(this)
     await Lugares.buscarDirecciones(this, consulta)
 });
 
@@ -35,9 +35,9 @@ Then('no encuentro direcciones', function () {
 
 When('busco una ciudad por {string}', async function (consulta: string) {
     if(consulta === 'potrerillos')
-        Lugares.mockPotrerillos()
+        Lugares.mockPotrerillos(this)
     if(consulta === 'una ciudad inexistente')
-        Lugares.mockLugarInexistente()
+        Lugares.mockLugarInexistente(this)
     await Lugares.buscarCiudades(this, consulta)
 });
 

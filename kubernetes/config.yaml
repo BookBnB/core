@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: core-config
+data:
+  PORT: "80"
+  BACKOFFICE_URL: "*"
+  NODE_ENV: "development"
+  PAYMENTS_SERVICE_URL: "http://bookbnb-payments-service"
+  USERS_SERVICE_URL: "http://bookbnb-users-service"
+  FIREBASE_DATABASE_URL: "https://bookbnb-taller2.firebaseio.com"

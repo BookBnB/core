@@ -1,13 +1,13 @@
 import {UseCase} from "../../UseCase";
 import PublicacionDTO from "../dtos/PublicacionDTO";
 import IPublicacionRepositorio from "../repositorios/PublicacionRepositorio";
-import Publicacion, {TipoDeAlojamiento} from "../entidades/Publicacion";
+import Publicacion, {EstadoPublicacion, TipoDeAlojamiento} from "../entidades/Publicacion";
 import ConsultaConPaginacion from "../../common/ConsultaConPaginacion";
-import {IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, ValidateNested} from "class-validator";
+import {IsBoolean, IsDate, IsDefined, IsEnum, IsInt, IsNumber, IsOptional, IsPositive, Min, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
 import {Coordenadas} from "../../lugares/entidades/Lugar";
 import {JSONSchema} from "class-validator-jsonschema";
-import PrecioPorNocheInvertido from "../excepciones/PrecioPorNocheInvertido";
+import PrecioPorNocheInvertidoError from "../excepciones/PrecioPorNocheInvertidoError";
 
 export class ConsultaDePublicaciones extends ConsultaConPaginacion {
     @ValidateNested() @IsDefined() @Type(() => Coordenadas)
@@ -23,11 +23,23 @@ export class ConsultaDePublicaciones extends ConsultaConPaginacion {
     @IsEnum(TipoDeAlojamiento) @IsOptional()
     public tipoDeAlojamiento?: TipoDeAlojamiento = undefined
 
-    @IsNumber() @IsPositive() @IsOptional()
+    @IsNumber() @Min(0) @IsOptional()
     public precioPorNocheMinimo?: number = undefined
 
     @IsNumber() @IsPositive() @IsOptional()
     public precioPorNocheMaximo?: number = undefined
+
+    @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-19"}) @IsOptional()
+    public fechaInicio!: Date;
+
+    @IsDate() @Type(() => Date) @JSONSchema({example: "2020-11-21"}) @IsOptional()
+    public fechaFin!: Date;
+
+    @IsEnum(EstadoPublicacion) @IsOptional()
+    public estado?: EstadoPublicacion = undefined
+
+    @IsBoolean() @IsOptional()
+    public incluirBloqueadas?: boolean = false
 }
 
 export class BuscarPublicaciones implements UseCase {
@@ -37,7 +49,7 @@ export class BuscarPublicaciones implements UseCase {
     async execute(consulta: ConsultaDePublicaciones): Promise<PublicacionDTO[]> {
         const {precioPorNocheMinimo, precioPorNocheMaximo} = consulta
         if(precioPorNocheMinimo && precioPorNocheMaximo && (precioPorNocheMinimo > precioPorNocheMaximo))
-            throw new PrecioPorNocheInvertido('El precio por noche máximo debe ser mayor al precio por noche mínimo')
+            throw new PrecioPorNocheInvertidoError('El precio por noche máximo debe ser mayor al precio por noche mínimo')
 
         return (await this.publicaciones.listar(consulta))
             .map((publicacion: Publicacion): PublicacionDTO =>

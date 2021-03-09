@@ -1,6 +1,6 @@
 # BookBnB
 
-[![Build Status](https://travis-ci.com/BookBnB/core.svg?branch=master)](https://travis-ci.com/BookBnB/core)
+[![build](https://github.com/BookBnB/core/workflows/build/badge.svg)](https://github.com/BookBnB/core/actions?query=workflow%3Abuild)
 [![codecov](https://codecov.io/gh/BookBnB/core/branch/master/graph/badge.svg?token=3HYQW6VBPY)](https://codecov.io/gh/BookBnB/core)
 [![Heroku](https://img.shields.io/badge/heroku-master-success.svg?l?style=flat&logo=heroku&logoColor=white&labelColor=494998)](https://bookbnb-master.herokuapp.com/)
 [![Heroku](https://img.shields.io/badge/heroku-develop-success.svg?l?style=flat&logo=heroku&logoColor=white&labelColor=494998)](https://bookbnb-develop.herokuapp.com/)
@@ -19,10 +19,10 @@ npm run start
 ## Tests
 
 ```
-npm run test			# all tests, no coverage
-npm run test:unit		# unit tests only
+npm run test            # all tests, no coverage
+npm run test:unit       # unit tests only
 npm run test:acceptance # acceptance tests only
-npm run test:coverage	# all tests, with coverage
+npm run test:coverag    # all tests, with coverage
 ```
 
 ## Migrations
