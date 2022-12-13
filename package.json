@@ -35,7 +35,7 @@
     "dotenv-cli": "^4.0.0",
     "dotenv-expand": "^5.1.0",
     "esm": "^3.2.25",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "firebase-admin": "^9.5.0",
     "geojson": "^0.5.0",
     "http-proxy-middleware": "^1.0.6",
